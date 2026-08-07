@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub Ultimate - شريكي هب المتكامل</title>
+  <title>SharikiHub Pro - شريكي هب الشامل</title>
   <style>
     :root {
       --primary: #2563eb;
@@ -27,64 +27,60 @@
     }
     .logo { font-size: 18px; font-weight: bold; color: var(--primary); }
     .header-actions { display: flex; gap: 6px; align-items: center; }
-    .btn-icon { background: #e2e8f0; border: none; padding: 6px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; position: relative; font-weight: bold; }
+    .btn-icon { background: #e2e8f0; border: none; padding: 6px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; font-weight: bold; position: relative; }
     .badge { background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -4px; right: -4px; }
 
     .container { padding: 16px; max-width: 600px; margin: 0 auto; }
     .page { display: none; }
     .page.active { display: block !important; }
 
-    /* Grid & Cards */
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-    .card { background: var(--card-bg); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .card-icon { font-size: 30px; margin-bottom: 6px; }
-    .card-title { font-weight: bold; font-size: 14px; }
-    
-    .studio-banner {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px;
+    /* Toast Notification */
+    #toast {
+      visibility: hidden; min-width: 200px; background-color: #10b981; color: #fff;
+      text-align: center; border-radius: 8px; padding: 12px; position: fixed;
+      z-index: 2000; left: 50%; bottom: 80px; transform: translateX(-50%); font-size: 13px; font-weight: bold;
     }
-    .btn { background: white; color: var(--primary); border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-success { background: var(--accent); color: white; }
+    #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+    @keyframes fadein { from {bottom: 50px; opacity: 0;} to {bottom: 80px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 80px; opacity: 1;} to {bottom: 50px; opacity: 0;} }
 
-    /* Advanced Studio UI */
+    /* Studio UI */
     .product-preview {
-      width: 100%; height: 260px; background-color: #ffffff; border-radius: 12px;
+      width: 100%; height: 250px; background-color: #ffffff; border-radius: 12px;
       display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;
       border: 2px dashed #cbd5e1; margin-bottom: 12px;
     }
-    .product-mockup { font-size: 150px; transition: color 0.3s; position: relative; user-select: none; }
+    .product-mockup { font-size: 140px; transition: color 0.3s; position: relative; user-select: none; }
     .custom-logo { position: absolute; max-width: 70px; max-height: 70px; top: 45%; left: 50%; transform: translate(-50%, -50%); display: none; }
     .custom-text-overlay { position: absolute; top: 32%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 15px; pointer-events: none; text-align: center; width: 80%; word-wrap: break-word; }
     .view-tag { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; }
 
     .control-group { background: white; padding: 12px; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .control-label { font-size: 12px; font-weight: bold; margin-bottom: 6px; display: block; color: #64748b; }
+    
+    .size-selector, .product-select-grid { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .size-btn, .prod-btn { flex: 1; padding: 8px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; text-align: center; }
+    .size-btn.active, .prod-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
     .color-options { display: flex; gap: 10px; justify-content: center; }
     .color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid #ccc; }
-    
-    .product-select-grid { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
-    .prod-btn { flex: 0 0 auto; padding: 8px 12px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
-    .prod-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
     .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 8px; font-size: 13px; }
+    .btn { background: white; color: var(--primary); border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-success { background: var(--accent); color: white; }
 
-    /* Orders & Admin UI */
-    .order-card { background: white; padding: 14px; border-radius: 12px; margin-bottom: 12px; border-right: 4px solid var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .cart-item { background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-    
-    /* Community Feed */
-    .post-box { background: white; padding: 12px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .post-box textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; resize: none; }
-    .feed-item { background: white; padding: 14px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .feed-header { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 4px; }
+    /* Cards & Grid */
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+    .card { background: var(--card-bg); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .card-icon { font-size: 30px; margin-bottom: 6px; }
+    .card-title { font-weight: bold; font-size: 14px; }
+
+    .studio-banner { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; }
+    .cart-item, .order-card { background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
     /* Bottom Nav */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg);
-      display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #e2e8f0; z-index: 1000;
-    }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #e2e8f0; z-index: 1000; }
     .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; background: none; border: none; cursor: pointer; flex: 1; }
     .nav-item.active { color: var(--primary); font-weight: bold; }
     .nav-icon { font-size: 18px; }
@@ -92,52 +88,41 @@
 </head>
 <body>
 
+  <div id="toast">تمت العملية بنجاح!</div>
+
   <!-- Header -->
   <header>
     <div class="logo">SharikiHub 🚀</div>
     <div class="header-actions">
+      <button class="btn-icon" onclick="switchPage('track')">🔍 تتبع</button>
       <button class="btn-icon" onclick="switchPage('admin')">👑 الإدارة</button>
       <button class="btn-icon" onclick="switchPage('cart')">🛒 السلة <span class="badge" id="cart-count">0</span></button>
-      <button class="btn-icon" onclick="switchPage('account')" id="user-btn-text">👤 حسابي</button>
     </div>
   </header>
 
   <div class="container">
 
-    <!-- 1. الرئيسية -->
+    <!-- 1. الصفحة الرئيسية -->
     <div id="page-home" class="page active">
       <div class="studio-banner">
-        <h2>🎨 استوديو الطباعة والمنتجات</h2>
-        <p>اختر منتجك، صمم الواجهة الأمامية والخلفية واطلبه فوراً!</p>
-        <button class="btn" onclick="switchPage('studio')">ابدأ التصميم المتقدم</button>
+        <h2>🎨 استوديو التصميم المتكامل</h2>
+        <p>صمم منتجك بالمقاس واللون المناسب واطلبه فوراً!</p>
+        <button class="btn" onclick="switchPage('studio')">ابدأ التصميم الآن</button>
       </div>
 
       <div style="font-weight: bold; margin-bottom: 12px;">✨ المجتمعات والتفاعل</div>
       <div class="grid">
-        <div class="card" onclick="switchPage('sports')">
-          <div class="card-icon">⚽</div>
-          <div class="card-title">الرياضة</div>
-        </div>
-        <div class="card" onclick="switchPage('clubs')">
-          <div class="card-icon">🛡️</div>
-          <div class="card-title">الأندية</div>
-        </div>
-        <div class="card" onclick="switchPage('movies')">
-          <div class="card-icon">🎬</div>
-          <div class="card-title">الأفلام</div>
-        </div>
-        <div class="card" onclick="switchPage('fashion')">
-          <div class="card-icon">👕</div>
-          <div class="card-title">الأزياء</div>
-        </div>
+        <div class="card" onclick="switchPage('sports')"><div class="card-icon">⚽</div><div class="card-title">الرياضة</div></div>
+        <div class="card" onclick="switchPage('clubs')"><div class="card-icon">🛡️</div><div class="card-title">الأندية</div></div>
+        <div class="card" onclick="switchPage('movies')"><div class="card-icon">🎬</div><div class="card-title">الأفلام</div></div>
+        <div class="card" onclick="switchPage('fashion')"><div class="card-icon">👕</div><div class="card-title">الأزياء</div></div>
       </div>
     </div>
 
-    <!-- 2. محرر الاستوديو المتقدم الموحد -->
+    <!-- 2. استوديو التصميم المتطور -->
     <div id="page-studio" class="page">
-      <h3>🎨 استوديو التصميم المتكامل</h3>
+      <h3>🎨 استوديو التصميم والمقاسات</h3>
       
-      <!-- اختيار نوع المنتج -->
       <div class="control-group">
         <span class="control-label">اختر نوع المنتج:</span>
         <div class="product-select-grid">
@@ -145,11 +130,9 @@
           <button class="prod-btn" onclick="selectProduct('🧥', 'هودي', 40, this)">🧥 هودي</button>
           <button class="prod-btn" onclick="selectProduct('🧢', 'قبعة', 15, this)">🧢 قبعة</button>
           <button class="prod-btn" onclick="selectProduct('☕', 'كوب', 12, this)">☕ كوب</button>
-          <button class="prod-btn" onclick="selectProduct('📱', 'كفر هاتف', 18, this)">📱 غطاء هاتف</button>
         </div>
       </div>
 
-      <!-- المعاينة المباشرة -->
       <div class="product-preview">
         <span class="view-tag" id="current-view-tag">الجهة الأمامية</span>
         <div class="product-mockup" id="product-icon" style="color: #000000;">👕</div>
@@ -157,29 +140,38 @@
         <img id="logo-preview" class="custom-logo" src="" alt="شعار">
       </div>
 
-      <!-- زر التبديل بين الأمام والخلف -->
       <button class="btn" style="background:#e2e8f0; color:#0f172a; margin-bottom:12px;" onclick="toggleProductView()">🔄 تبديل العرض (أمامي / خلفي)</button>
 
       <div class="control-group">
-        <span class="control-label">اختر لون المنتج:</span>
+        <span class="control-label">اختر المقاس:</span>
+        <div class="size-selector">
+          <button class="size-btn" onclick="selectSize('S', this)">S</button>
+          <button class="size-btn active" onclick="selectSize('M', this)">M</button>
+          <button class="size-btn" onclick="selectSize('L', this)">L</button>
+          <button class="size-btn" onclick="selectSize('XL', this)">XL</button>
+          <button class="size-btn" onclick="selectSize('XXL', this)">XXL</button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">اختر اللون:</span>
         <div class="color-options">
           <div class="color-dot" style="background: #000000;" onclick="changeProductColor('#000000')"></div>
           <div class="color-dot" style="background: #ffffff;" onclick="changeProductColor('#ffffff')"></div>
           <div class="color-dot" style="background: #94a3b8;" onclick="changeProductColor('#94a3b8')"></div>
           <div class="color-dot" style="background: #2563eb;" onclick="changeProductColor('#2563eb')"></div>
-          <div class="color-dot" style="background: #dc2626;" onclick="changeProductColor('#dc2626')"></div>
         </div>
       </div>
 
       <div class="control-group">
-        <span class="control-label">إضافة نص مخصص:</span>
-        <input type="text" id="custom-text-input" class="input-field" placeholder="اكتب عبارتك هنا..." oninput="updateCustomText()">
+        <span class="control-label">نص مخصص:</span>
+        <input type="text" id="custom-text-input" class="input-field" placeholder="اكتب عبادتك هنا..." oninput="updateCustomText()">
         <span class="control-label">لون النص:</span>
         <input type="color" id="text-color-picker" value="#ffffff" onchange="updateCustomTextColor()" style="width:100%; height:35px; border:none; cursor:pointer;">
       </div>
 
       <div class="control-group">
-        <span class="control-label">رفع شعار / صورة:</span>
+        <span class="control-label">رفع تصميم:</span>
         <input type="file" id="image-loader" accept="image/*" onchange="handleImageUpload(event)" class="input-field">
       </div>
 
@@ -188,7 +180,7 @@
 
     <!-- 3. السلة والدفع -->
     <div id="page-cart" class="page">
-      <h3>🛒 سلة المشتريات والدفع</h3>
+      <h3>🛒 السلة وإتمام الطلب</h3>
       <div id="cart-items-container"></div>
       
       <div class="control-group" style="margin-top: 15px;">
@@ -196,81 +188,37 @@
           <span>الإجمالي:</span>
           <span id="cart-total-price">$0</span>
         </div>
-        <hr style="border:0; border-top:1px solid #e2e8f0; margin-bottom:10px;">
-        
-        <span class="control-label">بيانات الشحن والدفع:</span>
-        <input type="text" id="shipping-address" class="input-field" placeholder="العنوان والمدينة التفصيلية...">
+        <input type="text" id="shipping-name" class="input-field" placeholder="الاسم الكامل...">
+        <input type="text" id="shipping-address" class="input-field" placeholder="العنوان والمدينة...">
         <input type="tel" id="shipping-phone" class="input-field" placeholder="رقم الهاتف للتواصل...">
-        
-        <span class="control-label">طريقة الدفع المفضلة:</span>
-        <select id="payment-method" class="input-field">
-          <option value="الدفع عند الاستلام (COD)">💵 الدفع عند الاستلام</option>
-          <option value="بطاقة إلكترونية (فيزا / ماستركارد)">💳 بطاقة إلكترونية / فيزا</option>
-        </select>
-
         <button class="btn btn-success" onclick="submitOrder()">تأكيد وإرسال الطلب 📦</button>
       </div>
     </div>
 
-    <!-- 4. لوحة الإدارة (Admin Dashboard) -->
+    <!-- 4. تتبع حالة الطلب للعميل -->
+    <div id="page-track" class="page">
+      <h3>🔍 تتبع حالة الطلب</h3>
+      <div class="control-group">
+        <span class="control-label">ادخل رقم الطلب الخفي الخاص بك:</span>
+        <input type="text" id="track-order-id" class="input-field" placeholder="مثال: ORD-4821">
+        <button class="btn btn-primary" onclick="trackOrder()">بحث وتتبع</button>
+      </div>
+      <div id="track-result" style="margin-top:15px;"></div>
+    </div>
+
+    <!-- 5. لوحة الإدارة (Admin) -->
     <div id="page-admin" class="page">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h3>👑 لوحة إدارة الطلبات</h3>
-        <button onclick="clearAllOrders()" style="background:#ef4444; color:white; border:none; padding:6px 10px; border-radius:6px; font-size:11px; cursor:pointer;">مسح الطلبات</button>
+        <h3>👑 لوحة الإدارة وتحديث الحالات</h3>
       </div>
-      <p style="font-size:12px; color:#64748b; margin-bottom:15px;">هنا تظهر جميع الطلبات الواصلة من العملاء مع تفاصيل التصميم والتواصل:</p>
       <div id="admin-orders-container"></div>
     </div>
 
-    <!-- 5. المجتمعات -->
-    <div id="page-sports" class="page">
-      <h3>⚽ مجتمع الرياضة</h3>
-      <div class="post-box">
-        <textarea id="post-sports" rows="2" placeholder="شارك رأيك..."></textarea>
-        <button class="btn btn-primary" onclick="addPost('sports')">نشر</button>
-      </div>
-      <div id="feed-sports"></div>
-    </div>
-
-    <div id="page-clubs" class="page">
-      <h3>🛡️ مجتمع الأندية</h3>
-      <div class="post-box">
-        <textarea id="post-clubs" rows="2" placeholder="تشجيع ناديك..."></textarea>
-        <button class="btn btn-primary" onclick="addPost('clubs')">نشر</button>
-      </div>
-      <div id="feed-clubs"></div>
-    </div>
-
-    <div id="page-movies" class="page">
-      <h3>🎬 مجتمع الأفلام</h3>
-      <div class="post-box">
-        <textarea id="post-movies" rows="2" placeholder="اقترح فيلماً..."></textarea>
-        <button class="btn btn-primary" onclick="addPost('movies')">نشر</button>
-      </div>
-      <div id="feed-movies"></div>
-    </div>
-
-    <div id="page-fashion" class="page">
-      <h3>👕 مجتمع الأزياء</h3>
-      <div class="post-box">
-        <textarea id="post-fashion" rows="2" placeholder="شارك تنسيقك..."></textarea>
-        <button class="btn btn-primary" onclick="addPost('fashion')">نشر</button>
-      </div>
-      <div id="feed-fashion"></div>
-    </div>
-
-    <!-- 6. الحساب -->
-    <div id="page-account" class="page">
-      <div class="card" id="auth-box">
-        <h3>تسجيل الدخول</h3>
-        <input type="text" id="username" class="input-field" placeholder="اسم المستخدم">
-        <button class="btn btn-primary" onclick="loginUser()">دخول</button>
-      </div>
-      <div class="card" id="user-profile" style="display: none;">
-        <h3 id="welcome-msg"></h3>
-        <button class="btn" style="background: #ef4444; color: white;" onclick="logoutUser()">تسجيل الخروج</button>
-      </div>
-    </div>
+    <!-- المجتمعات -->
+    <div id="page-sports" class="page"><h3>⚽ مجتمع الرياضة</h3><div id="feed-sports"></div></div>
+    <div id="page-clubs" class="page"><h3>🛡️ مجتمع الأندية</h3><div id="feed-clubs"></div></div>
+    <div id="page-movies" class="page"><h3>🎬 مجتمع الأفلام</h3><div id="feed-movies"></div></div>
+    <div id="page-fashion" class="page"><h3>👕 مجتمع الأزياء</h3><div id="feed-fashion"></div></div>
 
   </div>
 
@@ -284,13 +232,19 @@
   </nav>
 
   <script>
-    // الحالة العامة للبرنامج
     let currentProduct = { icon: '👕', name: 'تيشيرت', price: 25 };
+    let currentSize = 'M';
     let currentView = 'الجهة الأمامية';
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     let orders = JSON.parse(localStorage.getItem('orders') || '[]');
 
-    // التنقل بين الصفحات
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.className = "show";
+      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
     function switchPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const target = document.getElementById('page-' + pageId);
@@ -307,14 +261,18 @@
       if(pageId === 'admin') renderAdminOrders();
     }
 
-    // أدوات استوديو التصميم
-    function selectProduct(icon, name, price, btnElement) {
+    function selectProduct(icon, name, price, btn) {
       currentProduct = { icon, name, price };
       document.getElementById('product-icon').innerText = icon;
       document.getElementById('product-price-tag').innerText = '$' + price;
-      
       document.querySelectorAll('.prod-btn').forEach(b => b.classList.remove('active'));
-      if(btnElement) btnElement.classList.add('active');
+      if(btn) btn.classList.add('active');
+    }
+
+    function selectSize(size, btn) {
+      currentSize = size;
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      if(btn) btn.classList.add('active');
     }
 
     function toggleProductView() {
@@ -347,23 +305,19 @@
       }
     }
 
-    // إدارة السلة والطلبات
     function addToCart() {
       const text = document.getElementById('custom-text-input').value;
-      const color = document.getElementById('product-icon').style.color;
-
       cart.push({
         id: Date.now(),
         productName: currentProduct.name,
         price: currentProduct.price,
+        size: currentSize,
         view: currentView,
-        text: text || "بدون نص",
-        color: color
+        text: text || "بدون نص"
       });
-
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartBadge();
-      alert(`تمت إضافة (${currentProduct.name}) إلى السلة بنجاح! 🛒`);
+      showToast('تمت إضافتها للسلة بنجاح! 🛒');
     }
 
     function updateCartBadge() {
@@ -374,22 +328,15 @@
       const container = document.getElementById('cart-items-container');
       container.innerHTML = '';
       let total = 0;
-
       if(cart.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b;">السلة فارغة حالياً</p>';
+        container.innerHTML = '<p style="text-align:center; color:#64748b;">السلة فارغة</p>';
       } else {
         cart.forEach((item, index) => {
           total += item.price;
           container.innerHTML += `
             <div class="cart-item">
-              <div>
-                <strong>${item.productName} (${item.view})</strong>
-                <div style="font-size:11px; color:#64748b;">النص: ${item.text}</div>
-              </div>
-              <div>
-                <span style="font-weight:bold; margin-left:6px;">$${item.price}</span>
-                <button style="color:red; border:none; background:none; cursor:pointer;" onclick="removeFromCart(${index})">🗑️</button>
-              </div>
+              <div><strong>${item.productName} (${item.size}) - ${item.view}</strong><div style="font-size:11px;">نص: ${item.text}</div></div>
+              <div>$${item.price} <button style="color:red; border:none; background:none;" onclick="removeFromCart(${index})">🗑️</button></div>
             </div>`;
         });
       }
@@ -404,38 +351,73 @@
     }
 
     function submitOrder() {
-      const address = document.getElementById('shipping-address').value.trim();
+      const name = document.getElementById('shipping-name').value.trim();
       const phone = document.getElementById('shipping-phone').value.trim();
-      const payMethod = document.getElementById('payment-method').value;
+      const address = document.getElementById('shipping-address').value.trim();
 
-      if(!address || !phone) {
-        alert('يرجى ملء العنوان ورقم الهاتف أولاً');
-        return;
-      }
-      if(cart.length === 0) {
-        alert('السلة فارغة!');
-        return;
-      }
+      if(!phone || !name) { alert('يرجى ملء الاسم ورقم الهاتف'); return; }
+      if(cart.length === 0) { alert('السلة فارغة'); return; }
 
+      const orderId = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
       const newOrder = {
-        id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
-        user: localStorage.getItem('currentUser') || 'عميل',
-        items: [...cart],
-        address: address,
+        id: orderId,
+        customer: name,
         phone: phone,
-        payment: payMethod,
+        address: address,
+        items: [...cart],
+        status: 'قيد التصميم 🎨',
         date: new Date().toLocaleString('ar-SA')
       };
 
       orders.push(newOrder);
       localStorage.setItem('orders', JSON.stringify(orders));
 
-      alert('تم إرسال طلبك بنجاح! يمكن الإدارة معاينته في شاشة الإدارة 📦');
+      alert(`تم إرسال طلبك بنجاح! 🎉\nرقم التتبع الخاص بك هو: ${orderId}`);
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartBadge();
       switchPage('home');
     }
 
-    // شاشة لوحة الإدارة
-    functi
+    function trackOrder() {
+      const orderId = document.getElementById('track-order-id').value.trim();
+      const res = document.getElementById('track-result');
+      const order = orders.find(o => o.id === orderId);
+
+      if(order) {
+        res.innerHTML = `
+          <div class="order-card" style="border-right:4px solid var(--accent);">
+            <h4>رقم الطلب: ${order.id}</h4>
+            <p><strong>حالة الطلب:</strong> ${order.status}</p>
+            <p><strong>تاريخ الطلب:</strong> ${order.date}</p>
+          </div>`;
+      } else {
+        res.innerHTML = '<p style="color:red; text-align:center;">لم يتم العثور على طلب بهذا الرقم</p>';
+      }
+    }
+
+    function renderAdminOrders() {
+      const container = document.getElementById('admin-orders-container');
+      container.innerHTML = '';
+      if(orders.length === 0) {
+        container.innerHTML = '<p style="text-align:center;">لا توجد طلبات</p>';
+      } else {
+        orders.slice().reverse().forEach((ord, idx) => {
+          container.innerHTML += `
+            <div class="order-card">
+              <div><strong>${ord.id}</strong> - ${ord.customer} (${ord.phone})</div>
+              <div>الحالة الحالية: <strong>${ord.status}</strong></div>
+              <select onchange="updateOrderStatus('${ord.id}', this.value)" class="input-field" style="margin-top:8px;">
+                <option value="قيد التصميم 🎨">قيد التصميم 🎨</option>
+                <option value="قيد الطباعة 🖨️">قيد الطباعة 🖨️</option>
+                <option value="تم الشحن 📦">تم الشحن 📦</option>
+              </select>
+            </div>`;
+        });
+      }
+    }
+
+    function updateOrderStatus(orderId, newStatus) {
+      const order = orders.find(o => o.id === orderId);
+      if(order) {
+        order.status = newS
