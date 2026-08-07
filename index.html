@@ -18,7 +18,7 @@
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding-bottom: 70px;
+      padding-bottom: 80px;
     }
     header {
       background: var(--card-bg);
@@ -41,6 +41,11 @@
       font-weight: bold;
     }
     .container { padding: 16px; max-width: 600px; margin: 0 auto; }
+    
+    /* Dynamic Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+
     .section-title { font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     
     /* Grid & Cards */
@@ -51,7 +56,10 @@
       padding: 16px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       text-align: center;
+      cursor: pointer;
+      transition: transform 0.1s;
     }
+    .card:active { transform: scale(0.98); }
     .card-icon { font-size: 32px; margin-bottom: 8px; }
     .card-title { font-weight: bold; font-size: 14px; margin-bottom: 4px; }
     .card-sub { font-size: 12px; color: #64748b; }
@@ -78,6 +86,16 @@
       cursor: pointer;
     }
 
+    /* Page Placeholder Content */
+    .placeholder-box {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .placeholder-box h2 { color: var(--primary); margin-bottom: 10px; }
+
     /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
@@ -87,7 +105,7 @@
       background: var(--card-bg);
       display: flex;
       justify-content: space-around;
-      padding: 8px 0;
+      padding: 10px 0;
       border-top: 1px solid #e2e8f0;
       z-index: 1000;
     }
@@ -98,6 +116,10 @@
       font-size: 10px;
       color: #64748b;
       text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      flex: 1;
     }
     .nav-item.active { color: var(--primary); font-weight: bold; }
     .nav-icon { font-size: 20px; margin-bottom: 2px; }
@@ -111,38 +133,78 @@
     <div id="status" class="status-badge">متصل ✅</div>
   </header>
 
-  <!-- Main Content -->
   <div class="container">
 
-    <!-- Print on Demand Studio Banner -->
-    <div class="studio-card">
-      <h2>🎨 استوديو الطباعة عند الطلب</h2>
-      <p>صمّم منتجك الخاص بنفسك وقم بطباعته وشحنه بكل سهولة!</p>
-      <button class="btn" onclick="alert('سيتوفر محرر التصاميم قريباً!')">ابدأ التصميم الآن</button>
+    <!-- 1. الرئيسية -->
+    <div id="page-home" class="page active">
+      <div class="studio-card">
+        <h2>🎨 استوديو الطباعة عند الطلب</h2>
+        <p>صمّم منتجك الخاص بنفسك وقم بطباعته وشحنه بكل سهولة!</p>
+        <button class="btn" onclick="switchPage('studio')">ابدأ التصميم الآن</button>
+      </div>
+
+      <div class="section-title">✨ المجتمعات والأقسام</div>
+      <div class="grid">
+        <div class="card" onclick="switchPage('sports')">
+          <div class="card-icon">⚽</div>
+          <div class="card-title">الرياضة</div>
+          <div class="card-sub">أخبار وتفاعلات الرياضة</div>
+        </div>
+        <div class="card" onclick="switchPage('clubs')">
+          <div class="card-icon">🛡️</div>
+          <div class="card-title">الأندية</div>
+          <div class="card-sub">مجتمعات أنديتك المفضلة</div>
+        </div>
+        <div class="card" onclick="switchPage('movies')">
+          <div class="card-icon">🎬</div>
+          <div class="card-title">الأفلام</div>
+          <div class="card-sub">نقاشات ومراجعات سينمائية</div>
+        </div>
+        <div class="card" onclick="switchPage('fashion')">
+          <div class="card-icon">👕</div>
+          <div class="card-title">الأزياء</div>
+          <div class="card-sub">آخر صيحات وتصاميم الموضة</div>
+        </div>
+      </div>
     </div>
 
-    <!-- Entertainment & Communities Sections -->
-    <div class="section-title">✨ المجتمعات والأقسام</div>
-    <div class="grid">
-      <div class="card">
-        <div class="card-icon">⚽</div>
-        <div class="card-title">الرياضة</div>
-        <div class="card-sub">أخبار وتفاعلات الرياضة</div>
+    <!-- 2. الرياضة -->
+    <div id="page-sports" class="page">
+      <div class="placeholder-box">
+        <h2>⚽ قسم الرياضة</h2>
+        <p>مرحباً بك في مجتمع الرياضة! هنا ستجد أحدث الأخبار والمناقشات الرياضية.</p>
       </div>
-      <div class="card">
-        <div class="card-icon">🛡️</div>
-        <div class="card-title">الأندية</div>
-        <div class="card-sub">مجتمعات أنديتك المفضلة</div>
+    </div>
+
+    <!-- 3. الأندية -->
+    <div id="page-clubs" class="page">
+      <div class="placeholder-box">
+        <h2>🛡️ قسم الأندية</h2>
+        <p>انضم إلى ناديك المفضل وتفاعل مع بقية المشجعين!</p>
       </div>
-      <div class="card">
-        <div class="card-icon">🎬</div>
-        <div class="card-title">الأفلام</div>
-        <div class="card-sub">نقاشات ومراجعات سينمائية</div>
+    </div>
+
+    <!-- 4. الاستوديو -->
+    <div id="page-studio" class="page">
+      <div class="placeholder-box">
+        <h2>🎨 استوديو التصميم والطباعة</h2>
+        <p>هنا ستتمكن قريباً من رفع تصاميمك واختيار المنتجات وتخصيصها للطباعة.</p>
       </div>
-      <div class="card">
-        <div class="card-icon">👕</div>
-        <div class="card-title">الأزياء</div>
-        <div class="card-sub">آخر صيحات وتصاميم الموضة</div>
+    </div>
+
+    <!-- 5. الأفلام -->
+    <div id="page-movies" class="page">
+      <div class="placeholder-box">
+        <h2>🎬 قسم الأفلام</h2>
+        <p>استعرض أحدث الأفلام والمراجعات والترشيحات السينمائية.</p>
+      </div>
+    </div>
+
+    <!-- 6. الأزياء -->
+    <div id="page-fashion" class="page">
+      <div class="placeholder-box">
+        <h2>👕 قسم الأزياء</h2>
+        <p>استكشف صيحات الموضة والتصاميم المخصصة للطباعة.</p>
       </div>
     </div>
 
@@ -150,27 +212,64 @@
 
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <a href="#" class="nav-item active">
+    <button class="nav-item active" onclick="switchPage('home')">
       <span class="nav-icon">🏠</span>
       <span>الرئيسية</span>
-    </a>
-    <a href="#" class="nav-item">
+    </button>
+    <button class="nav-item" onclick="switchPage('sports')">
       <span class="nav-icon">⚽</span>
       <span>الرياضة</span>
-    </a>
-    <a href="#" class="nav-item">
+    </button>
+    <button class="nav-item" onclick="switchPage('studio')">
       <span class="nav-icon">🎨</span>
       <span>الاستوديو</span>
-    </a>
-    <a href="#" class="nav-item">
+    </button>
+    <button class="nav-item" onclick="switchPage('movies')">
       <span class="nav-icon">🎬</span>
       <span>الأفلام</span>
-    </a>
-    <a href="#" class="nav-item">
+    </button>
+    <button class="nav-item" onclick="switchPage('fashion')">
       <span class="nav-icon">👕</span>
       <span>الأزياء</span>
-    </a>
+    </button>
   </nav>
+
+  <!-- Page Navigation Script -->
+  <script>
+    function switchPage(pageId) {
+      // إخفاء كل الصفحات
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+
+      // إزالة التحديد عن كل أزرار القائمة
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      // إظهار الصفحة المطلوبة
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
+
+      // تحديد الزر المناسب في القائمة السفلية
+      const pageIndexMap = {
+        'home': 0,
+        'sports': 1,
+        'studio': 2,
+        'movies': 3,
+        'fashion': 4
+      };
+      
+      const navItems = document.querySelectorAll('.nav-item');
+      if (pageIndexMap[pageId] !== undefined && navItems[pageIndexMap[pageId]]) {
+        navItems[pageIndexMap[pageId]].classList.add('active');
+      }
+
+      window.scrollTo(0, 0);
+    }
+  </script>
 
   <!-- Firebase Integration Script -->
   <script type="module">
