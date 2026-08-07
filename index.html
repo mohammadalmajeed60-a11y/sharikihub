@@ -4,18 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SharikiHub - شريكي هب Pro</title>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
   <style>
     :root {
       --primary: #2563eb;
       --bg: #f1f5f9;
       --card-bg: #ffffff;
       --text: #0f172a;
-      --accent: #10b981;
     }
     * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
     body { background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; }
@@ -30,7 +24,7 @@
       align-items: center;
       position: sticky; top: 0; z-index: 100;
     }
-    .logo { font-size: 18px; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 6px; }
+    .logo { font-size: 18px; font-weight: bold; color: var(--primary); }
     .header-actions { display: flex; gap: 8px; align-items: center; }
     .btn-icon { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; position: relative; }
     .badge { background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -4px; right: -4px; }
@@ -54,11 +48,11 @@
 
     /* Studio UI */
     .product-preview {
-      width: 100%; height: 280px; background-color: #ffffff; border-radius: 12px;
+      width: 100%; height: 260px; background-color: #ffffff; border-radius: 12px;
       display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;
       border: 2px dashed #cbd5e1; margin-bottom: 15px;
     }
-    .tshirt-mockup { font-size: 180px; transition: color 0.3s; position: relative; user-select: none; }
+    .tshirt-mockup { font-size: 160px; transition: color 0.3s; position: relative; user-select: none; }
     .custom-logo { position: absolute; max-width: 80px; max-height: 80px; top: 42%; left: 50%; transform: translate(-50%, -50%); display: none; }
     .custom-text-overlay { position: absolute; top: 32%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 16px; pointer-events: none; text-align: center; width: 80%; word-wrap: break-word; }
     
@@ -74,9 +68,9 @@
     .post-box textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; resize: none; }
     .feed-item { background: white; padding: 14px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .feed-header { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 6px; }
-    .feed-actions { margin-top: 10px; font-size: 12px; color: #64748b; cursor: pointer; display: flex; gap: 10px; }
+    .feed-actions { margin-top: 10px; font-size: 12px; color: #64748b; cursor: pointer; }
 
-    /* Cart UI */
+    /* Cart & Auth */
     .cart-item { background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
     .auth-card { background: white; padding: 20px; border-radius: 12px; text-align: center; }
 
@@ -103,15 +97,15 @@
 
   <div class="container">
 
-    <!-- 1. الصفحة الرئيسية -->
+    <!-- 1. الرئيسية -->
     <div id="page-home" class="page active">
       <div class="studio-banner">
         <h2>🎨 استوديو الطباعة عند الطلب</h2>
-        <p>صمّم منتجك، أضف نصك الخاص، ارفَع شعارك واطلبه فوراً!</p>
-        <button class="btn" onclick="switchPage('studio')">ابدأ التصميم المتقدم</button>
+        <p>صمّم منتجك الخاص بنفسك واطلبه بسهولة!</p>
+        <button class="btn" onclick="switchPage('studio')">ابدأ التصميم الآن</button>
       </div>
 
-      <div style="font-weight: bold; margin-bottom: 12px;">✨ المجتمعات والتفاعل الحقيقي</div>
+      <div style="font-weight: bold; margin-bottom: 12px;">✨ المجتمعات والأقسام</div>
       <div class="grid">
         <div class="card" onclick="switchPage('sports')">
           <div class="card-icon">⚽</div>
@@ -132,10 +126,9 @@
       </div>
     </div>
 
-    <!-- 2. محرر الاستوديو -->
+    <!-- 2. الاستوديو -->
     <div id="page-studio" class="page">
       <h3>🎨 محرر المنتجات والتصميم</h3>
-      
       <div class="product-preview">
         <div class="tshirt-mockup" id="tshirt-icon" style="color: #000000;">👕</div>
         <div class="custom-text-overlay" id="text-overlay" style="color: #ffffff;"></div>
@@ -143,7 +136,7 @@
       </div>
 
       <div class="control-group">
-        <span class="control-label">لون المنتج:</span>
+        <span class="control-label">اختر لون المنتج:</span>
         <div class="color-options">
           <div class="color-dot" style="background: #000000;" onclick="changeTshirtColor('#000000')"></div>
           <div class="color-dot" style="background: #ffffff;" onclick="changeTshirtColor('#ffffff')"></div>
@@ -153,37 +146,32 @@
       </div>
 
       <div class="control-group">
-        <span class="control-label">نص مخصص على المنتج:</span>
-        <input type="text" id="custom-text-input" class="input-field" placeholder="اكتب عبارة أو اسمك هنا..." oninput="updateCustomText()">
+        <span class="control-label">نص مخصص:</span>
+        <input type="text" id="custom-text-input" class="input-field" placeholder="اكتب نصوصك هنا..." oninput="updateCustomText()">
         <span class="control-label">لون النص:</span>
         <input type="color" id="text-color-picker" value="#ffffff" onchange="updateCustomTextColor()" style="width:100%; height:35px; border:none; cursor:pointer;">
       </div>
 
       <div class="control-group">
-        <span class="control-label">رفع شعار / صورة:</span>
+        <span class="control-label">ارفع شعارك/تصميمك:</span>
         <input type="file" id="image-loader" accept="image/*" onchange="handleImageUpload(event)" class="input-field">
-        <span class="control-label">حجم الشعار:</span>
-        <input type="range" id="logo-size-slider" min="30" max="130" value="80" oninput="updateLogoSize()" style="width:100%;">
       </div>
 
-      <button class="btn btn-primary" onclick="addToCart()">إضافة إلى السلة 🛒 (السعر: $25)</button>
+      <button class="btn btn-primary" onclick="addToCart()">إضافة إلى السلة 🛒 ($25)</button>
     </div>
 
-    <!-- 3. سلة المشتريات -->
+    <!-- 3. السلة -->
     <div id="page-cart" class="page">
       <h3>🛒 سلة المشتريات</h3>
       <div id="cart-items-container"></div>
-      
       <div class="control-group" style="margin-top: 15px;">
         <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:10px;">
           <span>الإجمالي:</span>
           <span id="cart-total-price">$0</span>
         </div>
-        <hr style="border:0; border-top:1px solid #e2e8f0; margin-bottom:10px;">
-        <span class="control-label">معلومات الشحن:</span>
-        <input type="text" id="shipping-address" class="input-field" placeholder="العنوان الكامل والتفاصيل...">
+        <input type="text" id="shipping-address" class="input-field" placeholder="العنوان الكامل...">
         <input type="tel" id="shipping-phone" class="input-field" placeholder="رقم الهاتف...">
-        <button class="btn btn-primary" onclick="submitOrder()">تأكيد وإرسال الطلب 📦</button>
+        <button class="btn btn-primary" onclick="submitOrder()">تأكيد الطلب 📦</button>
       </div>
     </div>
 
@@ -191,7 +179,7 @@
     <div id="page-sports" class="page">
       <h3>⚽ مجتمع الرياضة</h3>
       <div class="post-box">
-        <textarea id="post-sports" rows="2" placeholder="شارك رأيك أو خبر رياضي..."></textarea>
+        <textarea id="post-sports" rows="2" placeholder="شارك رأيك..."></textarea>
         <button class="btn btn-primary" onclick="addPost('sports')">نشر</button>
       </div>
       <div id="feed-sports"></div>
@@ -200,48 +188,46 @@
     <div id="page-clubs" class="page">
       <h3>🛡️ مجتمع الأندية</h3>
       <div class="post-box">
-        <textarea id="post-clubs" rows="2" placeholder="اكتب تشجيعك لناديك المفضّل..."></textarea>
+        <textarea id="post-clubs" rows="2" placeholder="تشجيع ناديك..."></textarea>
         <button class="btn btn-primary" onclick="addPost('clubs')">نشر</button>
       </div>
       <div id="feed-clubs"></div>
     </div>
 
     <div id="page-movies" class="page">
-      <h3>🎬 مجتمع الأفلام والسينما</h3>
+      <h3>🎬 مجتمع الأفلام</h3>
       <div class="post-box">
-        <textarea id="post-movies" rows="2" placeholder="اقترح فيلماً أو شارك مراجعتك..."></textarea>
+        <textarea id="post-movies" rows="2" placeholder="اقترح فيلماً..."></textarea>
         <button class="btn btn-primary" onclick="addPost('movies')">نشر</button>
       </div>
       <div id="feed-movies"></div>
     </div>
 
     <div id="page-fashion" class="page">
-      <h3>👕 مجتمع الأزياء والموضة</h3>
+      <h3>👕 مجتمع الأزياء</h3>
       <div class="post-box">
-        <textarea id="post-fashion" rows="2" placeholder="استعرض تصميمك أو نسّق ملابسك..."></textarea>
+        <textarea id="post-fashion" rows="2" placeholder="شارك تنسيقك..."></textarea>
         <button class="btn btn-primary" onclick="addPost('fashion')">نشر</button>
       </div>
       <div id="feed-fashion"></div>
     </div>
 
-    <!-- 5. حساب المستخدم -->
+    <!-- 5. الحساب -->
     <div id="page-account" class="page">
       <div class="auth-card" id="auth-box">
-        <h3>تسجيل الدخول / حساب جديد</h3>
+        <h3>تسجيل الدخول</h3>
         <input type="text" id="username" class="input-field" placeholder="اسم المستخدم">
-        <input type="email" id="email" class="input-field" placeholder="البريد الإلكتروني">
-        <button class="btn btn-primary" onclick="loginUser()">دخول / تسجيل</button>
+        <button class="btn btn-primary" onclick="loginUser()">دخول</button>
       </div>
       <div class="auth-card" id="user-profile" style="display: none;">
         <h3 id="welcome-msg"></h3>
-        <p style="color: #64748b; font-size: 13px;">مرحباً بك في منصتك الخاصة للطباعة والمجتمعات!</p>
         <button class="btn" style="background: #ef4444; color: white;" onclick="logoutUser()">تسجيل الخروج</button>
       </div>
     </div>
 
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Navigation -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchPage('home')"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
     <button class="nav-item" onclick="switchPage('sports')"><span class="nav-icon">⚽</span><span>الرياضة</span></button>
@@ -251,24 +237,12 @@
   </nav>
 
   <script>
-    // تهيئة Firebase
-    const firebaseConfig = {
-      databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-    // التنقل بين الصفحات السلس
     function switchPage(pageId) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(p => p.classList.remove('active'));
-
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const target = document.getElementById('page-' + pageId);
-      if (target) {
-        target.classList.add('active');
-      }
+      if (target) target.classList.add('active');
 
       const navMap = { 'home':0, 'sports':1, 'studio':2, 'movies':3, 'fashion':4 };
       const navItems = document.querySelectorAll('.nav-item');
@@ -276,7 +250,6 @@
       if (navMap[pageId] !== undefined && navItems[navMap[pageId]]) {
         navItems[navMap[pageId]].classList.add('active');
       }
-      
       if(pageId === 'cart') renderCart();
     }
 
@@ -285,51 +258,32 @@
     }
 
     function updateCustomText() {
-      const val = document.getElementById('custom-text-input').value;
-      document.getElementById('text-overlay').innerText = val;
+      document.getElementById('text-overlay').innerText = document.getElementById('custom-text-input').value;
     }
 
     function updateCustomTextColor() {
-      const color = document.getElementById('text-color-picker').value;
-      document.getElementById('text-overlay').style.color = color;
+      document.getElementById('text-overlay').style.color = document.getElementById('text-color-picker').value;
     }
 
-    function handleImageUpload(event) {
-      const file = event.target.files[0];
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function(evt) {
           const img = document.getElementById('logo-preview');
-          img.src = e.target.result;
+          img.src = evt.target.result;
           img.style.display = 'block';
         }
         reader.readAsDataURL(file);
       }
     }
 
-    function updateLogoSize() {
-      const size = document.getElementById('logo-size-slider').value;
-      const img = document.getElementById('logo-preview');
-      img.style.maxWidth = size + 'px';
-      img.style.maxHeight = size + 'px';
-    }
-
     function addToCart() {
       const text = document.getElementById('custom-text-input').value;
-      const tshirtColor = document.getElementById('tshirt-icon').style.color;
-      
-      const item = {
-        id: Date.now(),
-        title: "تيشيرت مخصص",
-        price: 25,
-        text: text || "بدون نص",
-        color: tshirtColor
-      };
-      
-      cart.push(item);
+      cart.push({ id: Date.now(), title: "تيشيرت مخصص", price: 25, text: text || "بدون نص" });
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartBadge();
-      alert('تمت إضافة المنتج المصمم إلى السلة بنجاح! 🛒');
+      alert('تمت الإضافة للسلة! 🛒');
     }
 
     function updateCartBadge() {
@@ -340,24 +294,16 @@
       const container = document.getElementById('cart-items-container');
       container.innerHTML = '';
       let total = 0;
-
       if(cart.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b;">السلة فارغة حالياً</p>';
+        container.innerHTML = '<p style="text-align:center; color:#64748b;">السلة فارغة</p>';
       } else {
         cart.forEach((item, index) => {
           total += item.price;
           container.innerHTML += `
             <div class="cart-item">
-              <div>
-                <strong>${item.title}</strong>
-                <div style="font-size:11px; color:#64748b;">نص: ${item.text}</div>
-              </div>
-              <div>
-                <span style="font-weight:bold; margin-left:8px;">$${item.price}</span>
-                <button style="color:red; background:none; border:none; cursor:pointer;" onclick="removeFromCart(${index})">🗑️</button>
-              </div>
-            </div>
-          `;
+              <div><strong>${item.title}</strong><div style="font-size:11px;">${item.text}</div></div>
+              <div>$${item.price} <button style="color:red; border:none; background:none;" onclick="removeFromCart(${index})">🗑️</button></div>
+            </div>`;
         });
       }
       document.getElementById('cart-total-price').innerText = '$' + total;
@@ -371,90 +317,26 @@
     }
 
     function submitOrder() {
-      const address = document.getElementById('shipping-address').value.trim();
-      const phone = document.getElementById('shipping-phone').value.trim();
-
-      if(!address || !phone) {
-        alert('يرجى كتابة العنوان ورقم الهاتف لمتابعة الطلب');
-        return;
-      }
-      if(cart.length === 0) {
-        alert('سلتك فارغة!');
-        return;
-      }
-
-      const orderData = {
-        user: localStorage.getItem('currentUser') || 'زائر',
-        items: cart,
-        address: address,
-        phone: phone,
-        date: new Date().toLocaleString('ar-SA')
-      };
-
-      db.ref('orders').push(orderData).then(() => {
-        alert('تم إرسال طلبك بنجاح! سنتواصل معك قريباً 📦');
-        cart = [];
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartBadge();
-        switchPage('home');
-      });
+      if(!document.getElementById('shipping-phone').value) { alert('ادخل رقم الهاتف'); return; }
+      alert('تم طلب المنتج بنجاح! 📦');
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartBadge();
+      switchPage('home');
     }
 
-    function addPost(category) {
-      const textarea = document.getElementById('post-' + category);
-      const text = textarea.value.trim();
-      if (!text) return;
-
-      const user = localStorage.getItem('currentUser') || 'عضو مجتمعي';
-      const postData = {
-        user: user,
-        text: text,
-        likes: 0,
-        timestamp: Date.now()
-      };
-
-      db.ref('posts/' + category).push(postData);
-      textarea.value = '';
+    function addPost(cat) {
+      const text = document.getElementById('post-' + cat).value;
+      if(!text) return;
+      const user = localStorage.getItem('currentUser') || 'عضو';
+      const feed = document.getElementById('feed-' + cat);
+      feed.innerHTML = `<div class="feed-item"><div class="feed-header">👤 ${user}</div><div>${text}</div></div>` + feed.innerHTML;
+      document.getElementById('post-' + cat).value = '';
     }
-
-    function listenToPosts(category) {
-      db.ref('posts/' + category).on('value', (snapshot) => {
-        const feed = document.getElementById('feed-' + category);
-        if(!feed) return;
-        feed.innerHTML = '';
-        const data = snapshot.val();
-        if (data) {
-          Object.keys(data).reverse().forEach(key => {
-            const post = data[key];
-            const postDiv = document.createElement('div');
-            postDiv.className = 'feed-item';
-            postDiv.innerHTML = `
-              <div class="feed-header">👤 ${post.user}</div>
-              <div>${post.text}</div>
-              <div class="feed-actions">
-                <span onclick="likePost('${category}', '${key}', ${post.likes || 0})">❤️ ${post.likes || 0} إعجاب</span>
-              </div>
-            `;
-            feed.appendChild(postDiv);
-          });
-        }
-      });
-    }
-
-    function likePost(category, key, currentLikes) {
-      db.ref(`posts/${category}/${key}`).update({ likes: currentLikes + 1 });
-    }
-
-    ['sports', 'clubs', 'movies', 'fashion'].forEach(listenToPosts);
 
     function loginUser() {
-      const name = document.getElementById('username').value.trim();
-      if (name) {
-        localStorage.setItem('currentUser', name);
-        checkUserStatus();
-      } else {
-        alert('يرجى إدخال اسم المستخدم');
-      }
+      const name = document.getElementById('username').value;
+      if(name) { localStorage.setItem('currentUser', name); checkUserStatus(); }
     }
 
     function logoutUser() {
@@ -464,19 +346,15 @@
 
     function checkUserStatus() {
       const user = localStorage.getItem('currentUser');
-      const authBox = document.getElementById('auth-box');
-      const userProfile = document.getElementById('user-profile');
-      const userBtnText = document.getElementById('user-btn-text');
-
-      if (user) {
-        if(authBox) authBox.style.display = 'none';
-        if(userProfile) userProfile.style.display = 'block';
-        document.getElementById('welcome-msg').innerText = 'أهلاً بك، ' + user + ' 👋';
-        userBtnText.innerText = '👤 ' + user;
+      if(user) {
+        document.getElementById('auth-box').style.display = 'none';
+        document.getElementById('user-profile').style.display = 'block';
+        document.getElementById('welcome-msg').innerText = 'أهلاً ' + user;
+        document.getElementById('user-btn-text').innerText = '👤 ' + user;
       } else {
-        if(authBox) authBox.style.display = 'block';
-        if(userProfile) userProfile.style.display = 'none';
-        userBtnText.innerText = '👤 حسابي';
+        document.getElementById('auth-box').style.display = 'block';
+        document.getElementById('user-profile').style.display = 'none';
+        document.getElementById('user-btn-text').innerText = '👤 حسابي';
       }
     }
 
@@ -484,4 +362,4 @@
     updateCartBadge();
   </script>
 </body>
-</
+</html>
