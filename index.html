@@ -12,117 +12,69 @@
       --text: #0f172a;
       --accent: #10b981;
     }
-    * { box-sizing: border-box; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding-bottom: 80px;
-    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; }
+    
+    /* Header */
     header {
       background: var(--card-bg);
-      padding: 15px 20px;
+      padding: 12px 16px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
     }
-    .logo { font-size: 20px; font-weight: bold; color: var(--primary); }
-    .status-badge {
-      font-size: 11px;
-      padding: 4px 8px;
-      background: #dcfce7;
-      color: #166534;
-      border-radius: 12px;
-      font-weight: bold;
-    }
+    .logo { font-size: 18px; font-weight: bold; color: var(--primary); }
+    .user-btn { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+
     .container { padding: 16px; max-width: 600px; margin: 0 auto; }
-    
-    /* Dynamic Pages */
     .page { display: none; }
     .page.active { display: block; }
 
-    .section-title { font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    
     /* Grid & Cards */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.1s;
-    }
-    .card:active { transform: scale(0.98); }
-    .card-icon { font-size: 32px; margin-bottom: 8px; }
-    .card-title { font-weight: bold; font-size: 14px; margin-bottom: 4px; }
-    .card-sub { font-size: 12px; color: #64748b; }
-
-    /* Studio Card */
-    .studio-card {
+    .card { background: var(--card-bg); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .card-icon { font-size: 30px; margin-bottom: 6px; }
+    .card-title { font-weight: bold; font-size: 14px; }
+    
+    .studio-banner {
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-      text-align: center;
+      color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px;
     }
-    .studio-card h2 { margin: 0 0 8px 0; font-size: 20px; }
-    .studio-card p { font-size: 13px; opacity: 0.9; margin-bottom: 16px; }
-    .btn {
-      background: white;
-      color: var(--primary);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-    }
+    .btn { background: white; color: var(--primary); border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
+    .btn-primary { background: var(--primary); color: white; }
 
-    /* Page Placeholder Content */
-    .placeholder-box {
-      background: white;
-      padding: 30px 20px;
-      border-radius: 16px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* Studio UI */
+    .product-preview {
+      width: 100%; height: 260px; background-color: #ffffff; border-radius: 12px;
+      display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;
+      border: 2px dashed #cbd5e1; margin-bottom: 15px;
     }
-    .placeholder-box h2 { color: var(--primary); margin-bottom: 10px; }
+    .tshirt-mockup { font-size: 160px; transition: color 0.3s; position: relative; user-select: none; }
+    .custom-logo { position: absolute; max-width: 70px; max-height: 70px; top: 40%; left: 50%; transform: translate(-50%, -50%); display: none; }
+    .color-options { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+    .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid #ccc; }
 
-    /* Bottom Navigation */
+    /* Community Feed */
+    .post-box { background: white; padding: 12px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .post-box textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; resize: none; }
+    .feed-item { background: white; padding: 14px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .feed-header { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 6px; }
+    .feed-actions { margin-top: 10px; font-size: 12px; color: #64748b; cursor: pointer; display: inline-block; }
+
+    /* Auth Modal / Box */
+    .auth-card { background: white; padding: 20px; border-radius: 12px; text-align: center; }
+    .auth-card input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 8px; }
+
+    /* Bottom Nav */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      border-top: 1px solid #e2e8f0;
-      z-index: 1000;
+      position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg);
+      display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #e2e8f0; z-index: 1000;
     }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 10px;
-      color: #64748b;
-      text-decoration: none;
-      cursor: pointer;
-      background: none;
-      border: none;
-      flex: 1;
-    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; background: none; border: none; cursor: pointer; flex: 1; }
     .nav-item.active { color: var(--primary); font-weight: bold; }
-    .nav-icon { font-size: 20px; margin-bottom: 2px; }
+    .nav-icon { font-size: 18px; }
   </style>
 </head>
 <body>
@@ -130,81 +82,114 @@
   <!-- Header -->
   <header>
     <div class="logo">SharikiHub 🚀</div>
-    <div id="status" class="status-badge">متصل ✅</div>
+    <button class="user-btn" onclick="switchPage('account')" id="user-btn-text">👤 حسابي</button>
   </header>
 
   <div class="container">
 
-    <!-- 1. الرئيسية -->
+    <!-- 1. الصفحة الرئيسية -->
     <div id="page-home" class="page active">
-      <div class="studio-card">
+      <div class="studio-banner">
         <h2>🎨 استوديو الطباعة عند الطلب</h2>
-        <p>صمّم منتجك الخاص بنفسك وقم بطباعته وشحنه بكل سهولة!</p>
+        <p>صمّم منتجك الخاص بنفسك وقم بطباعته بسهولة!</p>
         <button class="btn" onclick="switchPage('studio')">ابدأ التصميم الآن</button>
       </div>
 
-      <div class="section-title">✨ المجتمعات والأقسام</div>
+      <div style="font-weight: bold; margin-bottom: 12px;">✨ المجتمعات والأقسام</div>
       <div class="grid">
         <div class="card" onclick="switchPage('sports')">
           <div class="card-icon">⚽</div>
           <div class="card-title">الرياضة</div>
-          <div class="card-sub">أخبار وتفاعلات الرياضة</div>
         </div>
         <div class="card" onclick="switchPage('clubs')">
           <div class="card-icon">🛡️</div>
           <div class="card-title">الأندية</div>
-          <div class="card-sub">مجتمعات أنديتك المفضلة</div>
         </div>
         <div class="card" onclick="switchPage('movies')">
           <div class="card-icon">🎬</div>
           <div class="card-title">الأفلام</div>
-          <div class="card-sub">نقاشات ومراجعات سينمائية</div>
         </div>
         <div class="card" onclick="switchPage('fashion')">
           <div class="card-icon">👕</div>
           <div class="card-title">الأزياء</div>
-          <div class="card-sub">آخر صيحات وتصاميم الموضة</div>
         </div>
       </div>
     </div>
 
-    <!-- 2. الرياضة -->
-    <div id="page-sports" class="page">
-      <div class="placeholder-box">
-        <h2>⚽ قسم الرياضة</h2>
-        <p>مرحباً بك في مجتمع الرياضة! هنا ستجد أحدث الأخبار والمناقشات الرياضية.</p>
-      </div>
-    </div>
-
-    <!-- 3. الأندية -->
-    <div id="page-clubs" class="page">
-      <div class="placeholder-box">
-        <h2>🛡️ قسم الأندية</h2>
-        <p>انضم إلى ناديك المفضل وتفاعل مع بقية المشجعين!</p>
-      </div>
-    </div>
-
-    <!-- 4. الاستوديو -->
+    <!-- 2. استوديو الطباعة -->
     <div id="page-studio" class="page">
-      <div class="placeholder-box">
-        <h2>🎨 استوديو التصميم والطباعة</h2>
-        <p>هنا ستتمكن قريباً من رفع تصاميمك واختيار المنتجات وتخصيصها للطباعة.</p>
+      <h3>🎨 محرر الملابس والمنتجات</h3>
+      <div class="product-preview">
+        <div class="tshirt-mockup" id="tshirt-icon" style="color: #000000;">👕</div>
+        <img id="logo-preview" class="custom-logo" src="" alt="شعارك">
       </div>
+
+      <p style="font-size: 13px; font-weight: bold;">اختر لون المنتج:</p>
+      <div class="color-options">
+        <div class="color-dot" style="background: #000000;" onclick="changeTshirtColor('#000000')"></div>
+        <div class="color-dot" style="background: #ffffff;" onclick="changeTshirtColor('#ffffff')"></div>
+        <div class="color-dot" style="background: #94a3b8;" onclick="changeTshirtColor('#94a3b8')"></div>
+        <div class="color-dot" style="background: #2563eb;" onclick="changeTshirtColor('#2563eb')"></div>
+      </div>
+
+      <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 5px;">ارفع شعارك/تصميمك:</label>
+      <input type="file" id="image-loader" accept="image/*" onchange="handleImageUpload(event)" style="margin-bottom: 15px;">
+
+      <button class="btn btn-primary" onclick="alert('تم حفظ التصميم وإضافته للسلة!')">طلب الطباعة الآن 🛒</button>
     </div>
 
-    <!-- 5. الأفلام -->
+    <!-- 3. قسم الرياضة -->
+    <div id="page-sports" class="page">
+      <h3>⚽ مجتمع الرياضة</h3>
+      <div class="post-box">
+        <textarea id="post-sports" rows="2" placeholder="شارك رأيك أو خبر رياضي..."></textarea>
+        <button class="btn btn-primary" onclick="addPost('sports')">نشر</button>
+      </div>
+      <div id="feed-sports"></div>
+    </div>
+
+    <!-- 4. قسم الأندية -->
+    <div id="page-clubs" class="page">
+      <h3>🛡️ مجتمع الأندية</h3>
+      <div class="post-box">
+        <textarea id="post-clubs" rows="2" placeholder="اكتب تشجيعك لناديك المفضّل..."></textarea>
+        <button class="btn btn-primary" onclick="addPost('clubs')">نشر</button>
+      </div>
+      <div id="feed-clubs"></div>
+    </div>
+
+    <!-- 5. قسم الأفلام -->
     <div id="page-movies" class="page">
-      <div class="placeholder-box">
-        <h2>🎬 قسم الأفلام</h2>
-        <p>استعرض أحدث الأفلام والمراجعات والترشيحات السينمائية.</p>
+      <h3>🎬 مجتمع الأفلام والسينما</h3>
+      <div class="post-box">
+        <textarea id="post-movies" rows="2" placeholder="اقترح فيلماً أو شارك مراجعتك..."></textarea>
+        <button class="btn btn-primary" onclick="addPost('movies')">نشر</button>
       </div>
+      <div id="feed-movies"></div>
     </div>
 
-    <!-- 6. الأزياء -->
+    <!-- 6. قسم الأزياء -->
     <div id="page-fashion" class="page">
-      <div class="placeholder-box">
-        <h2>👕 قسم الأزياء</h2>
-        <p>استكشف صيحات الموضة والتصاميم المخصصة للطباعة.</p>
+      <h3>👕 مجتمع الأزياء والموضة</h3>
+      <div class="post-box">
+        <textarea id="post-fashion" rows="2" placeholder="استعرض تصميمك أو نسّق ملابسك..."></textarea>
+        <button class="btn btn-primary" onclick="addPost('fashion')">نشر</button>
+      </div>
+      <div id="feed-fashion"></div>
+    </div>
+
+    <!-- 7. حساب المستخدم وتسجيل الدخول -->
+    <div id="page-account" class="page">
+      <div class="auth-card" id="auth-box">
+        <h3 id="auth-title">تسجيل الدخول / حساب جديد</h3>
+        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <button class="btn btn-primary" onclick="loginUser()">دخول / تسجيل</button>
+      </div>
+      <div class="auth-card" id="user-profile" style="display: none;">
+        <h3 id="welcome-msg"></h3>
+        <p style="color: #64748b; font-size: 13px;">مرحباً بك في منصتك الخاصة للطباعة والمجتمعات!</p>
+        <button class="btn" style="background: #ef4444; color: white;" onclick="logoutUser()">تسجيل الخروج</button>
       </div>
     </div>
 
@@ -212,86 +197,105 @@
 
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchPage('home')">
-      <span class="nav-icon">🏠</span>
-      <span>الرئيسية</span>
-    </button>
-    <button class="nav-item" onclick="switchPage('sports')">
-      <span class="nav-icon">⚽</span>
-      <span>الرياضة</span>
-    </button>
-    <button class="nav-item" onclick="switchPage('studio')">
-      <span class="nav-icon">🎨</span>
-      <span>الاستوديو</span>
-    </button>
-    <button class="nav-item" onclick="switchPage('movies')">
-      <span class="nav-icon">🎬</span>
-      <span>الأفلام</span>
-    </button>
-    <button class="nav-item" onclick="switchPage('fashion')">
-      <span class="nav-icon">👕</span>
-      <span>الأزياء</span>
-    </button>
+    <button class="nav-item active" onclick="switchPage('home')"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
+    <button class="nav-item" onclick="switchPage('sports')"><span class="nav-icon">⚽</span><span>الرياضة</span></button>
+    <button class="nav-item" onclick="switchPage('studio')"><span class="nav-icon">🎨</span><span>الاستوديو</span></button>
+    <button class="nav-item" onclick="switchPage('movies')"><span class="nav-icon">🎬</span><span>الأفلام</span></button>
+    <button class="nav-item" onclick="switchPage('fashion')"><span class="nav-icon">👕</span><span>الأزياء</span></button>
   </nav>
 
-  <!-- Page Navigation Script -->
   <script>
+    // التنقل بين الصفحات
     function switchPage(pageId) {
-      // إخفاء كل الصفحات
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
 
-      // إزالة التحديد عن كل أزرار القائمة
-      document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-      });
+      const target = document.getElementById('page-' + pageId);
+      if (target) target.classList.add('active');
 
-      // إظهار الصفحة المطلوبة
-      const targetPage = document.getElementById('page-' + pageId);
-      if (targetPage) {
-        targetPage.classList.add('active');
-      }
-
-      // تحديد الزر المناسب في القائمة السفلية
-      const pageIndexMap = {
-        'home': 0,
-        'sports': 1,
-        'studio': 2,
-        'movies': 3,
-        'fashion': 4
-      };
-      
+      const navMap = { 'home':0, 'sports':1, 'studio':2, 'movies':3, 'fashion':4 };
       const navItems = document.querySelectorAll('.nav-item');
-      if (pageIndexMap[pageId] !== undefined && navItems[pageIndexMap[pageId]]) {
-        navItems[pageIndexMap[pageId]].classList.add('active');
+      if (navMap[pageId] !== undefined && navItems[navMap[pageId]]) {
+        navItems[navMap[pageId]].classList.add('active');
       }
-
-      window.scrollTo(0, 0);
+      window.scrollTo(0,0);
     }
-  </script>
 
-  <!-- Firebase Integration Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBwn1cYeo-jP-ccBMZR",
-      authDomain: "sharikihub.firebaseapp.com",
-      projectId: "sharikihub",
-      storageBucket: "sharikihub.firebasestorage.app",
-      messagingSenderId: "393020794820",
-      appId: "1:393020794820:web:1a6a55",
-      measurementId: "G-QL47SXGDPR"
-    };
-
-    try {
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    } catch (e) {
-      document.getElementById("status").innerText = "خطأ ❌";
+    // الاستوديو: تغيير لون التيشيرت ورفع الصور
+    function changeTshirtColor(color) {
+      document.getElementById('tshirt-icon').style.color = color;
     }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('logo-preview');
+          img.src = e.target.result;
+          img.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // المجتمعات: إضافة منشورات
+    function addPost(category) {
+      const textarea = document.getElementById('post-' + category);
+      const text = textarea.value.trim();
+      if (!text) return;
+
+      const user = localStorage.getItem('currentUser') || 'عضو جديد';
+      const feed = document.getElementById('feed-' + category);
+
+      const postDiv = document.createElement('div');
+      postDiv.className = 'feed-item';
+      postDiv.innerHTML = `
+        <div class="feed-header">👤 ${user}</div>
+        <div>${text}</div>
+        <div class="feed-actions" onclick="this.innerHTML = '❤️ 1 إعجاب'">❤️ 0 إعجاب</div>
+      `;
+
+      feed.prepend(postDiv);
+      textarea.value = '';
+    }
+
+    // نظام تسجيل الدخول والحساب
+    function loginUser() {
+      const name = document.getElementById('username').value.trim();
+      if (name) {
+        localStorage.setItem('currentUser', name);
+        checkUserStatus();
+      } else {
+        alert('يرجى إدخال اسم المستخدم');
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      checkUserStatus();
+    }
+
+    function checkUserStatus() {
+      const user = localStorage.getItem('currentUser');
+      const authBox = document.getElementById('auth-box');
+      const userProfile = document.getElementById('user-profile');
+      const userBtnText = document.getElementById('user-btn-text');
+
+      if (user) {
+        authBox.style.display = 'none';
+        userProfile.style.display = 'block';
+        document.getElementById('welcome-msg').innerText = 'أهلاً بك، ' + user + ' 👋';
+        userBtnText.innerText = '👤 ' + user;
+      } else {
+        authBox.style.display = 'block';
+        userProfile.style.display = 'none';
+        userBtnText.innerText = '👤 حسابي';
+      }
+    }
+
+    // التحقق عند فتح التطبيق
+    checkUserStatus();
   </script>
 </body>
 </html>
