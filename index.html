@@ -37,7 +37,7 @@
 
     .container { padding: 16px; max-width: 600px; margin: 0 auto; }
     .page { display: none; }
-    .page.active { display: block; }
+    .page.active { display: block !important; }
 
     /* Grid & Cards */
     .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
@@ -52,7 +52,7 @@
     .btn { background: white; color: var(--primary); border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
     .btn-primary { background: var(--primary); color: white; }
 
-    /* Advanced Studio UI */
+    /* Studio UI */
     .product-preview {
       width: 100%; height: 280px; background-color: #ffffff; border-radius: 12px;
       display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;
@@ -76,10 +76,8 @@
     .feed-header { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 6px; }
     .feed-actions { margin-top: 10px; font-size: 12px; color: #64748b; cursor: pointer; display: flex; gap: 10px; }
 
-    /* Cart & Checkout UI */
+    /* Cart UI */
     .cart-item { background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-    
-    /* Auth Modal / Box */
     .auth-card { background: white; padding: 20px; border-radius: 12px; text-align: center; }
 
     /* Bottom Nav */
@@ -134,7 +132,7 @@
       </div>
     </div>
 
-    <!-- 2. محرر استوديو الطباعة المتقدم -->
+    <!-- 2. محرر الاستوديو -->
     <div id="page-studio" class="page">
       <h3>🎨 محرر المنتجات والتصميم</h3>
       
@@ -144,7 +142,6 @@
         <img id="logo-preview" class="custom-logo" src="" alt="شعارك">
       </div>
 
-      <!-- أدوات التحكم -->
       <div class="control-group">
         <span class="control-label">لون المنتج:</span>
         <div class="color-options">
@@ -172,13 +169,13 @@
       <button class="btn btn-primary" onclick="addToCart()">إضافة إلى السلة 🛒 (السعر: $25)</button>
     </div>
 
-    <!-- 3. سلة المشتريات وإكمال الطلب -->
+    <!-- 3. سلة المشتريات -->
     <div id="page-cart" class="page">
       <h3>🛒 سلة المشتريات</h3>
       <div id="cart-items-container"></div>
       
       <div class="control-group" style="margin-top: 15px;">
-        <div style="display:flex; justify-shadow:space-between; font-weight:bold; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:10px;">
           <span>الإجمالي:</span>
           <span id="cart-total-price">$0</span>
         </div>
@@ -190,7 +187,7 @@
       </div>
     </div>
 
-    <!-- 4. المجتمعات (مرتبطة بـ Firebase) -->
+    <!-- 4. المجتمعات -->
     <div id="page-sports" class="page">
       <h3>⚽ مجتمع الرياضة</h3>
       <div class="post-box">
@@ -254,35 +251,35 @@
   </nav>
 
   <script>
-    // تهيئة Firebase (قاعدة بيانات حقيقية مجانية ومباشرة)
+    // تهيئة Firebase
     const firebaseConfig = {
       databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // إعدادات الحالة السلة والحساب
     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-    // التنقل بين الصفحات
+    // التنقل بين الصفحات السلس
     function switchPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(p => p.classList.remove('active'));
 
       const target = document.getElementById('page-' + pageId);
-      if (target) target.classList.add('active');
+      if (target) {
+        target.classList.add('active');
+      }
 
       const navMap = { 'home':0, 'sports':1, 'studio':2, 'movies':3, 'fashion':4 };
       const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(i => i.classList.remove('active'));
       if (navMap[pageId] !== undefined && navItems[navMap[pageId]]) {
         navItems[navMap[pageId]].classList.add('active');
       }
       
       if(pageId === 'cart') renderCart();
-      window.scrollTo(0,0);
     }
 
-    // --- 1. أدوات التحكم بالاستوديو والتصميم ---
     function changeTshirtColor(color) {
       document.getElementById('tshirt-icon').style.color = color;
     }
@@ -317,7 +314,6 @@
       img.style.maxHeight = size + 'px';
     }
 
-    // --- 2. سلة المشتريات والطلبات ---
     function addToCart() {
       const text = document.getElementById('custom-text-input').value;
       const tshirtColor = document.getElementById('tshirt-icon').style.color;
@@ -395,7 +391,6 @@
         date: new Date().toLocaleString('ar-SA')
       };
 
-      // حفظ الطلب في Firebase
       db.ref('orders').push(orderData).then(() => {
         alert('تم إرسال طلبك بنجاح! سنتواصل معك قريباً 📦');
         cart = [];
@@ -405,7 +400,6 @@
       });
     }
 
-    // --- 3. المجتمعات التفاعلية مع Firebase ---
     function addPost(category) {
       const textarea = document.getElementById('post-' + category);
       const text = textarea.value.trim();
@@ -426,6 +420,7 @@
     function listenToPosts(category) {
       db.ref('posts/' + category).on('value', (snapshot) => {
         const feed = document.getElementById('feed-' + category);
+        if(!feed) return;
         feed.innerHTML = '';
         const data = snapshot.val();
         if (data) {
@@ -450,10 +445,8 @@
       db.ref(`posts/${category}/${key}`).update({ likes: currentLikes + 1 });
     }
 
-    // استماع متواصل لكل المجتمعات
     ['sports', 'clubs', 'movies', 'fashion'].forEach(listenToPosts);
 
-    // --- 4. الحساب والتسجيل ---
     function loginUser() {
       const name = document.getElementById('username').value.trim();
       if (name) {
@@ -476,6 +469,19 @@
       const userBtnText = document.getElementById('user-btn-text');
 
       if (user) {
-        authBox.style.display = 'none';
-        userProfile.style.display = 'block';
-     
+        if(authBox) authBox.style.display = 'none';
+        if(userProfile) userProfile.style.display = 'block';
+        document.getElementById('welcome-msg').innerText = 'أهلاً بك، ' + user + ' 👋';
+        userBtnText.innerText = '👤 ' + user;
+      } else {
+        if(authBox) authBox.style.display = 'block';
+        if(userProfile) userProfile.style.display = 'none';
+        userBtnText.innerText = '👤 حسابي';
+      }
+    }
+
+    checkUserStatus();
+    updateCartBadge();
+  </script>
+</body>
+</
