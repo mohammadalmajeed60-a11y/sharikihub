@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - شريكي هب</title>
+  <title>SharikiHub - شريكي هب Pro</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
   <style>
     :root {
       --primary: #2563eb;
@@ -25,8 +30,10 @@
       align-items: center;
       position: sticky; top: 0; z-index: 100;
     }
-    .logo { font-size: 18px; font-weight: bold; color: var(--primary); }
-    .user-btn { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+    .logo { font-size: 18px; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 6px; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .btn-icon { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; position: relative; }
+    .badge { background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -4px; right: -4px; }
 
     .container { padding: 16px; max-width: 600px; margin: 0 auto; }
     .page { display: none; }
@@ -45,27 +52,35 @@
     .btn { background: white; color: var(--primary); border: none; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
     .btn-primary { background: var(--primary); color: white; }
 
-    /* Studio UI */
+    /* Advanced Studio UI */
     .product-preview {
-      width: 100%; height: 260px; background-color: #ffffff; border-radius: 12px;
+      width: 100%; height: 280px; background-color: #ffffff; border-radius: 12px;
       display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;
       border: 2px dashed #cbd5e1; margin-bottom: 15px;
     }
-    .tshirt-mockup { font-size: 160px; transition: color 0.3s; position: relative; user-select: none; }
-    .custom-logo { position: absolute; max-width: 70px; max-height: 70px; top: 40%; left: 50%; transform: translate(-50%, -50%); display: none; }
-    .color-options { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
-    .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid #ccc; }
+    .tshirt-mockup { font-size: 180px; transition: color 0.3s; position: relative; user-select: none; }
+    .custom-logo { position: absolute; max-width: 80px; max-height: 80px; top: 42%; left: 50%; transform: translate(-50%, -50%); display: none; }
+    .custom-text-overlay { position: absolute; top: 32%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 16px; pointer-events: none; text-align: center; width: 80%; word-wrap: break-word; }
+    
+    .control-group { background: white; padding: 12px; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .control-label { font-size: 12px; font-weight: bold; margin-bottom: 6px; display: block; color: #64748b; }
+    .color-options { display: flex; gap: 10px; justify-content: center; }
+    .color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid #ccc; }
+    
+    .input-field { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 8px; font-size: 13px; }
 
     /* Community Feed */
     .post-box { background: white; padding: 12px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .post-box textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; resize: none; }
     .feed-item { background: white; padding: 14px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .feed-header { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 6px; }
-    .feed-actions { margin-top: 10px; font-size: 12px; color: #64748b; cursor: pointer; display: inline-block; }
+    .feed-actions { margin-top: 10px; font-size: 12px; color: #64748b; cursor: pointer; display: flex; gap: 10px; }
 
+    /* Cart & Checkout UI */
+    .cart-item { background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    
     /* Auth Modal / Box */
     .auth-card { background: white; padding: 20px; border-radius: 12px; text-align: center; }
-    .auth-card input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 8px; }
 
     /* Bottom Nav */
     .bottom-nav {
@@ -82,7 +97,10 @@
   <!-- Header -->
   <header>
     <div class="logo">SharikiHub 🚀</div>
-    <button class="user-btn" onclick="switchPage('account')" id="user-btn-text">👤 حسابي</button>
+    <div class="header-actions">
+      <button class="btn-icon" onclick="switchPage('cart')">🛒 السلة <span class="badge" id="cart-count">0</span></button>
+      <button class="btn-icon" onclick="switchPage('account')" id="user-btn-text">👤 حسابي</button>
+    </div>
   </header>
 
   <div class="container">
@@ -91,11 +109,11 @@
     <div id="page-home" class="page active">
       <div class="studio-banner">
         <h2>🎨 استوديو الطباعة عند الطلب</h2>
-        <p>صمّم منتجك الخاص بنفسك وقم بطباعته بسهولة!</p>
-        <button class="btn" onclick="switchPage('studio')">ابدأ التصميم الآن</button>
+        <p>صمّم منتجك، أضف نصك الخاص، ارفَع شعارك واطلبه فوراً!</p>
+        <button class="btn" onclick="switchPage('studio')">ابدأ التصميم المتقدم</button>
       </div>
 
-      <div style="font-weight: bold; margin-bottom: 12px;">✨ المجتمعات والأقسام</div>
+      <div style="font-weight: bold; margin-bottom: 12px;">✨ المجتمعات والتفاعل الحقيقي</div>
       <div class="grid">
         <div class="card" onclick="switchPage('sports')">
           <div class="card-icon">⚽</div>
@@ -116,29 +134,63 @@
       </div>
     </div>
 
-    <!-- 2. استوديو الطباعة -->
+    <!-- 2. محرر استوديو الطباعة المتقدم -->
     <div id="page-studio" class="page">
-      <h3>🎨 محرر الملابس والمنتجات</h3>
+      <h3>🎨 محرر المنتجات والتصميم</h3>
+      
       <div class="product-preview">
         <div class="tshirt-mockup" id="tshirt-icon" style="color: #000000;">👕</div>
+        <div class="custom-text-overlay" id="text-overlay" style="color: #ffffff;"></div>
         <img id="logo-preview" class="custom-logo" src="" alt="شعارك">
       </div>
 
-      <p style="font-size: 13px; font-weight: bold;">اختر لون المنتج:</p>
-      <div class="color-options">
-        <div class="color-dot" style="background: #000000;" onclick="changeTshirtColor('#000000')"></div>
-        <div class="color-dot" style="background: #ffffff;" onclick="changeTshirtColor('#ffffff')"></div>
-        <div class="color-dot" style="background: #94a3b8;" onclick="changeTshirtColor('#94a3b8')"></div>
-        <div class="color-dot" style="background: #2563eb;" onclick="changeTshirtColor('#2563eb')"></div>
+      <!-- أدوات التحكم -->
+      <div class="control-group">
+        <span class="control-label">لون المنتج:</span>
+        <div class="color-options">
+          <div class="color-dot" style="background: #000000;" onclick="changeTshirtColor('#000000')"></div>
+          <div class="color-dot" style="background: #ffffff;" onclick="changeTshirtColor('#ffffff')"></div>
+          <div class="color-dot" style="background: #94a3b8;" onclick="changeTshirtColor('#94a3b8')"></div>
+          <div class="color-dot" style="background: #2563eb;" onclick="changeTshirtColor('#2563eb')"></div>
+        </div>
       </div>
 
-      <label style="font-size: 13px; font-weight: bold; display: block; margin-bottom: 5px;">ارفع شعارك/تصميمك:</label>
-      <input type="file" id="image-loader" accept="image/*" onchange="handleImageUpload(event)" style="margin-bottom: 15px;">
+      <div class="control-group">
+        <span class="control-label">نص مخصص على المنتج:</span>
+        <input type="text" id="custom-text-input" class="input-field" placeholder="اكتب عبارة أو اسمك هنا..." oninput="updateCustomText()">
+        <span class="control-label">لون النص:</span>
+        <input type="color" id="text-color-picker" value="#ffffff" onchange="updateCustomTextColor()" style="width:100%; height:35px; border:none; cursor:pointer;">
+      </div>
 
-      <button class="btn btn-primary" onclick="alert('تم حفظ التصميم وإضافته للسلة!')">طلب الطباعة الآن 🛒</button>
+      <div class="control-group">
+        <span class="control-label">رفع شعار / صورة:</span>
+        <input type="file" id="image-loader" accept="image/*" onchange="handleImageUpload(event)" class="input-field">
+        <span class="control-label">حجم الشعار:</span>
+        <input type="range" id="logo-size-slider" min="30" max="130" value="80" oninput="updateLogoSize()" style="width:100%;">
+      </div>
+
+      <button class="btn btn-primary" onclick="addToCart()">إضافة إلى السلة 🛒 (السعر: $25)</button>
     </div>
 
-    <!-- 3. قسم الرياضة -->
+    <!-- 3. سلة المشتريات وإكمال الطلب -->
+    <div id="page-cart" class="page">
+      <h3>🛒 سلة المشتريات</h3>
+      <div id="cart-items-container"></div>
+      
+      <div class="control-group" style="margin-top: 15px;">
+        <div style="display:flex; justify-shadow:space-between; font-weight:bold; margin-bottom:10px;">
+          <span>الإجمالي:</span>
+          <span id="cart-total-price">$0</span>
+        </div>
+        <hr style="border:0; border-top:1px solid #e2e8f0; margin-bottom:10px;">
+        <span class="control-label">معلومات الشحن:</span>
+        <input type="text" id="shipping-address" class="input-field" placeholder="العنوان الكامل والتفاصيل...">
+        <input type="tel" id="shipping-phone" class="input-field" placeholder="رقم الهاتف...">
+        <button class="btn btn-primary" onclick="submitOrder()">تأكيد وإرسال الطلب 📦</button>
+      </div>
+    </div>
+
+    <!-- 4. المجتمعات (مرتبطة بـ Firebase) -->
     <div id="page-sports" class="page">
       <h3>⚽ مجتمع الرياضة</h3>
       <div class="post-box">
@@ -148,7 +200,6 @@
       <div id="feed-sports"></div>
     </div>
 
-    <!-- 4. قسم الأندية -->
     <div id="page-clubs" class="page">
       <h3>🛡️ مجتمع الأندية</h3>
       <div class="post-box">
@@ -158,7 +209,6 @@
       <div id="feed-clubs"></div>
     </div>
 
-    <!-- 5. قسم الأفلام -->
     <div id="page-movies" class="page">
       <h3>🎬 مجتمع الأفلام والسينما</h3>
       <div class="post-box">
@@ -168,7 +218,6 @@
       <div id="feed-movies"></div>
     </div>
 
-    <!-- 6. قسم الأزياء -->
     <div id="page-fashion" class="page">
       <h3>👕 مجتمع الأزياء والموضة</h3>
       <div class="post-box">
@@ -178,12 +227,12 @@
       <div id="feed-fashion"></div>
     </div>
 
-    <!-- 7. حساب المستخدم وتسجيل الدخول -->
+    <!-- 5. حساب المستخدم -->
     <div id="page-account" class="page">
       <div class="auth-card" id="auth-box">
-        <h3 id="auth-title">تسجيل الدخول / حساب جديد</h3>
-        <input type="text" id="username" placeholder="اسم المستخدم">
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <h3>تسجيل الدخول / حساب جديد</h3>
+        <input type="text" id="username" class="input-field" placeholder="اسم المستخدم">
+        <input type="email" id="email" class="input-field" placeholder="البريد الإلكتروني">
         <button class="btn btn-primary" onclick="loginUser()">دخول / تسجيل</button>
       </div>
       <div class="auth-card" id="user-profile" style="display: none;">
@@ -205,6 +254,16 @@
   </nav>
 
   <script>
+    // تهيئة Firebase (قاعدة بيانات حقيقية مجانية ومباشرة)
+    const firebaseConfig = {
+      databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // إعدادات الحالة السلة والحساب
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
     // التنقل بين الصفحات
     function switchPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -218,12 +277,24 @@
       if (navMap[pageId] !== undefined && navItems[navMap[pageId]]) {
         navItems[navMap[pageId]].classList.add('active');
       }
+      
+      if(pageId === 'cart') renderCart();
       window.scrollTo(0,0);
     }
 
-    // الاستوديو: تغيير لون التيشيرت ورفع الصور
+    // --- 1. أدوات التحكم بالاستوديو والتصميم ---
     function changeTshirtColor(color) {
       document.getElementById('tshirt-icon').style.color = color;
+    }
+
+    function updateCustomText() {
+      const val = document.getElementById('custom-text-input').value;
+      document.getElementById('text-overlay').innerText = val;
+    }
+
+    function updateCustomTextColor() {
+      const color = document.getElementById('text-color-picker').value;
+      document.getElementById('text-overlay').style.color = color;
     }
 
     function handleImageUpload(event) {
@@ -239,28 +310,150 @@
       }
     }
 
-    // المجتمعات: إضافة منشورات
+    function updateLogoSize() {
+      const size = document.getElementById('logo-size-slider').value;
+      const img = document.getElementById('logo-preview');
+      img.style.maxWidth = size + 'px';
+      img.style.maxHeight = size + 'px';
+    }
+
+    // --- 2. سلة المشتريات والطلبات ---
+    function addToCart() {
+      const text = document.getElementById('custom-text-input').value;
+      const tshirtColor = document.getElementById('tshirt-icon').style.color;
+      
+      const item = {
+        id: Date.now(),
+        title: "تيشيرت مخصص",
+        price: 25,
+        text: text || "بدون نص",
+        color: tshirtColor
+      };
+      
+      cart.push(item);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartBadge();
+      alert('تمت إضافة المنتج المصمم إلى السلة بنجاح! 🛒');
+    }
+
+    function updateCartBadge() {
+      document.getElementById('cart-count').innerText = cart.length;
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-items-container');
+      container.innerHTML = '';
+      let total = 0;
+
+      if(cart.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b;">السلة فارغة حالياً</p>';
+      } else {
+        cart.forEach((item, index) => {
+          total += item.price;
+          container.innerHTML += `
+            <div class="cart-item">
+              <div>
+                <strong>${item.title}</strong>
+                <div style="font-size:11px; color:#64748b;">نص: ${item.text}</div>
+              </div>
+              <div>
+                <span style="font-weight:bold; margin-left:8px;">$${item.price}</span>
+                <button style="color:red; background:none; border:none; cursor:pointer;" onclick="removeFromCart(${index})">🗑️</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+      document.getElementById('cart-total-price').innerText = '$' + total;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartBadge();
+      renderCart();
+    }
+
+    function submitOrder() {
+      const address = document.getElementById('shipping-address').value.trim();
+      const phone = document.getElementById('shipping-phone').value.trim();
+
+      if(!address || !phone) {
+        alert('يرجى كتابة العنوان ورقم الهاتف لمتابعة الطلب');
+        return;
+      }
+      if(cart.length === 0) {
+        alert('سلتك فارغة!');
+        return;
+      }
+
+      const orderData = {
+        user: localStorage.getItem('currentUser') || 'زائر',
+        items: cart,
+        address: address,
+        phone: phone,
+        date: new Date().toLocaleString('ar-SA')
+      };
+
+      // حفظ الطلب في Firebase
+      db.ref('orders').push(orderData).then(() => {
+        alert('تم إرسال طلبك بنجاح! سنتواصل معك قريباً 📦');
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartBadge();
+        switchPage('home');
+      });
+    }
+
+    // --- 3. المجتمعات التفاعلية مع Firebase ---
     function addPost(category) {
       const textarea = document.getElementById('post-' + category);
       const text = textarea.value.trim();
       if (!text) return;
 
-      const user = localStorage.getItem('currentUser') || 'عضو جديد';
-      const feed = document.getElementById('feed-' + category);
+      const user = localStorage.getItem('currentUser') || 'عضو مجتمعي';
+      const postData = {
+        user: user,
+        text: text,
+        likes: 0,
+        timestamp: Date.now()
+      };
 
-      const postDiv = document.createElement('div');
-      postDiv.className = 'feed-item';
-      postDiv.innerHTML = `
-        <div class="feed-header">👤 ${user}</div>
-        <div>${text}</div>
-        <div class="feed-actions" onclick="this.innerHTML = '❤️ 1 إعجاب'">❤️ 0 إعجاب</div>
-      `;
-
-      feed.prepend(postDiv);
+      db.ref('posts/' + category).push(postData);
       textarea.value = '';
     }
 
-    // نظام تسجيل الدخول والحساب
+    function listenToPosts(category) {
+      db.ref('posts/' + category).on('value', (snapshot) => {
+        const feed = document.getElementById('feed-' + category);
+        feed.innerHTML = '';
+        const data = snapshot.val();
+        if (data) {
+          Object.keys(data).reverse().forEach(key => {
+            const post = data[key];
+            const postDiv = document.createElement('div');
+            postDiv.className = 'feed-item';
+            postDiv.innerHTML = `
+              <div class="feed-header">👤 ${post.user}</div>
+              <div>${post.text}</div>
+              <div class="feed-actions">
+                <span onclick="likePost('${category}', '${key}', ${post.likes || 0})">❤️ ${post.likes || 0} إعجاب</span>
+              </div>
+            `;
+            feed.appendChild(postDiv);
+          });
+        }
+      });
+    }
+
+    function likePost(category, key, currentLikes) {
+      db.ref(`posts/${category}/${key}`).update({ likes: currentLikes + 1 });
+    }
+
+    // استماع متواصل لكل المجتمعات
+    ['sports', 'clubs', 'movies', 'fashion'].forEach(listenToPosts);
+
+    // --- 4. الحساب والتسجيل ---
     function loginUser() {
       const name = document.getElementById('username').value.trim();
       if (name) {
@@ -285,17 +478,4 @@
       if (user) {
         authBox.style.display = 'none';
         userProfile.style.display = 'block';
-        document.getElementById('welcome-msg').innerText = 'أهلاً بك، ' + user + ' 👋';
-        userBtnText.innerText = '👤 ' + user;
-      } else {
-        authBox.style.display = 'block';
-        userProfile.style.display = 'none';
-        userBtnText.innerText = '👤 حسابي';
-      }
-    }
-
-    // التحقق عند فتح التطبيق
-    checkUserStatus();
-  </script>
-</body>
-</html>
+     
