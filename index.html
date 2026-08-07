@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شريكي Hub - التطبيق الشامل</title>
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --secondary: #a29bfe;
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #ff7675;
+      --green: #00b894;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding-bottom: 75px;
+    }
+
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .nav-icon {
+      font-size: 1.3rem;
+    }
+
+    .studio-container {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .canvas-preview {
+      width: 100%;
+      height: 250px;
+      background-color: #334155;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 15px 0;
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .product-base-icon {
+      font-size: 6rem;
+      transition: color 0.3s;
+    }
+
+    .custom-text-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      pointer-events: none;
+    }
+
+    .controls-card {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.05);
+      text-align: right;
+    }
+
+    .control-group {
+      margin-bottom: 12px;
+    }
+
+    .control-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .control-group input, .control-group select {
+      width: 100%;
+      padding: 10px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .btn-save-design {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="page-home" class="page active">
+    <div style="padding: 20px; text-align: center;">
+      <h2 style="color: var(--primary);">شريكي Hub 🚀</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">مرحباً بك في منصتك الشاملة للطباعة والتواصل والترفيه.</p>
+      
+      <div style="background: var(--card-bg); margin-top: 20px; padding: 20px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05);">
+        <h3>ابدأ الآن بسهولة</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 10px 0;">يمكنك التنقل بين المتجر، استديو التصميم، ومجتمعات الترفيه عبر القائمة السفلية.</p>
+        <button onclick="navigateTo('studio')" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;">جرب استديو التصميم 🎨</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-store" class="page">
+    <div style="padding: 20px;">
+      <h3>المتجر 🛍️</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">اختر منتجاً وجرّب التعديل عليه</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+        <div style="background: var(--card-bg); padding: 10px; border-radius: 8px; text-align: center;">
+          <div style="font-size: 3rem;">👕</div>
+          <div style="font-size: 0.85rem; font-weight: bold;">تيشرت قطني</div>
+          <button onclick="navigateTo('studio')" style="background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-top: 5px; font-size: 0.75rem; cursor: pointer;">تخصيص</button>
+        </div>
+        <div style="background: var(--card-bg); padding: 10px; border-radius: 8px; text-align: center;">
+          <div style="font-size: 3rem;">☕</div>
+          <div style="font-size: 0.85rem; font-weight: bold;">كوب سيراميك</div>
+          <button onclick="navigateTo('studio')" style="background: var(--primary); color: white; border: none; padding: 5px 10px; border-radius: 5px; margin-top: 5px; font-size: 0.75rem; cursor: pointer;">تخصيص</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-studio" class="page">
+    <div class="studio-container">
+      <h3>استديو التصميم التفاعلي 🎨</h3>
+      
+      <div class="canvas-preview">
+        <div id="product-icon" class="product-base-icon">👕</div>
+        <div id="canvas-text" class="custom-text-overlay">نص تصميمك هنا</div>
+      </div>
+
+      <div class="controls-card">
+        <div class="control-group">
+          <label>نوع المنتج:</label>
+          <select onchange="document.getElementById('product-icon').innerText = this.value">
+            <option value="👕">تيشرت (T-Shirt)</option>
+            <option value="☕">كوب (Mug)</option>
+            <option value="📱">كفر هاتف (Phone Case)</option>
+            <option value="👜">حقيبة (Bag)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>اكتب النص على المنتج:</label>
+          <input type="text" placeholder="اكتب شعارك أو اقتباسك..." oninput="document.getElementById('canvas-text').innerText = this.value || 'نص تصميمك هنا'">
+        </div>
+
+        <div class="control-group">
+          <label>لون النص:</label>
+          <input type="color" value="#ffffff" onchange="document.getElementById('canvas-text').style.color = this.value">
+        </div>
+
+        <button class="btn-save-design" onclick="alert('تم حفظ تصميمك ونشره في المتجر بنجاح!')">حفظ ونشر المنتج 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-profile" class="page">
+    <div style="padding: 20px; text-align: center;">
+      <div style="width: 70px; height: 70px; background: var(--primary); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold;">م</div>
+      <h3>محمد علي 🎨</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">مصمم معتمد في منصة شريكي Hub</p>
+      
+      <div style="background: var(--card-bg); padding: 15px; border-radius: var(--radius); margin-top: 20px; text-align: right;">
+        <h4>أرباح الطباعة عند الطلب:</h4>
+        <p style="color: var(--green); font-size: 1.5rem; font-weight: bold; margin: 5px 0;">$142.50</p>
+        <button onclick="alert('تم طلب السحب بنجاح!')" style="background: var(--green); color: white; border: none; padding: 8px 15px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer;">سحب الأرباح 💳</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="nav-item active" onclick="navigateTo('home')">
+      <span class="nav-icon">🏠</span>
+      <span>الرئيسية</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('store')">
+      <span class="nav-icon">🛍️</span>
+      <span>المتجر</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('studio')">
+      <span class="nav-icon">🎨</span>
+      <span>تصميم</span>
+    </div>
+    <div class="nav-item" onclick="navigateTo('profile')">
+      <span class="nav-icon">👤</span>
+      <span>حسابي</span>
+    </div>
+  </nav>
+
+  <script>
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+      document.getElementById('page-' + pageId).classList.add('active');
+
+      const navIndex = { 'home': 0, 'store': 1, 'studio': 2, 'profile': 3 };
+      document.querySelectorAll('.nav-item')[navIndex[pageId]].classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
