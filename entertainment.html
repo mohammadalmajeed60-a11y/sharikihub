@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharikiHub - الترفيه</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: #f0f2f5; padding: 20px; text-align: center; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #34495e; margin-bottom: 20px; }
+        .game-area { margin: 20px 0; padding: 20px; border: 2px solid #ddd; border-radius: 10px; }
+        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        #message { margin-top: 15px; font-weight: bold; color: #2c3e50; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎲 ركن الترفيه</h1>
+    <p>جرب حظك واضغط على الزر!</p>
+    
+    <div class="game-area">
+        <p id="number">0</p>
+        <button onclick="rollDice()">رمي النرد</button>
+        <p id="message"></p>
+    </div>
+    
+    <a href="index.html" style="display: block; margin-top: 20px; color: #3498db; text-decoration: none;">العودة للرئيسية</a>
+</div>
+
+<script>
+    function rollDice() {
+        const num = Math.floor(Math.random() * 6) + 1;
+        document.getElementById('number').innerText = num;
+        document.getElementById('message').innerText = num === 6 ? "محظوظ! حصلت على 6 🎉" : "حاول مرة أخرى!";
+    }
+</script>
+
+</body>
+</html>
