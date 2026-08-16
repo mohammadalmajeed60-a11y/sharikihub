@@ -1,93 +1,102 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">    <!-- Meta Tags لتحسين العرض على وسائل التواصل -->
-    <meta property="og:title" content="SharikiHub - المنصة الشاملة">
-    <meta property="og:description" content="صمم، استمتع، وشارك ابداعك بلا حدود في منصة SharikiHub.">
-    <meta property="og:image" content="https://i.imgur.com/8Q9N4F4.png">
-    <meta property="og:url" content="https://mohammadalmajeed60-a11y.github.io/sharikihub/">
-    <meta property="og:type" content="website">
-    
-    <!-- أيقونة الموقع (Favicon) -->
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3233/3233075.png" type="image/png">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SharikiHub - المنصة الشاملة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharikiHub - منصة شركتك للتواصل والطباعة</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: #0f111a; color: #ffffff; padding-bottom: 90px; }
-        
-        .hero { background: linear-gradient(135deg, #6c5ce7 0%, #ff7675 100%); padding: 40px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3); }
-        .hero h1 { font-size: 32px; font-weight: 900; letter-spacing: 1px; margin-bottom: 8px; }
-        .hero p { font-size: 15px; opacity: 0.95; font-weight: 700; }
-
-        .section-title { margin: 25px 20px 15px; font-size: 18px; font-weight: 900; color: #a29bfe; }
-        .grid { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 0 20px; }
-        
-        .card { background: #181b2a; border: 1px solid #2d3250; border-radius: 20px; padding: 20px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
-        .card-reels { border-right: 6px solid #ff7675; }
-        .card-studio { border-right: 6px solid #fd79a8; }
-        .card-games { border-right: 6px solid #00b894; }
-        .card-admin { border-right: 6px solid #0984e3; }
-
-        .card-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-        .card-info p { font-size: 12px; color: #b2bec3; }
-        .card-icon { font-size: 32px; }
-
-        .nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #181b2a; border-top: 1px solid #2d3250; display: flex; justify-content: space-around; padding: 12px 0; z-index: 1000; }
-        .nav-item { text-decoration: none; color: #b2bec3; font-size: 12px; font-weight: 700; text-align: center; display: flex; flex-direction: column; gap: 4px; }
-        .nav-item.active { color: #ff7675; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+        body { background-color: #f4f7fe; padding: 20px; text-align: center; }
+        .card { background: white; max-width: 400px; margin: 40px auto; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #2b2d42; margin-bottom: 15px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; text-align: right; }
+        button { width: 100%; padding: 12px; background: #4361ee; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #3a56d4; }
+        .hidden { display: none; }
+        .section-box { background: #eef2ff; padding: 15px; border-radius: 8px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<div class="hero">
-    <h1>SharikiHub</h1>
-    <p>صمم، استمتع، وشارك ابداعك بلا حدود 🔥</p>
-</div>
+    <!-- نموذج تسجيل الدخول / إنشاء حساب -->
+    <div id="auth-box" class="card">
+        <h2>SharikiHub</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">انضم إلى المنصة</p>
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="registerUser()">إنشاء حساب جديد</button>
+        <button onclick="loginUser()" style="background: #2ec4b6;">تسجيل الدخول</button>
+        <p id="status-msg" style="margin-top: 10px; color: red; font-size: 13px;"></p>
+    </div>
 
-<div class="section-title">🚀 أقسام المنصة الرئيسية</div>
-
-<div class="grid">
-    <a href="reels.html" class="card card-reels">
-        <div class="card-info">
-            <h3>🎬 مجتمع الريلز</h3>
-            <p>مقاطع فيديو عصرية ومنشورات التفاعل</p>
+    <!-- واجهة المستخدم بعد الدخول -->
+    <div id="dashboard" class="card hidden">
+        <h2>مرحباً بك في SharikiHub! 👋</h2>
+        <p id="user-email" style="color: #555; margin-bottom: 15px;"></p>
+        
+        <div class="section-box">
+            <h3>🎨 قسم الطباعة حسب الطلب</h3>
+            <p style="font-size: 13px; color: #666; margin-top: 5px;">قريباً: صمم منتجك واطبعه فوراً</p>
         </div>
-        <div class="card-icon">🔥</div>
-    </a>
 
-    <a href="design-studio.html" class="card card-studio">
-        <div class="card-info">
-            <h3>🎨 استوديو التصميم</h3>
-            <p>خصص منتجاتك وطباعتك حسب الطلب فوراً</p>
+        <div class="section-box">
+            <h3>🎬 الأقسام الترفيهية</h3>
+            <p style="font-size: 13px; color: #666; margin-top: 5px;">كتب • رياضة • أزياء • أفلام</p>
         </div>
-        <div class="card-icon">✨</div>
-    </a>
 
-    <a href="entertainment.html" class="card card-games">
-        <div class="card-info">
-            <h3>🎮 ركن الترفيه</h3>
-            <p>العاب، مسابقات ومحتوى تفاعلي مميز</p>
-        </div>
-        <div class="card-icon">🎲</div>
-    </a>
+        <button onclick="logout()" style="background: #e63946; margin-top: 20px;">تسجيل الخروج</button>
+    </div>
 
-    <a href="admin.html" class="card card-admin">
-        <div class="card-info">
-            <h3>⚙️ لوحة الإدارة</h3>
-            <p>متابعة الطلبات وإدارة محتوى المنصة</p>
-        </div>
-        <div class="card-icon">📊</div>
-    </a>
-</div>
+    <!-- ربط Firebase JS SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-<nav class="nav">
-    <a href="index.html" class="nav-item active"><span>🏠</span>الرئيسية</a>
-    <a href="reels.html" class="nav-item"><span>🎬</span>الريلز</a>
-    <a href="design-studio.html" class="nav-item"><span>🎨</span>الاستوديو</a>
-</nav>
+        // ⚠️ استبدل القيم التالية بإعدادات مشروعك من Firebase Console
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // متابعة حالة المستخدم تلقائياً
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-box').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('user-email').innerText = user.email;
+            } else {
+                document.getElementById('auth-box').classList.remove('hidden');
+                document.getElementById('dashboard').classList.add('hidden');
+            }
+        });
+
+        // إنشاء حساب جديد
+        window.registerUser = () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            createUserWithEmailAndPassword(auth, email, pass)
+                .then(() => alert("تم إنشاء الحساب بنجاح!"))
+                .catch(err => document.getElementById('status-msg').innerText = err.message);
+        };
+
+        // تسجيل الدخول
+        window.loginUser = () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, pass)
+                .then(() => alert("تم تسجيل الدخول!"))
+                .catch(err => document.getElementById('status-msg').innerText = "بيانات الدخول غير صحيحة");
+        };
+
+        // تسجيل الخروج
+        window.logout = () => signOut(auth);
+    </script>
 </body>
 </html>
