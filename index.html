@@ -3,133 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - الترفيه والأسلوب</title>
+    <title>SharikiHub - لوحة التحكم</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f4f6f9; color: #333; padding: 15px; }
         .container { max-width: 600px; margin: 0 auto; }
         
         /* الهيدر */
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { color: #1a252f; font-size: 22px; }
-        .header p { color: #666; font-size: 14px; }
-
-        /* أزرار التنقل بين الأقسام */
-        .categories-tab {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            scrollbar-width: none;
-        }
-        .tab-btn {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 8px 16px;
-            border-radius: 20px;
-            white-space: nowrap;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .tab-btn.active { background-color: #2c3e50; color: white; border-color: #2c3e50; }
-
-        /* بطاقات المحتوى */
-        .content-card {
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-        }
-        .card-img { width: 100%; height: 160px; object-fit: cover; background-color: #e9ecef; }
-        .card-body { padding: 15px; }
-        .card-tag { font-size: 12px; color: #e67e22; font-weight: bold; }
-        .card-title { font-size: 16px; margin: 5px 0; color: #2c3e50; }
-        .card-desc { font-size: 13px; color: #666; margin-bottom: 12px; }
+        .header { text-align: center; margin-bottom: 20px; background: #1a252f; color: white; padding: 15px; border-radius: 12px; }
+        .header h1 { font-size: 20px; }
         
-        .action-btn {
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        /* كروت الإحصائيات */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: #fff; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-number { font-size: 22px; font-weight: bold; color: #27ae60; margin-top: 5px; }
+
+        /* الأقسام */
+        .section-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .section-title { font-size: 16px; color: #1a252f; margin-bottom: 12px; border-bottom: 2px solid #f4f6f9; padding-bottom: 8px; }
+
+        /* جدول الطلبات */
+        .order-item { background: #f8f9fa; border-right: 4px solid #e67e22; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-size: 13px; }
+        .order-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
+        
+        /* نموذج إضافة منتج */
+        .form-group { margin-bottom: 10px; }
+        label { font-size: 12px; font-weight: bold; color: #555; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; margin-top: 4px; }
+        
+        .btn-add { background: #27ae60; color: white; border: none; padding: 10px; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>✨ عالم الترفيه - SharikiHub</h1>
-        <p>استكشف محتواك المفضل واطبع أسلوبك الخاص</p>
+        <h1>⚙️ لوحة إدارة SharikiHub</h1>
     </div>
 
-    <!-- أقسام الترفيه -->
-    <div class="categories-tab">
-        <button class="tab-btn active" onclick="filterCategory('all')">الكل</button>
-        <button class="tab-btn" onclick="filterCategory('books')">📚 الكتب</button>
-        <button class="tab-btn" onclick="filterCategory('sports')">⚽ الرياضة</button>
-        <button class="tab-btn" onclick="filterCategory('fashion')">👗 الأزياء</button>
-        <button class="tab-btn" onclick="filterCategory('movies')">🎬 الأفلام</button>
+    <!-- ملخص الإحصائيات -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div>إجمالي الطلبات</div>
+            <div class="stat-number" id="totalOrders">12</div>
+        </div>
+        <div class="stat-card">
+            <div>الأرباح التقديرية</div>
+            <div class="stat-number">$180</div>
+        </div>
     </div>
 
-    <!-- بطاقات العرض -->
-    <div id="contentList">
-        <!-- قسم الكتب -->
-        <div class="content-card category-item books">
-            <div class="card-body">
-                <span class="card-tag">📚 كتاب الأسبوع</span>
-                <h3 class="card-title">اقتباسات ألهمت العالم</h3>
-                <p class="card-desc">"النجاح ليس ختاماً، والفشل ليس قاتلاً". يمكنك طباعة اقتباسك المفضل الآن على كوبك الخاص.</p>
-                <button class="action-btn" onclick="goToStudio('النجاح ليس ختاماً')">طباعة هذا الاقتباس 🎨</button>
+    <!-- إدارة الطلبات الواردة -->
+    <div class="section-card">
+        <h3 class="section-title">📦 أحدث الطلبات</h3>
+        <div id="ordersList">
+            <div class="order-item">
+                <div class="order-header">
+                    <span>طلب #101 - محمد</span>
+                    <span style="color: #e67e22;">قيد التنفيذ</span>
+                </div>
+                <div>المنتج: تيشيرت مخصص (فطومه الحلوه)</div>
+                <div>المبلغ: 15$ | الهاتف: 07800000000</div>
             </div>
         </div>
+    </div>
 
-        <!-- قسم الرياضة -->
-        <div class="content-card category-item sports">
-            <div class="card-body">
-                <span class="card-tag">⚽ حماس الرياضة</span>
-                <h3 class="card-title">تشجيع فريقك المفضل</h3>
-                <p class="card-desc">صمم قميصك الكروي الخاص باسمك ورقمك المفضليْن في استوديو التصميم.</p>
-                <button class="action-btn" onclick="goToStudio('رقم 10')">تصميم قميصك الآن 👕</button>
+    <!-- إضافة منتج جديد -->
+    <div class="section-card">
+        <h3 class="section-title">➕ إضافة منتج جديد للمتجر</h3>
+        <form id="addProductForm" onsubmit="addNewProduct(event)">
+            <div class="form-group">
+                <label>اسم المنتج:</label>
+                <input type="text" id="prodName" placeholder="مثال: كوب رياضي" required>
             </div>
-        </div>
-
-        <!-- قسم الأفلام -->
-        <div class="content-card category-item movies">
-            <div class="card-body">
-                <span class="card-tag">🎬 سينما Shariki</span>
-                <h3 class="card-title">عالم السينما والمسلسلات</h3>
-                <p class="card-desc">اختر شعار فيلمك أو شخصيتك المفضلة واطبعها على غلاف هاتفك.</p>
-                <button class="action-btn" onclick="goToStudio('Movie Fan')">طباعة شعار الفيلم 📱</button>
+            <div class="form-group">
+                <label>السعر ($):</label>
+                <input type="number" id="prodPrice" placeholder="10" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label>القسم:</label>
+                <select id="prodCat">
+                    <option value="طباعة">طباعة حسب الطلب</option>
+                    <option value="كتب">الكتب</option>
+                    <option value="رياضة">الرياضة</option>
+                    <option value="أزياء">الأزياء</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-add">إضافة المنتج للمتجر 🚀</button>
+        </form>
     </div>
 </div>
 
 <script>
-    function filterCategory(cat) {
-        const items = document.querySelectorAll('.category-item');
-        items.forEach(item => {
-            if (cat === 'all' || item.classList.contains(cat)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-    }
-
-    function goToStudio(text) {
-        alert(`جاري الانتقال لاستوديو التصميم مع نص: "${text}"`);
-        window.location.href = 'design-studio.html';
+    function addNewProduct(e) {
+        e.preventDefault();
+        const name = document.getElementById('prodName').value;
+        const price = document.getElementById('prodPrice').value;
+        alert(`تمت إضافة المنتج "${name}" بسعر $${price} بنجاح إلى المتجر!`);
+        document.getElementById('addProductForm').reset();
     }
 </script>
 
