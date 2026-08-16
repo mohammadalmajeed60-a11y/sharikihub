@@ -10,26 +10,29 @@
         body { background-color: #0f111a; color: #ffffff; padding: 20px; padding-bottom: 100px; }
         
         .container { max-width: 500px; margin: 0 auto; background: #181b2a; border-radius: 20px; padding: 20px; border: 1px solid #2d3250; }
-        h2 { text-align: center; margin-bottom: 20px; color: #a29bfe; font-size: 22px; }
+        h2 { text-align: center; margin-bottom: 20px; color: #a29bfe; font-size: 22px; font-weight: 900; }
         
-        /* تحسين أزرار المنتجات لتكون مرنة */
-        .product-selector { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+        .product-selector { display: flex; gap: 8px; margin-bottom: 15px; justify-content: center; flex-wrap: wrap; }
         .product-btn { background: #2d3250; color: #fff; border: none; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .product-btn.active { background: linear-gradient(135deg, #6c5ce7, #fd79a8); }
 
-        .preview-area { position: relative; width: 100%; height: 300px; background: #0f111a; border-radius: 15px; display: flex; justify-content: center; align-items: center; border: 2px dashed #2d3250; margin-bottom: 20px; background-size: contain; background-repeat: no-repeat; background-position: center; }
+        .price-tag { text-align: center; font-size: 18px; font-weight: 900; color: #00b894; margin-bottom: 15px; background: #0f111a; padding: 8px; border-radius: 10px; border: 1px solid #2d3250; }
+
+        .preview-area { position: relative; width: 100%; height: 260px; background: #0f111a; border-radius: 15px; display: flex; justify-content: center; align-items: center; border: 2px dashed #2d3250; margin-bottom: 20px; background-size: contain; background-repeat: no-repeat; background-position: center; }
 
         .controls { display: flex; flex-direction: column; gap: 15px; }
-        .control-group label { font-size: 14px; font-weight: bold; color: #b2bec3; margin-bottom: 5px; }
-        input { background: #2d3250; border: none; padding: 12px; border-radius: 8px; color: white; width: 100%; }
+        .control-group label { font-size: 13px; font-weight: bold; color: #b2bec3; margin-bottom: 5px; display: block; }
         
-        .add-to-cart-btn { background: linear-gradient(135deg, #00b894, #0984e3); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+        input, select { background: #2d3250; border: none; padding: 12px; border-radius: 8px; color: white; width: 100%; font-size: 14px; outline: none; }
+        
+        .add-to-cart-btn { background: linear-gradient(135deg, #00b894, #0984e3); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; font-size: 15px; }
+        .btn-back { display: block; text-align: center; margin-top: 15px; color: #a29bfe; font-weight: bold; text-decoration: none; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>🎨 اختر منتجك</h2>
+    <h2>🎨 استوديو التصميم والطباعة</h2>
     
     <div class="product-selector">
         <button class="product-btn active" onclick="setProduct('tshirt', this)">تيشيرت</button>
@@ -39,40 +42,69 @@
         <button class="product-btn" onclick="setProduct('cap', this)">قبعة</button>
     </div>
 
+    <div class="price-tag">
+        السعر التقديري: <span id="productPrice">15,000</span> د.ع
+    </div>
+
     <div class="preview-area" id="productMockup"></div>
 
     <div class="controls">
         <div class="control-group">
-            <label>اكتب عبارتك أو تفاصيل الطلب:</label>
-            <input type="text" id="userText" placeholder="مثال: اسمي، شعار، لون...">
+            <label>اختر اللون:</label>
+            <select id="productColor">
+                <option value="أسود">أسود</option>
+                <option value="أبيض">أبيض</option>
+                <option value="رمادي">رمادي</option>
+                <option value="كحلي">كحلي</option>
+            </select>
         </div>
+
+        <div class="control-group">
+            <label>اكتب عبارتك أو تفاصيل التصميم:</label>
+            <input type="text" id="userText" placeholder="مثال: طباعة شعار بالمنتصف، اسم على الظهر...">
+        </div>
+
         <button class="add-to-cart-btn" onclick="sendToWhatsApp()">إرسال الطلب عبر الواتساب 💬</button>
     </div>
+
+    <a href="index.html" class="btn-back">🏠 العودة للرئيسية</a>
 </div>
 
 <script>
-    // مكتبة صور المنتجات - يمكنك استبدال الروابط لاحقاً بصورك الخاصة
-    const products = {
-        tshirt: 'https://i.imgur.com/8Q9N4F4.png',
-        mug: 'https://i.imgur.com/mO4P5wN.png',
-        hoodie: 'https://cdn-icons-png.flaticon.com/512/3163/3163478.png',
-        case: 'https://cdn-icons-png.flaticon.com/512/3233/3233075.png',
-        cap: 'https://cdn-icons-png.flaticon.com/512/1792/1792931.png'
+    // بيانات المنتجات: الأسعار بالدينار العراقي والصور المؤقتة
+    const productsData = {
+        tshirt: { price: '15,000', image: 'https://i.imgur.com/8Q9N4F4.png' },
+        mug: { price: '8,000', image: 'https://i.imgur.com/mO4P5wN.png' },
+        hoodie: { price: '25,000', image: 'https://cdn-icons-png.flaticon.com/512/3163/3163478.png' },
+        case: { price: '10,000', image: 'https://cdn-icons-png.flaticon.com/512/3233/3233075.png' },
+        cap: { price: '7,000', image: 'https://cdn-icons-png.flaticon.com/512/1792/1792931.png' }
     };
+
+    let selectedKey = 'tshirt';
 
     function setProduct(type, btn) {
         document.querySelectorAll('.product-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        document.getElementById('productMockup').style.backgroundImage = `url('${products[type]}')`;
+        selectedKey = type;
+        
+        // تحديث السعر والصورة
+        document.getElementById('productPrice').innerText = productsData[type].price;
+        document.getElementById('productMockup').style.backgroundImage = `url('${productsData[type].image}')`;
     }
 
     // إعداد البداية
-    document.getElementById('productMockup').style.backgroundImage = `url('${products.tshirt}')`;
+    document.getElementById('productMockup').style.backgroundImage = `url('${productsData.tshirt.image}')`;
 
     function sendToWhatsApp() {
-        const text = document.getElementById('userText').value;
+        const text = document.getElementById('userText').value || 'بدون تفاصيل إضافية';
+        const color = document.getElementById('productColor').value;
         const activeProduct = document.querySelector('.product-btn.active').innerText;
-        window.open(`https://wa.me/9647000000000?text=أريد طلب تصميم على ( ${activeProduct} ) - تفاصيل التصميم: ${text}`, '_blank');
+        const price = productsData[selectedKey].price;
+
+        const message = `مرحباً SharikiHub 👋%0Aأريد طلب منتج من الاستوديو:%0A-%0A👕 *المنتج:* ${activeProduct}%0A🎨 *اللون:* ${color}%0A💰 *السعر:* ${price} د.ع%0A📝 *التفاصيل:* ${text}`;
+
+        // يمكن تعديل الرقم أدناه إلى رقم الواتساب الخاص بك
+        window.open(`https://wa.me/9647000000000?text=${message}`, '_blank');
     }
 </script>
 
