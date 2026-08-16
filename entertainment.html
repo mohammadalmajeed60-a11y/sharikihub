@@ -3,48 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - ركن الترفيه</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>SharikiHub - قسم الترفيه</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: #0f111a; color: #ffffff; padding: 20px; }
-        .container { max-width: 500px; margin: 0 auto; background: #181b2a; border-radius: 20px; padding: 30px; border: 1px solid #2d3250; text-align: center; }
-        h1 { color: #a29bfe; margin-bottom: 20px; font-size: 24px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; padding: 15px; }
         
-        .game-area { margin: 20px 0; padding: 30px; border: 2px dashed #2d3250; border-radius: 15px; }
-        #number { 
-            font-size: 80px; font-weight: 900; color: #ff7675; 
-            margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,118,117,0.5); 
-        }
-        
-        button { 
-            background: linear-gradient(135deg, #00b894, #0984e3); 
-            color: white; border: none; padding: 15px 30px; border-radius: 12px; 
-            cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; 
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        button:active { transform: scale(0.95); }
-        
-        .btn-back { display: block; margin-top: 20px; color: #a29bfe; text-decoration: none; font-weight: bold; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-size: 24px; color: #1a1a1a; }
+        .header p { font-size: 14px; color: #666; margin-top: 5px; }
+
+        /* تبويبات الأقسام */
+        .nav-tabs { display: flex; justify-content: space-around; background: #fff; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px; overflow-x: auto; }
+        .tab-btn { background: none; border: none; padding: 8px 16px; font-size: 14px; font-weight: bold; color: #555; cursor: pointer; border-radius: 8px; white-space: nowrap; }
+        .tab-btn.active { background: #007bff; color: #fff; }
+
+        /* شبكة المحتوى */
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+        .card { background: #fff; border-radius: 12px; padding: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .card h3 { font-size: 15px; margin-bottom: 5px; }
+        .card p { font-size: 12px; color: #777; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🎲 ركن الترفيه</h1>
-    <div class="game-area">
-        <p id="number">0</p>
-        <button onclick="rollDice()">رمي النرد</button>
-    </div>
-    <a href="index.html" class="btn-back">🏠 العودة للرئيسية</a>
+<div class="header">
+    <h1>عالم الترفيه</h1>
+    <p>استكشف أحدث المحتويات والمشاركات حسب شغفك</p>
+</div>
+
+<!-- شريط التنقل بين الفئات -->
+<div class="nav-tabs">
+    <button class="tab-btn active" onclick="filterCategory('books', this)">📚 الكتب</button>
+    <button class="tab-btn" onclick="filterCategory('sports', this)">⚽ الرياضة</button>
+    <button class="tab-btn" onclick="filterCategory('fashion', this)">👗 الأزياء</button>
+    <button class="tab-btn" onclick="filterCategory('movies', this)">🎬 الأفلام</button>
+</div>
+
+<!-- منطقة الكروت -->
+<div class="content-grid" id="grid-container">
+    <!-- المحتوى التفاعلي يظهر هنا -->
 </div>
 
 <script>
-    function rollDice() {
-        const num = Math.floor(Math.random() * 6) + 1;
-        document.getElementById('number').innerText = num;
-        document.getElementById('number').style.color = '#fd79a8';
+    const items = {
+        books: [
+            { title: 'ملخصات الكتب', desc: 'أهم الأفكار في صفحات معدودة', img: 'https://via.placeholder.com/150/007bff/ffffff?text=Books' },
+            { title: 'ترشيحات الأسبوع', desc: 'أفضل الكتب قراءة هذا الشهر', img: 'https://via.placeholder.com/150/007bff/ffffff?text=Reading' }
+        ],
+        sports: [
+            { title: 'أخبار المباريات', desc: 'متابعة لأهم الدوريات العالمية', img: 'https://via.placeholder.com/150/28a745/ffffff?text=Sports' },
+            { title: 'تحليلات رياضية', desc: 'آراء ومناقشات تفاعلية', img: 'https://via.placeholder.com/150/28a745/ffffff?text=Match' }
+        ],
+        fashion: [
+            { title: 'أحدث الصيحات', desc: 'تصاميم وتنسيقات عصرية', img: 'https://via.placeholder.com/150/e83e8c/ffffff?text=Fashion' },
+            { title: 'طباعة وتنسيق', desc: 'أفكار لملابس مخصصة', img: 'https://via.placeholder.com/150/e83e8c/ffffff?text=Style' }
+        ],
+        movies: [
+            { title: 'مراجعات الأفلام', desc: 'تقييمات لأحدث العروض', img: 'https://via.placeholder.com/150/fd7e14/ffffff?text=Movies' },
+            { title: 'قوائم المشاهدة', desc: 'مقترحات لسهرتك الليلة', img: 'https://via.placeholder.com/150/fd7e14/ffffff?text=Cinema' }
+        ]
+    };
+
+    function filterCategory(cat, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const container = document.getElementById('grid-container');
+        container.innerHTML = '';
+
+        items[cat].forEach(item => {
+            container.innerHTML += `
+                <div class="card">
+                    <img src="${item.img}" alt="${item.title}">
+                    <h3>${item.title}</h3>
+                    <p>${item.desc}</p>
+                </div>
+            `;
+        });
     }
+
+    // تحميل قسم الكتب افتراضياً
+    filterCategory('books', document.querySelector('.tab-btn'));
 </script>
 
 </body>
