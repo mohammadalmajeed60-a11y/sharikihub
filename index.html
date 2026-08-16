@@ -2,105 +2,233 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - لوحة التحكم</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SharikiHub - استوديو التصميم</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; padding: 15px; }
-        .container { max-width: 600px; margin: 0 auto; }
+        body { background-color: #f4f6f9; color: #333; padding: 10px; padding-bottom: 90px; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 15px; }
+        h2 { text-align: center; margin-bottom: 12px; color: #1a252f; font-size: 20px; }
         
-        /* الهيدر */
-        .header { text-align: center; margin-bottom: 20px; background: #1a252f; color: white; padding: 15px; border-radius: 12px; }
-        .header h1 { font-size: 20px; }
-        
-        /* كروت الإحصائيات */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: #fff; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .stat-number { font-size: 22px; font-weight: bold; color: #27ae60; margin-top: 5px; }
+        .product-selector { display: flex; gap: 8px; margin-bottom: 15px; justify-content: center; }
+        .product-btn { background-color: #e2e6ea; color: #333; border: none; padding: 8px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
+        .product-btn.active { background-color: #27ae60; color: white; }
 
-        /* الأقسام */
-        .section-card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .section-title { font-size: 16px; color: #1a252f; margin-bottom: 12px; border-bottom: 2px solid #f4f6f9; padding-bottom: 8px; }
+        .preview-area {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 2px dashed #ccc;
+            touch-action: none;
+        }
+        
+        .product-mockup {
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+            transition: background-color 0.3s;
+        }
 
-        /* جدول الطلبات */
-        .order-item { background: #f8f9fa; border-right: 4px solid #e67e22; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-size: 13px; }
-        .order-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
+        .design-container {
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 60%;
+            height: 60%;
+        }
+
+        .draggable {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            touch-action: none;
+        }
         
-        /* نموذج إضافة منتج */
-        .form-group { margin-bottom: 10px; }
-        label { font-size: 12px; font-weight: bold; color: #555; }
-        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; margin-top: 4px; }
-        
-        .btn-add { background: #27ae60; color: white; border: none; padding: 10px; border-radius: 6px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        #textPreview {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        #imagePreviewContainer {
+            display: none;
+            max-width: 120px;
+            max-height: 120px;
+        }
+
+        #imagePreviewContainer img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .controls { margin-top: 15px; display: flex; flex-direction: column; gap: 12px; }
+        .control-group { display: flex; flex-direction: column; gap: 4px; }
+        .control-row { display: flex; gap: 10px; align-items: center; }
+        label { font-weight: bold; font-size: 13px; color: #555; }
+        input, select { padding: 9px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; width: 100%; }
+        input[type="color"] { padding: 2px; height: 38px; cursor: pointer; }
+
+        .cart-btn-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            padding: 12px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .add-to-cart-btn {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h1>⚙️ لوحة إدارة SharikiHub</h1>
+    <h2>🎨 استوديو تصميم SharikiHub</h2>
+    
+    <div class="product-selector">
+        <button class="product-btn active" onclick="setProduct('tshirt', this)">تيشيرت</button>
+        <button class="product-btn" onclick="setProduct('mug', this)">كوب</button>
+        <button class="product-btn" onclick="setProduct('phonecase', this)">غلاف هاتف</button>
     </div>
 
-    <!-- ملخص الإحصائيات -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div>إجمالي الطلبات</div>
-            <div class="stat-number" id="totalOrders">12</div>
-        </div>
-        <div class="stat-card">
-            <div>الأرباح التقديرية</div>
-            <div class="stat-number">$180</div>
-        </div>
-    </div>
-
-    <!-- إدارة الطلبات الواردة -->
-    <div class="section-card">
-        <h3 class="section-title">📦 أحدث الطلبات</h3>
-        <div id="ordersList">
-            <div class="order-item">
-                <div class="order-header">
-                    <span>طلب #101 - محمد</span>
-                    <span style="color: #e67e22;">قيد التنفيذ</span>
+    <div class="preview-area">
+        <div class="product-mockup" id="productMockup" style="background-image: url('https://i.imgur.com/8Q9N4F4.png');">
+            <div class="design-container">
+                <div class="draggable" id="textPreview" style="color: #000000; font-size: 18px; top: 20px; left: 20px;">نصك هنا</div>
+                <div class="draggable" id="imagePreviewContainer" style="top: 70px; left: 20px;">
+                    <img id="imagePreview" src="" alt="شعارك">
                 </div>
-                <div>المنتج: تيشيرت مخصص (فطومه الحلوه)</div>
-                <div>المبلغ: 15$ | الهاتف: 07800000000</div>
             </div>
         </div>
     </div>
 
-    <!-- إضافة منتج جديد -->
-    <div class="section-card">
-        <h3 class="section-title">➕ إضافة منتج جديد للمتجر</h3>
-        <form id="addProductForm" onsubmit="addNewProduct(event)">
-            <div class="form-group">
-                <label>اسم المنتج:</label>
-                <input type="text" id="prodName" placeholder="مثال: كوب رياضي" required>
+    <div class="controls">
+        <div class="control-row">
+            <div class="control-group" style="flex: 1;">
+                <label for="productColor">لون المنتج:</label>
+                <input type="color" id="productColor" value="#ffffff">
             </div>
-            <div class="form-group">
-                <label>السعر ($):</label>
-                <input type="number" id="prodPrice" placeholder="10" required>
+            <div class="control-group" style="flex: 1;">
+                <label for="textColor">لون النص:</label>
+                <input type="color" id="textColor" value="#000000">
             </div>
-            <div class="form-group">
-                <label>القسم:</label>
-                <select id="prodCat">
-                    <option value="طباعة">طباعة حسب الطلب</option>
-                    <option value="كتب">الكتب</option>
-                    <option value="رياضة">الرياضة</option>
-                    <option value="أزياء">الأزياء</option>
-                </select>
-            </div>
-            <button type="submit" class="btn-add">إضافة المنتج للمتجر 🚀</button>
-        </form>
+        </div>
+
+        <div class="control-group">
+            <label for="userText">نص التصميم:</label>
+            <input type="text" id="userText" placeholder="اكتب النص هنا...">
+        </div>
+
+        <div class="control-group">
+            <label for="textSize">حجم النص:</label>
+            <input type="range" id="textSize" min="12" max="45" value="18">
+        </div>
+
+        <div class="control-group">
+            <label for="imageUpload">رفع تصميم / شعار (PNG/JPG):</label>
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
     </div>
 </div>
 
+<div class="cart-btn-container">
+    <button class="add-to-cart-btn" onclick="goToCart()">إنتقال إلى السلة وإتمام الطلب 🛒</button>
+</div>
+
 <script>
-    function addNewProduct(e) {
-        e.preventDefault();
-        const name = document.getElementById('prodName').value;
-        const price = document.getElementById('prodPrice').value;
-        alert(`تمت إضافة المنتج "${name}" بسعر $${price} بنجاح إلى المتجر!`);
-        document.getElementById('addProductForm').reset();
+    const products = {
+        tshirt: { img: 'https://i.imgur.com/8Q9N4F4.png', colorable: true },
+        mug: { img: 'https://i.imgur.com/mO4P5wN.png', colorable: false },
+        phonecase: { img: 'https://i.imgur.com/6U8YQfD.png', colorable: true }
+    };
+    let currentProduct = 'tshirt';
+
+    function setProduct(type, btn) {
+        currentProduct = type;
+        document.getElementById('productMockup').style.backgroundImage = `url('${products[type].img}')`;
+        document.querySelectorAll('.product-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const colorInput = document.getElementById('productColor');
+        colorInput.disabled = !products[type].colorable;
+        document.getElementById('productMockup').style.backgroundColor = products[type].colorable ? colorInput.value : 'transparent';
+    }
+
+    document.getElementById('productColor').addEventListener('input', (e) => {
+        if (products[currentProduct].colorable) {
+            document.getElementById('productMockup').style.backgroundColor = e.target.value;
+        }
+    });
+
+    document.getElementById('userText').addEventListener('input', (e) => {
+        document.getElementById('textPreview').innerText = e.target.value || 'نصك هنا';
+    });
+
+    document.getElementById('textColor').addEventListener('input', (e) => {
+        document.getElementById('textPreview').style.color = e.target.value;
+    });
+
+    document.getElementById('textSize').addEventListener('input', (e) => {
+        document.getElementById('textPreview').style.fontSize = e.target.value + 'px';
+    });
+
+    document.getElementById('imageUpload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                document.getElementById('imagePreview').src = evt.target.result;
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // السحب باللمس للموبايل
+    document.querySelectorAll('.draggable').forEach(el => {
+        let isDragging = false, startX, startY, initX, initY;
+
+        el.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            initX = el.offsetLeft;
+            initY = el.offsetTop;
+        });
+
+        el.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const dx = e.touches[0].clientX - startX;
+            const dy = e.touches[0].clientY - startY;
+            el.style.left = (initX + dx) + 'px';
+            el.style.top = (initY + dy) + 'px';
+        });
+
+        el.addEventListener('touchend', () => isDragging = false);
+    });
+
+    function goToCart() {
+        window.location.href = 'cart.html';
     }
 </script>
 
