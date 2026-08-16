@@ -12,59 +12,67 @@
         .container { max-width: 500px; margin: 0 auto; background: #181b2a; border-radius: 20px; padding: 20px; border: 1px solid #2d3250; }
         h2 { text-align: center; margin-bottom: 20px; color: #a29bfe; font-size: 22px; }
         
-        .product-selector { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
-        .product-btn { background: #2d3250; color: #fff; border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        /* تحسين أزرار المنتجات لتكون مرنة */
+        .product-selector { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+        .product-btn { background: #2d3250; color: #fff; border: none; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .product-btn.active { background: linear-gradient(135deg, #6c5ce7, #fd79a8); }
 
-        .preview-area {
-            position: relative; width: 100%; height: 300px; background: #0f111a;
-            border-radius: 15px; display: flex; justify-content: center; align-items: center;
-            border: 2px dashed #2d3250; margin-bottom: 20px;
-        }
+        .preview-area { position: relative; width: 100%; height: 300px; background: #0f111a; border-radius: 15px; display: flex; justify-content: center; align-items: center; border: 2px dashed #2d3250; margin-bottom: 20px; background-size: contain; background-repeat: no-repeat; background-position: center; }
 
         .controls { display: flex; flex-direction: column; gap: 15px; }
-        .control-group label { font-size: 14px; font-weight: bold; color: #b2bec3; display: block; margin-bottom: 5px; }
+        .control-group label { font-size: 14px; font-weight: bold; color: #b2bec3; margin-bottom: 5px; }
         input { background: #2d3250; border: none; padding: 12px; border-radius: 8px; color: white; width: 100%; }
         
-        .add-to-cart-btn {
-            background: linear-gradient(135deg, #00b894, #0984e3); color: white; border: none;
-            padding: 15px; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer;
-            width: 100%; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,184,148,0.3);
-        }
+        .add-to-cart-btn { background: linear-gradient(135deg, #00b894, #0984e3); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>🎨 استوديو التصميم</h2>
+    <h2>🎨 اختر منتجك</h2>
     
     <div class="product-selector">
         <button class="product-btn active" onclick="setProduct('tshirt', this)">تيشيرت</button>
         <button class="product-btn" onclick="setProduct('mug', this)">كوب</button>
+        <button class="product-btn" onclick="setProduct('hoodie', this)">هودي</button>
+        <button class="product-btn" onclick="setProduct('case', this)">كفر هاتف</button>
+        <button class="product-btn" onclick="setProduct('cap', this)">قبعة</button>
     </div>
 
-    <div class="preview-area" id="productMockup" style="background-image: url('https://i.imgur.com/8Q9N4F4.png'); background-size: contain; background-repeat: no-repeat; background-position: center;">
-    </div>
+    <div class="preview-area" id="productMockup"></div>
 
     <div class="controls">
         <div class="control-group">
-            <label>نص التصميم:</label>
-            <input type="text" id="userText" placeholder="اكتب هنا...">
+            <label>اكتب عبارتك أو تفاصيل الطلب:</label>
+            <input type="text" id="userText" placeholder="مثال: اسمي، شعار، لون...">
         </div>
         <button class="add-to-cart-btn" onclick="sendToWhatsApp()">إرسال الطلب عبر الواتساب 💬</button>
     </div>
 </div>
 
 <script>
+    // مكتبة صور المنتجات - يمكنك استبدال الروابط لاحقاً بصورك الخاصة
+    const products = {
+        tshirt: 'https://i.imgur.com/8Q9N4F4.png',
+        mug: 'https://i.imgur.com/mO4P5wN.png',
+        hoodie: 'https://cdn-icons-png.flaticon.com/512/3163/3163478.png',
+        case: 'https://cdn-icons-png.flaticon.com/512/3233/3233075.png',
+        cap: 'https://cdn-icons-png.flaticon.com/512/1792/1792931.png'
+    };
+
     function setProduct(type, btn) {
         document.querySelectorAll('.product-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const img = type === 'tshirt' ? 'https://i.imgur.com/8Q9N4F4.png' : 'https://i.imgur.com/mO4P5wN.png';
-        document.getElementById('productMockup').style.backgroundImage = `url('${img}')`;
+        document.getElementById('productMockup').style.backgroundImage = `url('${products[type]}')`;
     }
+
+    // إعداد البداية
+    document.getElementById('productMockup').style.backgroundImage = `url('${products.tshirt}')`;
+
     function sendToWhatsApp() {
         const text = document.getElementById('userText').value;
-        window.open(`https://wa.me/9647000000000?text=أريد طلب تصميم: ${text}`, '_blank');
+        const activeProduct = document.querySelector('.product-btn.active').innerText;
+        window.open(`https://wa.me/9647000000000?text=أريد طلب تصميم على ( ${activeProduct} ) - تفاصيل التصميم: ${text}`, '_blank');
     }
 </script>
 
