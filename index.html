@@ -2,105 +2,120 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - استوديو التصميم</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SharikiHub - استوديو التصميم المطور</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #f4f6f9;
-            color: #333;
-            padding: 15px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #1a252f;
-        }
-        /* منطقة معاينة المنتج */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; padding: 10px; padding-bottom: 80px; /* لزر السلة الثابت */ }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 15px; }
+        h2 { text-align: center; margin-bottom: 10px; color: #1a252f; font-size: 20px; }
+        
+        /* منطقة معاينة المنتج المحسنة */
         .preview-area {
             position: relative;
             width: 100%;
-            height: 320px;
-            background-color: #e9ecef;
+            height: 350px;
+            background-color: #f8f9fa;
             border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            border: 2px dashed #ccc;
+            border: 2px solid #ddd;
+            touch-action: none; /* لمنع التمرير أثناء السحب */
         }
+        
+        /* قالب المنتج (التيشيرت، الكوب، الغلاف) */
         .product-mockup {
-            width: 240px;
-            height: 280px;
-            background-color: #ffffff; /* لون المنتج الأولي */
-            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            transition: background-color 0.3s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            transition: background-image 0.3s;
         }
+
+        /* حاوية عناصر التصميم القابلة للسحب */
+        .design-container {
+            position: absolute;
+            top: 25%; /* منطقة افتراضية للتصميم */
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            pointer-events: none; /* حتى لا تتداخل مع سحب المنتجات */
+        }
+
         /* الطباعة على المنتج */
         .design-element {
             position: absolute;
-            max-width: 140px;
-            max-height: 140px;
-            text-align: center;
-            word-wrap: break-word;
             cursor: move;
             user-select: none;
+            touch-action: none;
+            pointer-events: auto; /* السماح بالتفاعل */
+            max-width: 100px;
+            max-height: 100px;
         }
+        
         .design-element img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
+
         /* أدوات التحكم */
-        .controls {
-            margin-top: 20px;
+        .controls { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .control-group { display: flex; flex-direction: column; gap: 4px; }
+        .control-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+        label { font-weight: bold; font-size: 13px; color: #555; }
+        input, select, button { padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; width: 100%; }
+        input[type="color"] { padding: 2px; height: 35px; cursor: pointer; }
+        input[type="range"] { padding: 0; }
+        
+        /* تبويب المنتجات */
+        .product-selector {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .control-group {
-            display: flex;
-            flex-direction: column;
             gap: 5px;
+            margin-bottom: 10px;
+            justify-content: center;
         }
-        label {
-            font-weight: bold;
-            font-size: 14px;
+        .product-btn {
+            background-color: #e2e6ea;
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        input, select, button {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        button {
+        .product-btn.active {
             background-color: #27ae60;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* زر الإضافة للسلة الثابت في الأسفل */
+        .cart-btn-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .add-to-cart-btn {
+            background-color: #e67e22;
             color: white;
             border: none;
             font-weight: bold;
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background-color: #219150;
         }
     </style>
 </head>
@@ -109,48 +124,96 @@
 <div class="container">
     <h2>🎨 استوديو تصميم SharikiHub</h2>
     
+    <!-- خيارات نوع المنتج -->
+    <div class="product-selector">
+        <button class="product-btn active" onclick="setProduct('tshirt', this)">تيشيرت</button>
+        <button class="product-btn" onclick="setProduct('mug', this)">كوب</button>
+        <button class="product-btn" onclick="setProduct('phonecase', this)">غلاف هاتف</button>
+    </div>
+
     <!-- شاشة المعاينة -->
-    <div class="preview-area">
-        <div class="product-mockup" id="productMockup">
-            <!-- عنصر النص المُضاف -->
-            <div class="design-element" id="textPreview">نصك هنا</div>
-            <!-- عنصر الصورة المُضافة -->
-            <div class="design-element" id="imagePreviewContainer" style="display:none;">
-                <img id="imagePreview" src="" alt="شعارك">
+    <div class="preview-area" id="previewArea">
+        <!-- قالب المنتج -->
+        <div class="product-mockup" id="productMockup" style="background-image: url('https://i.imgur.com/8Q9N4F4.png');">
+            <!-- حاوية التصميم السحابية -->
+            <div class="design-container">
+                <!-- عنصر النص المُضاف (قابل للسحب) -->
+                <div class="design-element draggable" id="textPreview" style="color: #000000; font-size: 16px; top: 10px; left: 10px;">نصك هنا</div>
+                <!-- عنصر الصورة المُضافة (قابل للسحب) -->
+                <div class="design-element draggable" id="imagePreviewContainer" style="display:none; top: 50px; left: 10px;">
+                    <img id="imagePreview" src="" alt="شعارك">
+                </div>
             </div>
         </div>
     </div>
 
     <!-- لوحة التحكم بالهاتف -->
     <div class="controls">
-        <div class="control-group">
-            <label for="productColor">اختر لون المنتج:</label>
-            <input type="color" id="productColor" value="#ffffff">
+        <div class="control-row">
+            <div class="control-group" style="flex: 1;">
+                <label for="productColor">لون المنتج:</label>
+                <input type="color" id="productColor" value="#ffffff">
+            </div>
+            <div class="control-group" style="flex: 2;">
+                <label for="textColor">لون النص:</label>
+                <input type="color" id="textColor" value="#000000">
+            </div>
         </div>
 
         <div class="control-group">
-            <label for="userText">إضافة نص على المنتج:</label>
+            <label for="userText">نص التصميم:</label>
             <input type="text" id="userText" placeholder="اكتب النص هنا...">
         </div>
 
         <div class="control-group">
-            <label for="textColor">لون النص:</label>
-            <input type="color" id="textColor" value="#000000">
+            <label for="textSize">حجم النص:</label>
+            <input type="range" id="textSize" min="10" max="40" value="16">
         </div>
 
         <div class="control-group">
             <label for="imageUpload">رفع تصميم / شعار (PNG/JPG):</label>
             <input type="file" id="imageUpload" accept="image/*">
         </div>
-
-        <button onclick="saveDesign()">حفظ المعاينة والارسال للسلة 🛒</button>
     </div>
 </div>
 
+<!-- زر الإضافة للسلة الثابت -->
+<div class="cart-btn-container">
+    <button class="add-to-cart-btn" onclick="addToCart()">إضافة للتصميم للسلة 🛒</button>
+</div>
+
 <script>
+    // بيانات المنتجات
+    const products = {
+        tshirt: { img: 'https://i.imgur.com/8Q9N4F4.png', colorable: true },
+        mug: { img: 'https://i.imgur.com/mO4P5wN.png', colorable: false }, // الكوب لا يتلون بالكامل
+        phonecase: { img: 'https://i.imgur.com/6U8YQfD.png', colorable: true }
+    };
+    let currentProduct = 'tshirt';
+
+    // تغيير نوع المنتج
+    function setProduct(productType, btn) {
+        currentProduct = productType;
+        document.getElementById('productMockup').style.backgroundImage = `url('${products[productType].img}')`;
+        
+        // تفعيل الزر
+        document.querySelectorAll('.product-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // تعطيل/تفعيل تلوين المنتج
+        document.getElementById('productColor').disabled = !products[productType].colorable;
+        if (!products[productType].colorable) {
+            document.getElementById('productMockup').style.backgroundColor = 'transparent';
+        } else {
+            document.getElementById('productMockup').style.backgroundColor = document.getElementById('productColor').value;
+        }
+    }
+
     // تغيير لون المنتج
     document.getElementById('productColor').addEventListener('input', function(e) {
-        document.getElementById('productMockup').style.backgroundColor = e.target.value;
+        if (products[currentProduct].colorable) {
+            document.getElementById('productMockup').style.backgroundColor = e.target.value;
+        }
     });
 
     // تحديث النص اللحظي
@@ -161,6 +224,11 @@
     // تغيير لون النص
     document.getElementById('textColor').addEventListener('input', function(e) {
         document.getElementById('textPreview').style.color = e.target.value;
+    });
+
+    // تغيير حجم النص
+    document.getElementById('textSize').addEventListener('input', function(e) {
+        document.getElementById('textPreview').style.fontSize = e.target.value + 'px';
     });
 
     // رفع وعرض الصورة
@@ -177,8 +245,55 @@
         }
     });
 
-    function saveDesign() {
-        alert('تم حفظ تصميمك بنجاح! جاهز للانتقال لنظام الطلبات.');
+    // تفعيل خاصية السحب (Drag and Drop) باللمس
+    const draggables = document.querySelectorAll('.draggable');
+    draggables.forEach(draggable => {
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+
+        draggable.addEventListener('touchstart', dragStart);
+        draggable.addEventListener('touchend', dragEnd);
+        draggable.addEventListener('touchmove', drag);
+
+        function dragStart(e) {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            initialX = draggable.offsetLeft;
+            initialY = draggable.offsetTop;
+            draggable.style.opacity = '0.7';
+        }
+
+        function dragEnd() {
+            isDragging = false;
+            draggable.style.opacity = '1';
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            const dx = currentX - startX;
+            const dy = currentY - startY;
+            draggable.style.left = (initialX + dx) + 'px';
+            draggable.style.top = (initialY + dy) + 'px';
+        }
+    });
+
+    // إضافة للتسلة (محاكاة)
+    function addToCart() {
+        const designData = {
+            product: currentProduct,
+            color: products[currentProduct].colorable ? document.getElementById('productColor').value : 'N/A',
+            text: document.getElementById('userText').value,
+            textColor: document.getElementById('textColor').value,
+            textSize: document.getElementById('textSize').value,
+            hasImage: document.getElementById('imagePreviewContainer').style.display !== 'none'
+        };
+        
+        console.log('تمت إضافة التصميم للسلة:', designData);
+        alert(`تمت إضافة ${currentProduct} بتصميمك الخاص إلى السلة! 🛒\n(تفاصيل التصميم محفوظة)`);
     }
 </script>
 
