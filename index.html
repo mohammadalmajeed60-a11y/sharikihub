@@ -3,111 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - سلة التسوق وإتمام الطلب</title>
+    <title>SharikiHub - الترفيه والأسلوب</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f4f6f9; color: #333; padding: 15px; }
-        .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 20px; }
-        h2 { text-align: center; margin-bottom: 15px; color: #1a252f; }
+        .container { max-width: 600px; margin: 0 auto; }
         
-        /* ملخص السلة */
-        .cart-item {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
+        /* الهيدر */
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { color: #1a252f; font-size: 22px; }
+        .header p { color: #666; font-size: 14px; }
+
+        /* أزرار التنقل بين الأقسام */
+        .categories-tab {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            scrollbar-width: none;
         }
-        .cart-item h3 { font-size: 16px; color: #2c3e50; margin-bottom: 8px; }
-        .cart-detail { font-size: 14px; color: #666; margin: 4px 0; }
+        .tab-btn {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            white-space: nowrap;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .tab-btn.active { background-color: #2c3e50; color: white; border-color: #2c3e50; }
+
+        /* بطاقات المحتوى */
+        .content-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .card-img { width: 100%; height: 160px; object-fit: cover; background-color: #e9ecef; }
+        .card-body { padding: 15px; }
+        .card-tag { font-size: 12px; color: #e67e22; font-weight: bold; }
+        .card-title { font-size: 16px; margin: 5px 0; color: #2c3e50; }
+        .card-desc { font-size: 13px; color: #666; margin-bottom: 12px; }
         
-        /* نموذج الشحن */
-        .form-group { margin-bottom: 12px; }
-        label { font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-        
-        /* زر إرسال الطلب */
-        .submit-btn {
-            background-color: #25d366; /* لون الواتساب */
+        .action-btn {
+            background-color: #27ae60;
             color: white;
             border: none;
             width: 100%;
-            padding: 12px;
-            font-size: 16px;
+            padding: 10px;
+            border-radius: 6px;
             font-weight: bold;
-            border-radius: 8px;
             cursor: pointer;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>🛒 سلة التسوق وإتمام الطلب</h2>
-
-    <!-- ملخص المنتجات -->
-    <div class="cart-item">
-        <h3>منتجك المُصمم</h3>
-        <p class="cart-detail"><strong>النوع:</strong> تيشيرت مخصص</p>
-        <p class="cart-detail"><strong>اللون:</strong> أبيض</p>
-        <p class="cart-detail"><strong>النص المكتوب:</strong> فطومه الحلوه</p>
-        <p class="cart-detail"><strong>السعر:</strong> 15$</p>
+    <div class="header">
+        <h1>✨ عالم الترفيه - SharikiHub</h1>
+        <p>استكشف محتواك المفضل واطبع أسلوبك الخاص</p>
     </div>
 
-    <!-- معلومات العميل -->
-    <form id="orderForm">
-        <div class="form-group">
-            <label for="fullName">الاسم الكامل:</label>
-            <input type="text" id="fullName" placeholder="أدخل اسمك الكامل" required>
+    <!-- أقسام الترفيه -->
+    <div class="categories-tab">
+        <button class="tab-btn active" onclick="filterCategory('all')">الكل</button>
+        <button class="tab-btn" onclick="filterCategory('books')">📚 الكتب</button>
+        <button class="tab-btn" onclick="filterCategory('sports')">⚽ الرياضة</button>
+        <button class="tab-btn" onclick="filterCategory('fashion')">👗 الأزياء</button>
+        <button class="tab-btn" onclick="filterCategory('movies')">🎬 الأفلام</button>
+    </div>
+
+    <!-- بطاقات العرض -->
+    <div id="contentList">
+        <!-- قسم الكتب -->
+        <div class="content-card category-item books">
+            <div class="card-body">
+                <span class="card-tag">📚 كتاب الأسبوع</span>
+                <h3 class="card-title">اقتباسات ألهمت العالم</h3>
+                <p class="card-desc">"النجاح ليس ختاماً، والفشل ليس قاتلاً". يمكنك طباعة اقتباسك المفضل الآن على كوبك الخاص.</p>
+                <button class="action-btn" onclick="goToStudio('النجاح ليس ختاماً')">طباعة هذا الاقتباس 🎨</button>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="phone">رقم الهاتف:</label>
-            <input type="tel" id="phone" placeholder="07XXXXXXXX" required>
+        <!-- قسم الرياضة -->
+        <div class="content-card category-item sports">
+            <div class="card-body">
+                <span class="card-tag">⚽ حماس الرياضة</span>
+                <h3 class="card-title">تشجيع فريقك المفضل</h3>
+                <p class="card-desc">صمم قميصك الكروي الخاص باسمك ورقمك المفضليْن في استوديو التصميم.</p>
+                <button class="action-btn" onclick="goToStudio('رقم 10')">تصميم قميصك الآن 👕</button>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="address">العنوان الكامل (المدينة / الحي):</label>
-            <textarea id="address" rows="3" placeholder="أدخل تفاصيل العنوان والتوصيل" required></textarea>
+        <!-- قسم الأفلام -->
+        <div class="content-card category-item movies">
+            <div class="card-body">
+                <span class="card-tag">🎬 سينما Shariki</span>
+                <h3 class="card-title">عالم السينما والمسلسلات</h3>
+                <p class="card-desc">اختر شعار فيلمك أو شخصيتك المفضلة واطبعها على غلاف هاتفك.</p>
+                <button class="action-btn" onclick="goToStudio('Movie Fan')">طباعة شعار الفيلم 📱</button>
+            </div>
         </div>
-
-        <button type="button" class="submit-btn" onclick="sendToWhatsApp()">
-            تأكيد وإرسال الطلب عبر الواتساب 💬
-        </button>
-    </form>
+    </div>
 </div>
 
 <script>
-    function sendToWhatsApp() {
-        const name = document.getElementById('fullName').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
+    function filterCategory(cat) {
+        const items = document.querySelectorAll('.category-item');
+        items.forEach(item => {
+            if (cat === 'all' || item.classList.contains(cat)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
 
-        if (!name || !phone || !address) {
-            alert('يرجى ملاء جميع الحقول المطلوبة!');
-            return;
-        }
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
 
-        // رقم واتساب المتجر (ضع رقمك هنا بدلاً من الرقم الافتراضي)
-        const merchantPhone = "9647000000000"; 
-
-        // نص الرسالة المُنسق
-        const message = `مرحباً SharikiHub! أرغب بتأكيد الطلب التالي:%0A%0A` +
-                        `👤 *اسم العميل:* ${name}%0A` +
-                        `📞 *رقم الهاتف:* ${phone}%0A` +
-                        `📍 *العنوان:* ${address}%0A%0A` +
-                        `📦 *تفاصيل المنتج:*%0A` +
-                        `- تيشيرت مخصص%0A` +
-                        `- النص: فطومه الحلوه%0A` +
-                        `- السعر الإجمالي: 15$`;
-
-        // فتح الواتساب مباشر
-        window.open(`https://wa.me/${merchantPhone}?text=${message}`, '_blank');
+    function goToStudio(text) {
+        alert(`جاري الانتقال لاستوديو التصميم مع نص: "${text}"`);
+        window.location.href = 'design-studio.html';
     }
 </script>
 
