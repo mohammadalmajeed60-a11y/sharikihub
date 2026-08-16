@@ -3,37 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - الترفيه</title>
+    <title>SharikiHub - ركن الترفيه</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: #f0f2f5; padding: 20px; text-align: center; }
-        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #34495e; margin-bottom: 20px; }
-        .game-area { margin: 20px 0; padding: 20px; border: 2px solid #ddd; border-radius: 10px; }
-        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        #message { margin-top: 15px; font-weight: bold; color: #2c3e50; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: #0f111a; color: #ffffff; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; background: #181b2a; border-radius: 20px; padding: 30px; border: 1px solid #2d3250; text-align: center; }
+        h1 { color: #a29bfe; margin-bottom: 20px; font-size: 24px; }
+        
+        .game-area { margin: 20px 0; padding: 30px; border: 2px dashed #2d3250; border-radius: 15px; }
+        #number { 
+            font-size: 80px; font-weight: 900; color: #ff7675; 
+            margin-bottom: 20px; text-shadow: 0 0 20px rgba(255,118,117,0.5); 
+        }
+        
+        button { 
+            background: linear-gradient(135deg, #00b894, #0984e3); 
+            color: white; border: none; padding: 15px 30px; border-radius: 12px; 
+            cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:active { transform: scale(0.95); }
+        
+        .btn-back { display: block; margin-top: 20px; color: #a29bfe; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🎲 ركن الترفيه</h1>
-    <p>جرب حظك واضغط على الزر!</p>
-    
     <div class="game-area">
         <p id="number">0</p>
         <button onclick="rollDice()">رمي النرد</button>
-        <p id="message"></p>
     </div>
-    
-    <a href="index.html" style="display: block; margin-top: 20px; color: #3498db; text-decoration: none;">العودة للرئيسية</a>
+    <a href="index.html" class="btn-back">🏠 العودة للرئيسية</a>
 </div>
 
 <script>
     function rollDice() {
         const num = Math.floor(Math.random() * 6) + 1;
         document.getElementById('number').innerText = num;
-        document.getElementById('message').innerText = num === 6 ? "محظوظ! حصلت على 6 🎉" : "حاول مرة أخرى!";
+        document.getElementById('number').style.color = '#fd79a8';
     }
 </script>
 
