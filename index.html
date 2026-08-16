@@ -3,100 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - منصة شركتك للتواصل والطباعة</title>
+    <title>SharikiHub - الرئيسية</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-        body { background-color: #f4f7fe; padding: 20px; text-align: center; }
-        .card { background: white; max-width: 400px; margin: 40px auto; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { color: #2b2d42; margin-bottom: 15px; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; text-align: right; }
-        button { width: 100%; padding: 12px; background: #4361ee; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        button:hover { background: #3a56d4; }
-        .hidden { display: none; }
-        .section-box { background: #eef2ff; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: #f4f4f9; color: #333; padding: 20px; }
+        
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 28px; color: #007bff; }
+        
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .menu-item { background: #fff; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-decoration: none; color: #333; transition: transform 0.2s; }
+        .menu-item:active { transform: scale(0.95); }
+        .menu-item span { display: block; font-size: 30px; margin-bottom: 10px; }
+        .menu-item h3 { font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <!-- نموذج تسجيل الدخول / إنشاء حساب -->
-    <div id="auth-box" class="card">
-        <h2>SharikiHub</h2>
-        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">انضم إلى المنصة</p>
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button onclick="registerUser()">إنشاء حساب جديد</button>
-        <button onclick="loginUser()" style="background: #2ec4b6;">تسجيل الدخول</button>
-        <p id="status-msg" style="margin-top: 10px; color: red; font-size: 13px;"></p>
-    </div>
+<div class="header">
+    <h1>مرحباً بك في SharikiHub</h1>
+    <p>بوابتك للتصميم، الترفيه، والإبداع</p>
+</div>
 
-    <!-- واجهة المستخدم بعد الدخول -->
-    <div id="dashboard" class="card hidden">
-        <h2>مرحباً بك في SharikiHub! 👋</h2>
-        <p id="user-email" style="color: #555; margin-bottom: 15px;"></p>
-        
-        <div class="section-box">
-            <h3>🎨 قسم الطباعة حسب الطلب</h3>
-            <p style="font-size: 13px; color: #666; margin-top: 5px;">قريباً: صمم منتجك واطبعه فوراً</p>
-        </div>
+<div class="menu-grid">
+    <a href="design-studio.html" class="menu-item">
+        <span>🎨</span>
+        <h3>استوديو التصميم</h3>
+    </a>
+    <a href="entertainment.html" class="menu-item">
+        <span>🎭</span>
+        <h3>الترفيه</h3>
+    </a>
+    <a href="reels.html" class="menu-item">
+        <span>⚡</span>
+        <h3>الريلز</h3>
+    </a>
+    <a href="about.html" class="menu-item">
+        <span>ℹ️</span>
+        <h3>من نحن</h3>
+    </a>
+    <a href="admin.html" class="menu-item">
+        <span>⚙️</span>
+        <h3>لوحة التحكم</h3>
+    </a>
+    <a href="privacy.html" class="menu-item">
+        <span>🔒</span>
+        <h3>الخصوصية</h3>
+    </a>
+</div>
 
-        <div class="section-box">
-            <h3>🎬 الأقسام الترفيهية</h3>
-            <p style="font-size: 13px; color: #666; margin-top: 5px;">كتب • رياضة • أزياء • أفلام</p>
-        </div>
-
-        <button onclick="logout()" style="background: #e63946; margin-top: 20px;">تسجيل الخروج</button>
-    </div>
-
-    <!-- ربط Firebase JS SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        // ⚠️ استبدل القيم التالية بإعدادات مشروعك من Firebase Console
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // متابعة حالة المستخدم تلقائياً
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('auth-box').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-email').innerText = user.email;
-            } else {
-                document.getElementById('auth-box').classList.remove('hidden');
-                document.getElementById('dashboard').classList.add('hidden');
-            }
-        });
-
-        // إنشاء حساب جديد
-        window.registerUser = () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            createUserWithEmailAndPassword(auth, email, pass)
-                .then(() => alert("تم إنشاء الحساب بنجاح!"))
-                .catch(err => document.getElementById('status-msg').innerText = err.message);
-        };
-
-        // تسجيل الدخول
-        window.loginUser = () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, pass)
-                .then(() => alert("تم تسجيل الدخول!"))
-                .catch(err => document.getElementById('status-msg').innerText = "بيانات الدخول غير صحيحة");
-        };
-
-        // تسجيل الخروج
-        window.logout = () => signOut(auth);
-    </script>
 </body>
 </html>
