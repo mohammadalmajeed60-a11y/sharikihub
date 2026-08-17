@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - المتجر والتصميم</title>
+  <title>SharikiHub - استديو التصميم والطباعة</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -49,57 +49,113 @@
       gap: 15px;
     }
 
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 15px;
-    }
-
-    .product-card {
+    /* منطقة المعاينة المباشرة */
+    .preview-box {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 12px;
+      height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-base {
+      font-size: 8rem;
+      user-select: none;
+    }
+
+    .custom-text-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      word-break: break-word;
       text-align: center;
+      max-width: 80%;
+    }
+
+    /* أدوات التحكم والتخصيص */
+    .controls-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      gap: 12px;
     }
 
-    .product-img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 8px;
-      background-color: #334155;
-      margin-bottom: 10px;
-    }
-
-    .product-title {
-      font-size: 0.95rem;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .product-price {
+    .control-label {
       font-size: 0.85rem;
-      color: #fbbf24;
-      margin-bottom: 10px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
     }
 
-    .btn-action {
-      width: 100%;
-      padding: 8px;
+    .product-selector {
+      display: flex;
+      gap: 10px;
+    }
+
+    .select-btn {
+      flex: 1;
+      padding: 10px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .select-btn.active {
+      border-color: var(--accent);
       background: var(--accent);
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-main);
+      color: #fff;
+      outline: none;
+    }
+
+    .color-picker {
+      display: flex;
+      gap: 10px;
+    }
+
+    .color-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #fff;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: #10b981;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       color: white;
       font-weight: bold;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       cursor: pointer;
+      margin-top: 5px;
     }
 
-    /* شريط التنقل السفلي المثبت */
+    /* شريط التنقل السفلي */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -133,37 +189,47 @@
 <body>
 
   <header>
-    <div class="header-title">🛍️ متجر التصاميم والمطبوعات</div>
+    <div class="header-title">🎨 استديو الطباعة والتصميم</div>
   </header>
 
   <div class="container">
-    <div class="products-grid">
-      
-      <div class="product-card">
-        <div class="product-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">👕</div>
-        <div class="product-title">تيشرت مطبوع</div>
-        <div class="product-price">15 $</div>
-        <button class="btn-action">تخصيص وتصميم</button>
+    <!-- منطقة المعاينة -->
+    <div class="preview-box">
+      <div class="product-base" id="productBase">👕</div>
+      <div class="custom-text-overlay" id="textOverlay">نص التصميم</div>
+    </div>
+
+    <!-- لوحة التحكم -->
+    <div class="controls-card">
+      <div>
+        <div class="control-label">اختر المنتج:</div>
+        <div class="product-selector">
+          <button class="select-btn active" onclick="setProduct('👕', this)">تيشرت</button>
+          <button class="select-btn" onclick="setProduct('☕', this)">كوب</button>
+          <button class="select-btn" onclick="setProduct('🧢', this)">قبعة</button>
+        </div>
       </div>
 
-      <div class="product-card">
-        <div class="product-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">☕</div>
-        <div class="product-title">كوب سيراميك</div>
-        <div class="product-price">8 $</div>
-        <button class="btn-action">تخصيص وتصميم</button>
+      <div>
+        <div class="control-label">اكتب النص المطبوع:</div>
+        <input type="text" class="text-input" id="inputCustomText" value="نص التصميم" oninput="updateText(this.value)">
       </div>
 
-      <div class="product-card">
-        <div class="product-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">🧢</div>
-        <div class="product-title">قبعة رياضية</div>
-        <div class="product-price">10 $</div>
-        <button class="btn-action">تخصيص وتصميم</button>
+      <div>
+        <div class="control-label">لون النص:</div>
+        <div class="color-picker">
+          <div class="color-dot" style="background: #ffffff;" onclick="setTextColor('#ffffff')"></div>
+          <div class="color-dot" style="background: #f59e0b;" onclick="setTextColor('#f59e0b')"></div>
+          <div class="color-dot" style="background: #ef4444;" onclick="setTextColor('#ef4444')"></div>
+          <div class="color-dot" style="background: #38bdf8;" onclick="setTextColor('#38bdf8')"></div>
+        </div>
       </div>
 
+      <button class="btn-submit" onclick="orderDesign()">🛍️ حفظ التصميم وطلب المنتج</button>
     </div>
   </div>
 
-  <!-- شريط التنقل السفلي -->
+  <!-- الشريط السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
@@ -172,5 +238,24 @@
     <a href="admin.html" class="nav-item">👤 الملف</a>
   </nav>
 
+  <script>
+    function setProduct(icon, btn) {
+      document.getElementById('productBase').innerText = icon;
+      document.querySelectorAll('.select-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function updateText(val) {
+      document.getElementById('textOverlay').innerText = val || 'نص التصميم';
+    }
+
+    function setTextColor(color) {
+      document.getElementById('textOverlay').style.color = color;
+    }
+
+    function orderDesign() {
+      alert('تم حفظ تصميمك بنجاح ونقله إلى قائمة الطلبات الخاصة بك!');
+    }
+  </script>
 </body>
 </html>
