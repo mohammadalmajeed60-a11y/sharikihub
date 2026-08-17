@@ -1,95 +1,176 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - استوديو التصميم</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background-color: #f8f9fa; color: #333; padding: 15px; text-align: center; }
-        .header { margin-bottom: 20px; }
-        .header h1 { font-size: 22px; color: #1a1a1a; }
-        
-        .studio-container { max-width: 450px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-        
-        /* منطقة معاينة المنتج */
-        .preview-box { position: relative; width: 280px; height: 280px; margin: 0 auto 20px; border: 2px dashed #ddd; border-radius: 12px; background-color: #f0f0f0; background-size: contain; background-repeat: no-repeat; background-position: center; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .preview-img { max-width: 55%; max-height: 55%; position: absolute; object-fit: contain; }
-        .preview-text { position: absolute; font-weight: bold; font-size: 18px; color: #000; text-align: center; word-break: break-word; max-width: 80%; pointer-events: none; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub - المتجر والتصميم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
 
-        /* أدوات التحكم */
-        .control-group { display: flex; flex-direction: column; gap: 12px; text-align: right; }
-        label { font-size: 14px; font-weight: 600; color: #555; }
-        select, input[type="text"], input[type="file"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; background: #fff; }
-        
-        .btn-submit { background: #007bff; color: #fff; font-size: 16px; font-weight: bold; border: none; padding: 14px; border-radius: 8px; cursor: pointer; margin-top: 10px; width: 100%; }
-        .btn-submit:active { background: #0056b3; }
-    </style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 70px;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .container {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      background-color: #334155;
+      margin-bottom: 10px;
+    }
+
+    .product-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .product-price {
+      font-size: 0.85rem;
+      color: #fbbf24;
+      margin-bottom: 10px;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 8px;
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* شريط التنقل السفلي المثبت */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>استوديو التصميم المخصص</h1>
-</div>
+  <header>
+    <div class="header-title">🛍️ متجر التصاميم والمطبوعات</div>
+  </header>
 
-<div class="studio-container">
-    <!-- المعاينة المباشرة -->
-    <div class="preview-box" id="preview-area" style="background-image: url('https://via.placeholder.com/280x280/e9ecef/000000?text=T-Shirt');">
-        <img id="user-image" class="preview-img" style="display:none;">
-        <span id="user-text" class="preview-text"></span>
+  <div class="container">
+    <div class="products-grid">
+      
+      <div class="product-card">
+        <div class="product-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">👕</div>
+        <div class="product-title">تيشرت مطبوع</div>
+        <div class="product-price">15 $</div>
+        <button class="btn-action">تخصيص وتصميم</button>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">☕</div>
+        <div class="product-title">كوب سيراميك</div>
+        <div class="product-price">8 $</div>
+        <button class="btn-action">تخصيص وتصميم</button>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">🧢</div>
+        <div class="product-title">قبعة رياضية</div>
+        <div class="product-price">10 $</div>
+        <button class="btn-action">تخصيص وتصميم</button>
+      </div>
+
     </div>
+  </div>
 
-    <!-- أدوات التعديل -->
-    <div class="control-group">
-        <div>
-            <label>1. اختر المنتج:</label>
-            <select id="product-type" onchange="updateProductBg()">
-                <option value="tshirt">تيشرت (T-Shirt)</option>
-                <option value="mug">كوب (Mug)</option>
-                <option value="phone">غلاف هاتف (Phone Case)</option>
-            </select>
-        </div>
-
-        <div>
-            <label>2. ارفع تصميمك:</label>
-            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
-        </div>
-
-        <div>
-            <label>3. اكتب نصاً مخصصاً:</label>
-            <input type="text" id="text-input" placeholder="اكتب عبارة أو اسماً..." oninput="updateText()">
-        </div>
-
-        <button class="btn-submit" onclick="submitDesign()">حفظ والتخصيص</button>
-    </div>
-</div>
-
-<script>
-    function updateProductBg() {
-        const type = document.getElementById('product-type').value;
-        const preview = document.getElementById('preview-area');
-        if(type === 'tshirt') preview.style.backgroundImage = "url('https://via.placeholder.com/280x280/e9ecef/000000?text=T-Shirt')";
-        if(type === 'mug') preview.style.backgroundImage = "url('https://via.placeholder.com/280x280/dee2e6/000000?text=Mug')";
-        if(type === 'phone') preview.style.backgroundImage = "url('https://via.placeholder.com/280x280/ced4da/000000?text=Phone+Case')";
-    }
-
-    function handleImageUpload(event) {
-        const img = document.getElementById('user-image');
-        if (event.target.files && event.target.files[0]) {
-            img.src = URL.createObjectURL(event.target.files[0]);
-            img.style.display = 'block';
-        }
-    }
-
-    function updateText() {
-        const input = document.getElementById('text-input').value;
-        document.getElementById('user-text').innerText = input;
-    }
-
-    function submitDesign() {
-        alert('تم حفظ تصميمك بنجاح ونقله إلى خيارات الطلب!');
-    }
-</script>
+  <!-- شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="chat.html" class="nav-item">💬 المحادثات</a>
+    <a href="design-studio.html" class="nav-item active">🛍️ المتجر</a>
+    <a href="admin.html" class="nav-item">👤 الملف</a>
+  </nav>
 
 </body>
 </html>
