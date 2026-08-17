@@ -31,79 +31,97 @@
 
     header {
       background-color: var(--card-bg);
-      padding: 20px;
+      padding: 15px;
       text-align: center;
       border-bottom: 1px solid var(--border);
     }
 
-    .profile-avatar {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 10px;
-    }
-
-    .profile-name {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    .profile-handle {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+    .header-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
     }
 
     .container {
       padding: 15px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 15px;
     }
 
-    .section-card {
+    /* بطاقة المستخدم */
+    .profile-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 15px;
-    }
-
-    .section-title {
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #38bdf8;
-    }
-
-    .info-row {
+      padding: 20px;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      border: 2px solid #38bdf8;
+    }
+
+    .user-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .user-email {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* القوائم والخيارات */
+    .menu-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 14px 15px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
       font-size: 0.9rem;
     }
 
-    .info-row:last-child {
+    .menu-item:last-child {
       border-bottom: none;
     }
 
-    .btn-logout {
-      width: 100%;
-      padding: 12px;
-      background: #ef4444;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      margin-top: 10px;
-      cursor: pointer;
+    .menu-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* شريط التنقل السفلي المثبت */
+    .badge {
+      background: #10b981;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+    }
+
+    /* الشريط السفلي */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -137,46 +155,50 @@
 <body>
 
   <header>
-    <div class="profile-avatar">👤</div>
-    <div class="profile-name" id="userName">مستخدم SharikiHub</div>
-    <div class="profile-handle" id="userHandle">@user</div>
+    <div class="header-title">👤 الملف الشخصي والإعدادات</div>
   </header>
 
   <div class="container">
-    
-    <div class="section-card">
-      <div class="section-title">📊 إحصائيات الحساب</div>
-      <div class="info-row">
-        <span>التصميمات المحفوظة</span>
-        <strong>3</strong>
-      </div>
-      <div class="info-row">
-        <span>المجالس المشترك بها</span>
-        <strong>2</strong>
-      </div>
-      <div class="info-row">
-        <span>طلبات المطبوعات</span>
-        <strong>1</strong>
-      </div>
+    <!-- بطاقة البيانات الشخصية -->
+    <div class="profile-card">
+      <div class="avatar">👤</div>
+      <div class="user-name">مستخدم SharikiHub</div>
+      <div class="user-email">user@sharikihub.com</div>
     </div>
 
-    <div class="section-card">
-      <div class="section-title">⚙️ الإعدادات</div>
-      <div class="info-row" style="cursor:pointer;" onclick="changeName()">
-        <span>تعديل اسم المستخدم</span>
-        <span>✏️</span>
-      </div>
-      <div class="info-row">
-        <span>الإشعارات</span>
-        <span>مفعلة</span>
+    <!-- قائمة الخيارات والمتابعة -->
+    <div class="menu-card">
+      <a href="cart.html" class="menu-item">
+        <div class="menu-info">
+          <span>📦 طلباتي ومشترياتي</span>
+        </div>
+        <span class="badge">قيد التوصيل</span>
+      </a>
+
+      <a href="design-studio.html" class="menu-item">
+        <div class="menu-info">
+          <span>🎨 تصاميمي المحفوظة</span>
+        </div>
+        <span>←</span>
+      </a>
+
+      <a href="chat.html" class="menu-item">
+        <div class="menu-info">
+          <span>💬 رسائل الدعم الفني</span>
+        </div>
+        <span>←</span>
+      </a>
+
+      <div class="menu-item" onclick="alert('تغيير الإعدادات قريباً!')">
+        <div class="menu-info">
+          <span>⚙️ إعدادات الحساب</span>
+        </div>
+        <span>←</span>
       </div>
     </div>
-
-    <button class="btn-logout" onclick="resetUser()">إعادة تعيين التعريف</button>
-
   </div>
 
-  <!-- شريط التنقل السفلي -->
+  <!-- الشريط السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
@@ -185,23 +207,5 @@
     <a href="admin.html" class="nav-item active">👤 الملف</a>
   </nav>
 
-  <script>
-    let user = localStorage.getItem('sharikihub_user') || 'مستخدم_جديد';
-    document.getElementById('userName').innerText = user;
-    document.getElementById('userHandle').innerText = '@' + user;
-
-    function changeName() {
-      let newName = prompt("أدخل اسم المستخدم الجديد:", user);
-      if (newName && newName.trim() !== "") {
-        localStorage.setItem('sharikihub_user', newName.trim());
-        location.reload();
-      }
-    }
-
-    function resetUser() {
-      localStorage.removeItem('sharikihub_user');
-      location.reload();
-    }
-  </script>
 </body>
 </html>
