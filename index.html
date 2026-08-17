@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -62,7 +61,29 @@
       gap: 15px;
     }
 
-    /* الوصول السريع */
+    /* صندوق إنشاء منشور */
+    .create-post-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .create-post-input {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 10px 15px;
+      color: var(--text-muted);
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    /* أزرار الوصول السريع */
     .quick-access {
       display: flex;
       gap: 10px;
@@ -73,7 +94,7 @@
     .quick-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      padding: 10px 15px;
+      padding: 8px 14px;
       border-radius: 20px;
       white-space: nowrap;
       font-size: 0.85rem;
@@ -120,6 +141,7 @@
       line-height: 1.5;
       color: #cbd5e1;
       margin-bottom: 12px;
+      white-space: pre-line;
     }
 
     .feed-actions {
@@ -138,12 +160,62 @@
       gap: 4px;
     }
 
+    /* النافذة المنبثقة للإنشاء */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 450px;
+      padding: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .modal-textarea {
+      width: 100%;
+      height: 100px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 10px;
+      resize: none;
+      outline: none;
+      margin-bottom: 15px;
+    }
+
+    .post-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     /* الشريط السفلي الموحد */
     .bottom-nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       height: 60px;
       background-color: var(--card-bg);
       display: flex;
@@ -180,6 +252,12 @@
   </header>
 
   <div class="container">
+    <!-- صندوق إنشاء منشور -->
+    <div class="create-post-box" onclick="openPostModal()">
+      <div class="avatar" id="userAvatar">👤</div>
+      <div class="create-post-input">بم تفكر اليوم؟ شارك المجتمع...</div>
+    </div>
+
     <!-- أزرار وصول سريع -->
     <div class="quick-access">
       <a href="design-studio.html" class="quick-card">🛍️ المتجر والتصاميم</a>
@@ -188,41 +266,21 @@
       <a href="chat.html" class="quick-card">💬 مجتمع المنصة</a>
     </div>
 
-    <!-- منشور تجريبي 1 -->
-    <div class="feed-card">
-      <div class="feed-header">
-        <div class="avatar">S</div>
-        <div>
-          <div class="feed-user">إدارة SharikiHub</div>
-          <div style="font-size:0.75rem; color:var(--text-muted);">منذ ساعة</div>
-        </div>
-      </div>
-      <div class="feed-content">
-        مرحباً بكم في المنصة الشاملة! تم إطلاق استوديو التصاميم والمطبوعات بالإضافة للأقسام الترفيهية ومقاطع الريلز. استكشف التطبيق الآن وأخبرنا برأيك! 🔥👕
-      </div>
-      <div class="feed-actions">
-        <span class="action-item" onclick="this.style.color='#ef4444'">❤️ إعجاب</span>
-        <span class="action-item" onclick="alert('قسم التعليقات قريباً!')">💬 تعليق</span>
-        <a href="design-studio.html" class="action-item" style="color:var(--accent); text-decoration:none;">🛍️ زيارة المتجر</a>
-      </div>
+    <!-- قائمة المنشورات الديناميكية -->
+    <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;">
+      <!-- المنشورات المضافة والمحفوظة تظهر هنا -->
     </div>
+  </div>
 
-    <!-- منشور تجريبي 2 -->
-    <div class="feed-card">
-      <div class="feed-header">
-        <div class="avatar" style="background:#10b981;">A</div>
-        <div>
-          <div class="feed-user">مجتمع المصممين</div>
-          <div style="font-size:0.75rem; color:var(--text-muted);">منذ 3 ساعات</div>
-        </div>
+  <!-- النافذة المنبثقة لكتابة منشور -->
+  <div class="modal" id="postModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>إنشاء منشور جديد</h3>
+        <span style="cursor:pointer;" onclick="closePostModal()">❌</span>
       </div>
-      <div class="feed-content">
-        تمت إضافة تصاميم جديدة للملابس والأكواب داخل المتجر. يمكنك الآن طلب الطباعة المباشرة حسب الطلب مع التوصيل!
-      </div>
-      <div class="feed-actions">
-        <span class="action-item" onclick="this.style.color='#ef4444'">❤️ إعجاب</span>
-        <span class="action-item" onclick="alert('قسم التعليقات قريباً!')">💬 تعليق</span>
-      </div>
+      <textarea id="postText" class="modal-textarea" placeholder="اكتب منشورك هنا..."></textarea>
+      <button class="post-btn" onclick="publishPost()">نشر الآن 🚀</button>
     </div>
   </div>
 
@@ -235,5 +293,79 @@
     <a href="admin.html" class="nav-item">👤 الملف</a>
   </nav>
 
+  <script>
+    // المنشورات المفتراضية
+    const defaultPosts = [
+      {
+        author: "إدارة SharikiHub",
+        avatar: "S",
+        time: "منذ ساعة",
+        content: "مرحباً بكم في المنصة الشاملة! تم إطلاق استوديو التصاميم والمطبوعات بالإضافة للأقسام الترفيهية ومقاطع الريلز. استكشف التطبيق الآن! 🔥👕"
+      },
+      {
+        author: "مجتمع المصممين",
+        avatar: "A",
+        time: "منذ 3 ساعات",
+        content: "تمت إضافة تصاميم جديدة للملابس والأكواب داخل المتجر. يمكنك الآن طلب الطباعة المباشرة حسب الطلب مع التوصيل!"
+      }
+    ];
+
+    function loadPosts() {
+      const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
+      const allPosts = [...savedPosts, ...defaultPosts];
+      const feed = document.getElementById('postsFeed');
+      feed.innerHTML = '';
+
+      allPosts.forEach(post => {
+        feed.innerHTML += `
+          <div class="feed-card">
+            <div class="feed-header">
+              <div class="avatar">${post.avatar}</div>
+              <div>
+                <div class="feed-user">${post.author}</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">${post.time}</div>
+              </div>
+            </div>
+            <div class="feed-content">${post.content}</div>
+            <div class="feed-actions">
+              <span class="action-item" onclick="this.style.color='#ef4444'">❤️ إعجاب</span>
+              <span class="action-item" onclick="alert('قسم التعليقات قريباً!')">💬 تعليق</span>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function openPostModal() {
+      document.getElementById('postModal').style.display = 'flex';
+    }
+
+    function closePostModal() {
+      document.getElementById('postModal').style.display = 'none';
+      document.getElementById('postText').value = '';
+    }
+
+    function publishPost() {
+      const text = document.getElementById('postText').value.trim();
+      if (!text) { alert('يرجى كتابة نص المنشور'); return; }
+
+      const user = JSON.parse(localStorage.getItem('currentUser')) || { name: 'مستخدم جديد' };
+      const newPost = {
+        author: user.name,
+        avatar: user.name.charAt(0).toUpperCase(),
+        time: "الآن",
+        content: text
+      };
+
+      const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
+      savedPosts.unshift(newPost);
+      localStorage.setItem('userPosts', JSON.stringify(savedPosts));
+
+      closePostModal();
+      loadPosts();
+    }
+
+    window.onload = loadPosts;
+  </script>
 </body>
 </html>
