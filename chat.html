@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - المحادثات والمجالس</title>
+  <title>SharikiHub - المحادثات</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -25,165 +25,95 @@
     body {
       background-color: var(--bg-main);
       color: var(--text);
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
     }
 
     header {
       background-color: var(--card-bg);
-      padding: 12px 16px;
+      padding: 15px;
       text-align: center;
       border-bottom: 1px solid var(--border);
     }
 
     .header-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: #f59e0b;
-    }
-
-    .chat-tabs {
-      display: flex;
-      background: var(--card-bg);
-      padding: 6px;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: transparent;
-      color: var(--text-muted);
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .tab-btn.active {
-      background: var(--accent);
-      color: #fff;
+      color: #38bdf8;
     }
 
     /* منطقة الرسائل */
-    .chat-view {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .messages-container {
+    .chat-container {
       flex: 1;
       padding: 15px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 130px;
+      gap: 12px;
+      margin-bottom: 120px;
     }
 
-    .msg-card {
-      background: var(--card-bg);
+    .message {
+      max-width: 80%;
       padding: 10px 14px;
       border-radius: 12px;
-      max-width: 80%;
-      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      word-break: break-word;
     }
 
-    .msg-card.me {
-      align-self: flex-start;
-      background: var(--accent);
-    }
-
-    .msg-card.other {
-      align-self: flex-end;
-    }
-
-    .msg-sender {
-      font-size: 0.75rem;
-      color: #fbbf24;
-      margin-bottom: 2px;
-      font-weight: bold;
-    }
-
-    /* قائمة المجالس الجماعية */
-    .groups-list {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      padding: 15px;
-      overflow-y: auto;
-      margin-bottom: 70px;
-    }
-
-    .group-item {
+    .msg-received {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      padding: 15px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
+      align-self: flex-start;
+      border-bottom-right-radius: 2px;
     }
 
-    .group-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .msg-sent {
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-left-radius: 2px;
     }
 
-    .group-icon {
-      font-size: 1.5rem;
-      background: #334155;
-      padding: 8px;
-      border-radius: 10px;
-    }
-
-    .group-title {
-      font-weight: bold;
-      font-size: 0.95rem;
-    }
-
-    .group-sub {
-      font-size: 0.8rem;
+    .msg-time {
+      font-size: 0.65rem;
       color: var(--text-muted);
+      margin-top: 4px;
+      text-align: left;
     }
 
-    /* شريط الكتابة */
+    /* شريط إدخال الرسالة */
     .input-bar {
       position: fixed;
       bottom: 60px;
       left: 0;
       right: 0;
       background: var(--card-bg);
-      padding: 10px;
+      padding: 10px 15px;
       display: flex;
-      gap: 8px;
+      gap: 10px;
       border-top: 1px solid var(--border);
-      z-index: 90;
     }
 
-    .input-bar input {
+    .chat-input {
       flex: 1;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 10px 14px;
+      border-radius: 20px;
       border: 1px solid var(--border);
       background: var(--bg-main);
       color: #fff;
       outline: none;
+      font-size: 0.9rem;
     }
 
-    .input-bar button {
-      padding: 0 16px;
+    .send-btn {
       background: var(--accent);
       border: none;
-      border-radius: 8px;
       color: #fff;
+      padding: 0 16px;
+      border-radius: 20px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -210,6 +140,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 3px;
     }
 
     .nav-item.active {
@@ -221,60 +152,22 @@
 <body>
 
   <header>
-    <div class="header-title" id="roomTitle">💬 المحادثات العامة</div>
+    <div class="header-title">💬 الدعم الفني والمحادثات</div>
   </header>
 
-  <div class="chat-tabs">
-    <button class="tab-btn active" id="btnPrivate">الخاص (الأصدقاء)</button>
-    <button class="tab-btn" id="btnGroups">المجالس الجماعية</button>
-  </div>
-
-  <!-- عرض المحادثات -->
-  <div class="chat-view" id="chatView">
-    <div class="messages-container" id="messagesBox"></div>
-
-    <div class="input-bar" id="inputBar">
-      <input type="text" id="msgInput" placeholder="اكتب رسالتك..." onkeydown="if(event.key==='Enter') sendMsg()">
-      <button onclick="sendMsg()">إرسال</button>
+  <div class="chat-container" id="chatBox">
+    <div class="message msg-received">
+      مرحباً بك في SharikiHub! كيف يمكننا مساعدتك اليوم في الاستوديو أو طلباتك؟
+      <div class="msg-time">10:00 ص</div>
     </div>
   </div>
 
-  <!-- قائمة المجالس الجماعية -->
-  <div class="groups-list" id="groupsList">
-    <div class="group-item" onclick="joinRoom('مجلس الرياضة', 'sports')">
-      <div class="group-info">
-        <div class="group-icon">⚽</div>
-        <div>
-          <div class="group-title">مجلس الرياضة</div>
-          <div class="group-sub">نقاشات المباريات والبطولات</div>
-        </div>
-      </div>
-      <span>➡️</span>
-    </div>
-
-    <div class="group-item" onclick="joinRoom('ورشة التصميم', 'design')">
-      <div class="group-info">
-        <div class="group-icon">🎨</div>
-        <div>
-          <div class="group-title">ورشة التصميم المشترك</div>
-          <div class="group-sub">أفكار المطبوعات والتيشرتات</div>
-        </div>
-      </div>
-      <span>➡️</span>
-    </div>
-
-    <div class="group-item" onclick="joinRoom('مجلس الكتب والسينما', 'media')">
-      <div class="group-info">
-        <div class="group-icon">🎬</div>
-        <div>
-          <div class="group-title">مجلس الكتب والسينما</div>
-          <div class="group-sub">ترشيحات ومناقشات الأفلام والكتب</div>
-        </div>
-      </div>
-      <span>➡️</span>
-    </div>
+  <div class="input-bar">
+    <input type="text" id="msgInput" class="chat-input" placeholder="اكتب رسالتك هنا..." onkeypress="handleKeyPress(event)">
+    <button class="send-btn" onclick="sendMessage()">إرسال</button>
   </div>
 
+  <!-- الشريط السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
@@ -283,88 +176,38 @@
     <a href="admin.html" class="nav-item">👤 الملف</a>
   </nav>
 
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
   <script>
-    const firebaseConfig = {
-      databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    let user = localStorage.getItem('sharikihub_user') || 'مستخدم_' + Math.floor(Math.random() * 1000);
-    localStorage.setItem('sharikihub_user', user);
-
-    let currentRoom = 'global';
-    const messagesBox = document.getElementById('messagesBox');
-
-    function loadRoomMessages(room) {
-      messagesBox.innerHTML = '';
-      db.ref('rooms/' + room).off();
-      
-      db.ref('rooms/' + room).on('child_added', (snapshot) => {
-        const data = snapshot.val();
-        const isMe = data.sender === user;
-        
-        const msgCard = document.createElement('div');
-        msgCard.className = `msg-card ${isMe ? 'me' : 'other'}`;
-        msgCard.innerHTML = `
-          <div class="msg-sender">${data.sender}</div>
-          <div>${data.text}</div>
-        `;
-        
-        messagesBox.appendChild(msgCard);
-        messagesBox.scrollTop = messagesBox.scrollHeight;
-      });
-    }
-
-    function sendMsg() {
+    function sendMessage() {
       const input = document.getElementById('msgInput');
       const text = input.value.trim();
-      if (text !== '') {
-        db.ref('rooms/' + currentRoom).push({
-          sender: user,
-          text: text,
-          timestamp: Date.now()
-        });
-        input.value = '';
+      if (!text) return;
+
+      const chatBox = document.getElementById('chatBox');
+
+      // إضافة رسالة المستخدم
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message msg-sent';
+      userMsg.innerText = text;
+      chatBox.appendChild(userMsg);
+
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // رد تلقائي بسيط تجريبي
+      setTimeout(() => {
+        const replyMsg = document.createElement('div');
+        replyMsg.className = 'message msg-received';
+        replyMsg.innerText = 'شكراً لتواصلك معنا! تم استلام رسالتك وسنرد عليك قريباً.';
+        chatBox.appendChild(replyMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 1000);
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
       }
     }
-
-    const btnPrivate = document.getElementById('btnPrivate');
-    const btnGroups = document.getElementById('btnGroups');
-    const chatView = document.getElementById('chatView');
-    const groupsList = document.getElementById('groupsList');
-    const roomTitle = document.getElementById('roomTitle');
-
-    btnPrivate.addEventListener('click', () => {
-      btnPrivate.classList.add('active');
-      btnGroups.classList.remove('active');
-      chatView.style.display = 'flex';
-      groupsList.style.display = 'none';
-      roomTitle.innerText = '💬 المحادثات العامة';
-      currentRoom = 'global';
-      loadRoomMessages(currentRoom);
-    });
-
-    btnGroups.addEventListener('click', () => {
-      btnGroups.classList.add('active');
-      btnPrivate.classList.remove('active');
-      chatView.style.display = 'none';
-      groupsList.style.display = 'flex';
-      roomTitle.innerText = '👥 اختر المجلس الجماعي';
-    });
-
-    function joinRoom(name, roomId) {
-      currentRoom = roomId;
-      roomTitle.innerText = '💬 ' + name;
-      chatView.style.display = 'flex';
-      groupsList.style.display = 'none';
-      loadRoomMessages(currentRoom);
-    }
-
-    loadRoomMessages('global');
   </script>
 </body>
 </html>
