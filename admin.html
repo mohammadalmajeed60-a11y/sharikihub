@@ -101,6 +101,7 @@
       color: var(--text);
       text-decoration: none;
       font-size: 0.9rem;
+      cursor: pointer;
     }
 
     .menu-item:last-child {
@@ -119,6 +120,11 @@
       padding: 2px 8px;
       border-radius: 10px;
       font-size: 0.75rem;
+    }
+
+    .logout-btn {
+      color: #ef4444;
+      font-weight: bold;
     }
 
     /* الشريط السفلي */
@@ -168,6 +174,13 @@
 
     <!-- قائمة الخيارات والمتابعة -->
     <div class="menu-card">
+      <a href="login.html" class="menu-item" id="loginLink">
+        <div class="menu-info">
+          <span>🔑 تسجيل الدخول / حساب جديد</span>
+        </div>
+        <span>←</span>
+      </a>
+
       <a href="cart.html" class="menu-item">
         <div class="menu-info">
           <span>📦 طلباتي ومشترياتي</span>
@@ -189,9 +202,9 @@
         <span>←</span>
       </a>
 
-      <div class="menu-item" onclick="alert('تغيير الإعدادات قريباً!')">
+      <div class="menu-item logout-btn" onclick="logout()">
         <div class="menu-info">
-          <span>⚙️ إعدادات الحساب</span>
+          <span>🚪 تسجيل الخروج</span>
         </div>
         <span>←</span>
       </div>
@@ -202,10 +215,26 @@
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
-    <a href="design-studio.html" class="nav-item">🛍️ المتجر</a>
     <a href="admin.html" class="nav-item active">👤 الملف</a>
   </nav>
 
+  <script>
+    window.onload = function() {
+      const user = JSON.parse(localStorage.getItem('currentUser'));
+      if (user && user.isLogged) {
+        document.querySelector('.user-name').innerText = user.name;
+        document.querySelector('.user-email').innerText = user.email;
+        document.getElementById('loginLink').style.display = 'none'; // إخفاء زر الدخول عند تسجيل الدخول
+      }
+    };
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      alert('تم تسجيل الخروج بنجاح');
+      window.location.reload();
+    }
+  </script>
 </body>
 </html>
