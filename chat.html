@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محادثات بيتنا الدافئ</title>
+    <style>
+        :root {
+            --bg-color: #0f0f12;
+            --card-bg: #1a1a24;
+            --accent-color: #7c3aed;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --border-color: #2e2e3e;
+            --warm-highlight: #f59e0b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 75px; }
+
+        /* الشريط العلوي */
+        header {
+            background-color: var(--card-bg);
+            padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-size: 1.2rem; font-weight: bold; color: var(--warm-highlight); }
+
+        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+
+        /* تبويبات المحادثات والمجالس */
+        .chat-tabs {
+            display: flex; background: var(--card-bg); border-radius: 10px;
+            padding: 4px; margin-bottom: 15px; border: 1px solid var(--border-color);
+        }
+        .chat-tab-btn {
+            flex: 1; padding: 8px; border: none; background: transparent;
+            color: var(--text-muted); font-size: 0.85rem; font-weight: bold; cursor: pointer;
+            border-radius: 8px; text-align: center;
+        }
+        .chat-tab-btn.active { background: var(--accent-color); color: white; }
+
+        /* قائمة المحادثات / الغرف */
+        .chat-list { display: flex; flex-direction: column; gap: 10px; }
+        
+        .chat-item {
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 12px 15px; border-radius: 12px; display: flex; align-items: center;
+            gap: 12px; text-decoration: none; color: var(--text-main);
+            transition: border-color 0.2s;
+        }
+        .chat-item:hover { border-color: var(--warm-highlight); }
+
+        .chat-avatar {
+            width: 45px; height: 45px; border-radius: 50%; background: #252533;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            flex-shrink: 0; position: relative;
+        }
+        
+        .online-dot {
+            width: 12px; height: 12px; background: #10b981; border-radius: 50%;
+            position: absolute; bottom: 0; left: 0; border: 2px solid var(--card-bg);
+        }
+
+        .chat-info { flex: 1; overflow: hidden; }
+        .chat-name { font-weight: bold; font-size: 0.95rem; margin-bottom: 3px; }
+        .chat-last-msg { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .chat-meta { text-align: left; font-size: 0.7rem; color: var(--text-muted); }
+        .badge { background: var(--warm-highlight); color: #000; padding: 2px 6px; border-radius: 10px; font-weight: bold; font-size: 0.65rem; display: inline-block; margin-top: 4px; }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; background-color: var(--card-bg);
+            display: flex; justify-content: space-around; padding: 10px 0;
+            border-top: 1px solid var(--border-color); z-index: 100;
+        }
+        .nav-item {
+            color: var(--text-muted); text-decoration: none; font-size: 0.75rem;
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
+        }
+        .nav-item.active { color: var(--warm-highlight); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">💬 المحادثات والمجالس</div>
+        <div style="font-size: 1.1rem; color: var(--text-muted);">➕</div>
+    </header>
+
+    <div class="container">
+        <!-- التبويبات -->
+        <div class="chat-tabs">
+            <button class="chat-tab-btn active">الخاص (الأصدقاء)</button>
+            <button class="chat-tab-btn">المجالس الجماعية</button>
+        </div>
+
+        <!-- قائمة المحادثات -->
+        <div class="chat-list">
+            <!-- محادثة فردية -->
+            <a href="#" class="chat-item">
+                <div class="chat-avatar">
+                    🎨
+                    <div class="online-dot"></div>
+                </div>
+                <div class="chat-info">
+                    <div class="chat-name">ورشة التصميم المشترك</div>
+                    <div class="chat-last-msg">هل أرسلت لك ملف التيشرت الجديد لنقوم بتعديله؟</div>
+                </div>
+                <div class="chat-meta">
+                    12:30 م
+                    <br><span class="badge">2</span>
+                </div>
+            </a>
+
+            <!-- مجلس تفاعلي -->
+            <a href="#" class="chat-item">
+                <div class="chat-avatar">⚽</div>
+                <div class="chat-info">
+                    <div class="chat-name">مجلس الرياضة الحي</div>
+                    <div class="chat-last-msg">أحمد: توقعاتي لمباراة القمة اليوم هي التعادل الإيجابي...</div>
+                </div>
+                <div class="chat-meta">منذ قليل</div>
+            </a>
+
+            <!-- محادثة شخصية -->
+            <a href="#" class="chat-item">
+                <div class="chat-avatar">
+                    👤
+                    <div class="online-dot"></div>
+                </div>
+                <div class="chat-info">
+                    <div class="chat-name">سارة محمد</div>
+                    <div class="chat-last-msg">شكراً على ترشيح الكتاب، بدأته اليوم وأعجبني جداً!</div>
+                </div>
+                <div class="chat-meta">أمس</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي المحدث -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">🏠 الرئيسية</a>
+        <a href="reels.html" class="nav-item">🎬 ريلز</a>
+        <a href="chat.html" class="nav-item active">💬 المحادثات</a>
+        <a href="#" class="nav-item">🛍️ المتجر</a>
+        <a href="#" class="nav-item">👤 الملف</a>
+    </nav>
+
+</body>
+</html>
