@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - المحادثات</title>
+  <title>SharikiHub - المحادثات والمجتمع</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -15,12 +15,7 @@
       --border: #334155;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Tajawal', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 
     body {
       background-color: var(--bg-main);
@@ -32,98 +27,73 @@
 
     header {
       background-color: var(--card-bg);
-      padding: 15px;
-      text-align: center;
       border-bottom: 1px solid var(--border);
     }
 
-    .header-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #38bdf8;
+    /* تبويبات التنقل بين أنواع الشات */
+    .chat-tabs {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
     }
 
-    /* منطقة الرسائل */
-    .chat-container {
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: bold;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* قائمة المحادثات والمجتمع */
+    .chat-list {
       flex: 1;
-      padding: 15px;
       overflow-y: auto;
+      padding: 15px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 120px;
-    }
-
-    .message {
-      max-width: 80%;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .msg-received {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      align-self: flex-start;
-      border-bottom-right-radius: 2px;
-    }
-
-    .msg-sent {
-      background: var(--accent);
-      color: #fff;
-      align-self: flex-end;
-      border-bottom-left-radius: 2px;
-    }
-
-    .msg-time {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-      text-align: left;
-    }
-
-    /* شريط إدخال الرسالة */
-    .input-bar {
-      position: fixed;
-      bottom: 60px;
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      padding: 10px 15px;
-      display: flex;
       gap: 10px;
-      border-top: 1px solid var(--border);
+      margin-bottom: 60px;
     }
 
-    .chat-input {
-      flex: 1;
-      padding: 10px 14px;
-      border-radius: 20px;
+    .chat-item {
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      background: var(--bg-main);
-      color: #fff;
-      outline: none;
-      font-size: 0.9rem;
-    }
-
-    .send-btn {
-      background: var(--accent);
-      border: none;
-      color: #fff;
-      padding: 0 16px;
-      border-radius: 20px;
-      font-weight: bold;
+      padding: 12px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       cursor: pointer;
     }
+
+    .chat-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    .chat-details { flex: 1; }
+    .chat-title { font-weight: bold; font-size: 0.95rem; }
+    .chat-preview { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
 
     /* الشريط السفلي */
     .bottom-nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       height: 60px;
       background-color: var(--card-bg);
       display: flex;
@@ -143,70 +113,89 @@
       gap: 3px;
     }
 
-    .nav-item.active {
-      color: var(--accent);
-      font-weight: bold;
-    }
+    .nav-item.active { color: var(--accent); font-weight: bold; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="header-title">💬 الدعم الفني والمحادثات</div>
+    <div class="chat-tabs">
+      <button class="tab-btn active" onclick="switchTab('personal')">💬 الشخصية</button>
+      <button class="tab-btn" onclick="switchTab('community')">🌐 المجتمع</button>
+      <button class="tab-btn" onclick="switchTab('support')">🎧 الدعم الفني</button>
+    </div>
   </header>
 
-  <div class="chat-container" id="chatBox">
-    <div class="message msg-received">
-      مرحباً بك في SharikiHub! كيف يمكننا مساعدتك اليوم في الاستوديو أو طلباتك؟
-      <div class="msg-time">10:00 ص</div>
+  <!-- المحادثات الشخصية -->
+  <div id="personal" class="chat-list">
+    <div class="chat-item" onclick="alert('فتح محادثة أحمد...')">
+      <div class="chat-avatar">👤</div>
+      <div class="chat-details">
+        <div class="chat-title">أحمد علي</div>
+        <div class="chat-preview">ما هو رأيك في التصميم الجديد؟</div>
+      </div>
+    </div>
+    <div class="chat-item" onclick="alert('فتح محادثة سارة...')">
+      <div class="chat-avatar">👤</div>
+      <div class="chat-details">
+        <div class="chat-title">سارة محمد</div>
+        <div class="chat-preview">تم إرسال المطبوعات المطلوبة 👍</div>
+      </div>
     </div>
   </div>
 
-  <div class="input-bar">
-    <input type="text" id="msgInput" class="chat-input" placeholder="اكتب رسالتك هنا..." onkeypress="handleKeyPress(event)">
-    <button class="send-btn" onclick="sendMessage()">إرسال</button>
+  <!-- شات المجتمع -->
+  <div id="community" class="chat-list" style="display: none;">
+    <div class="chat-item" onclick="alert('الدخول إلى قروب المصممين...')">
+      <div class="chat-avatar">🎨</div>
+      <div class="chat-details">
+        <div class="chat-title">مجتمع المصممين (الرسمي)</div>
+        <div class="chat-preview">محمد: شاركونا أفضل تصاميم اليوم!</div>
+      </div>
+    </div>
+    <div class="chat-item" onclick="alert('الدخول إلى قروب صناع المحتوى...')">
+      <div class="chat-avatar">🎬</div>
+      <div class="chat-details">
+        <div class="chat-title">مجتمع صناع الريلز</div>
+        <div class="chat-preview">علي: كيف تقومون بزيادة المشاهدات؟</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- الدعم الفني -->
+  <div id="support" class="chat-list" style="display: none;">
+    <div class="chat-item" onclick="alert('فتح شات المساعدة الفنية...')">
+      <div class="chat-avatar">🎧</div>
+      <div class="chat-details">
+        <div class="chat-title">فريق دعم SharikiHub</div>
+        <div class="chat-preview">مرحباً! كيف يمكننا مساعدتك اليوم؟</div>
+      </div>
+    </div>
   </div>
 
   <!-- الشريط السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
     <a href="chat.html" class="nav-item active">💬 المحادثات</a>
-    <a href="design-studio.html" class="nav-item">🛍️ المتجر</a>
     <a href="admin.html" class="nav-item">👤 الملف</a>
   </nav>
 
   <script>
-    function sendMessage() {
-      const input = document.getElementById('msgInput');
-      const text = input.value.trim();
-      if (!text) return;
+    function switchTab(tabId) {
+      // إخفاء كل القوائم
+      document.getElementById('personal').style.display = 'none';
+      document.getElementById('community').style.display = 'none';
+      document.getElementById('support').style.display = 'none';
 
-      const chatBox = document.getElementById('chatBox');
+      // إزالة التفعيل عن الأزرار
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach(tab => tab.classList.remove('active'));
 
-      // إضافة رسالة المستخدم
-      const userMsg = document.createElement('div');
-      userMsg.className = 'message msg-sent';
-      userMsg.innerText = text;
-      chatBox.appendChild(userMsg);
-
-      input.value = '';
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      // رد تلقائي بسيط تجريبي
-      setTimeout(() => {
-        const replyMsg = document.createElement('div');
-        replyMsg.className = 'message msg-received';
-        replyMsg.innerText = 'شكراً لتواصلك معنا! تم استلام رسالتك وسنرد عليك قريباً.';
-        chatBox.appendChild(replyMsg);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }, 1000);
-    }
-
-    function handleKeyPress(e) {
-      if (e.key === 'Enter') {
-        sendMessage();
-      }
+      // إظهار التبويب المحدد وتفعيل الزر
+      document.getElementById(tabId).style.display = 'flex';
+      event.target.classList.add('active');
     }
   </script>
 </body>
