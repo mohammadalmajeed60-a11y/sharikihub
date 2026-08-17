@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - ريلز وستوري</title>
+  <title>SharikiHub - الريلز</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-main: #000000;
+      --bg-main: #0f172a;
       --card-bg: #1e293b;
       --accent: #8b5cf6;
       --text: #f8fafc;
@@ -15,85 +15,68 @@
       --border: #334155;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Tajawal', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 
     body {
-      background-color: var(--bg-main);
+      background-color: #000000;
       color: var(--text);
-      height: 100vh;
-      overflow: hidden;
+      padding-bottom: 60px;
+      overflow-x: hidden;
     }
 
-    /* شريط علوي لزر إضافة ريلز */
-    .top-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 15px;
+    /* شريط علوي خفيف فوق الفيديو */
+    .reels-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 20;
-      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+      z-index: 90;
     }
 
-    .top-title {
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #fff;
-    }
+    .brand { font-size: 1.2rem; font-weight: 700; color: #38bdf8; }
 
     .add-reel-btn {
       background: var(--accent);
-      color: #fff;
+      color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 6px 14px;
       border-radius: 20px;
       font-weight: bold;
-      font-size: 0.85rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      font-size: 0.85rem;
     }
 
-    /* حاوي الفيديوهات الرأسي */
+    /* الحاوية الرئيسية للتمرير العمودي */
     .reels-container {
-      height: calc(100vh - 60px);
+      height: 100vh;
+      overflow-y: snap-mandatory;
       scroll-snap-type: y mandatory;
-      overflow-y: scroll;
     }
 
     .reel-card {
-      height: 100%;
-      width: 100%;
+      height: 100vh;
       scroll-snap-align: start;
       position: relative;
-      background: #111;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      background: #000;
     }
 
-    /* فيديو العرض */
     .reel-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    /* عناصر التحكم والتفاعل الجانبية */
+    /* الأزرار التفاعلية الجانبية */
     .reel-actions {
       position: absolute;
       left: 15px;
-      bottom: 80px;
+      bottom: 100px;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -102,188 +85,205 @@
     }
 
     .action-btn {
-      background: rgba(0, 0, 0, 0.4);
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      border-radius: 50%;
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(5px);
+      border: 1px solid var(--border);
       width: 45px;
       height: 45px;
+      border-radius: 50%;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--text);
       cursor: pointer;
-      backdrop-filter: blur(5px);
-    }
-
-    .action-btn.liked {
-      color: #ef4444;
     }
 
     .action-count {
       font-size: 0.75rem;
-      color: #fff;
-      text-align: center;
+      color: var(--text);
       margin-top: 2px;
+      text-align: center;
     }
 
-    /* تفاصيل الفيديو بالأسفل */
-    .reel-info {
+    /* تفاصيل الفيديو السفلية */
+    .reel-details {
       position: absolute;
-      bottom: 20px;
       right: 15px;
+      bottom: 80px;
       left: 70px;
       z-index: 10;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 10px;
+      border-radius: 8px;
     }
 
-    .reel-user {
+    .reel-author {
       font-weight: bold;
-      font-size: 1rem;
-      color: #38bdf8;
+      font-size: 0.95rem;
       margin-bottom: 5px;
+      color: #38bdf8;
     }
 
-    .reel-desc {
+    .reel-caption {
       font-size: 0.85rem;
       color: #e2e8f0;
-      line-height: 1.3;
+      line-height: 1.4;
     }
 
-    /* الشريط السفلي */
+    /* النافذة المنبثقة لإضافة ريلز */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8); z-index: 200;
+      justify-content: center; align-items: center; padding: 20px;
+    }
+
+    .modal-content {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; width: 100%; max-width: 400px; padding: 20px;
+    }
+
+    .input-field {
+      width: 100%; background: var(--bg-main); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); padding: 10px; outline: none; margin-bottom: 12px;
+    }
+
+    .submit-btn {
+      width: 100%; padding: 10px; background: var(--accent);
+      color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+    }
+
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: #1e293b;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid var(--border);
-      z-index: 100;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--card-bg); display: flex; justify-content: space-around;
+      align-items: center; border-top: 1px solid var(--border); z-index: 100;
     }
 
     .nav-item {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
+      color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
     }
-
-    .nav-item.active {
-      color: var(--accent);
-      font-weight: bold;
-    }
+    .nav-item.active { color: var(--accent); font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <!-- شريط علوي يحتوي على زر إضافة فيديو -->
-  <div class="top-bar">
-    <div class="top-title">🎬 ريلز SharikiHub</div>
-    <button class="add-reel-btn" onclick="triggerVideoUpload()">➕ إضافة فيديو</button>
+  <div class="reels-header">
+    <div class="brand">🎬 ريلز SharikiHub</div>
+    <button class="add-reel-btn" onclick="openReelModal()">+ ريلز جديد</button>
   </div>
 
-  <!-- حقل رفع الفيديو المخفي -->
-  <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleVideoUpload(event)">
-
-  <div class="reels-container">
-    
-    <!-- فيديو 1 -->
-    <div class="reel-card">
-      <video class="reel-video" loop autoplay muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-black-suit-41583-large.mp4"></video>
-      
-      <div class="reel-actions">
-        <div>
-          <button class="action-btn" onclick="toggleLike(this)">❤️</button>
-          <div class="action-count">1.2k</div>
-        </div>
-        <div>
-          <button class="action-btn" onclick="alert('قسم التعليقات قريباً!')">💬</button>
-          <div class="action-count">254</div>
-        </div>
-        <div>
-          <button class="action-btn" onclick="alert('تم نسخ رابط الفيديو!')">🔗</button>
-          <div class="action-count">مشاركة</div>
-        </div>
-      </div>
-
-      <div class="reel-info">
-        <div class="reel-user">@shariki_fashion</div>
-        <div class="reel-desc">استعرض أحدث تصاميم الملابس والمطبوعات الجديدة الخاصة بنا! 👕🔥</div>
-      </div>
-    </div>
-
-    <!-- فيديو 2 -->
-    <div class="reel-card">
-      <video class="reel-video" loop playsinline src="https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-smartphone-with-a-green-screen-41528-large.mp4"></video>
-      
-      <div class="reel-actions">
-        <div>
-          <button class="action-btn" onclick="toggleLike(this)">❤️</button>
-          <div class="action-count">850</div>
-        </div>
-        <div>
-          <button class="action-btn" onclick="alert('قسم التعليقات قريباً!')">💬</button>
-          <div class="action-count">98</div>
-        </div>
-        <div>
-          <button class="action-btn" onclick="alert('تم نسخ رابط الفيديو!')">🔗</button>
-          <div class="action-count">مشاركة</div>
-        </div>
-      </div>
-
-      <div class="reel-info">
-        <div class="reel-user">@tech_hub</div>
-        <div class="reel-desc">تصميم كفرات الهواتف والتخصيص المباشر من التطبيق 📱✨</div>
-      </div>
-    </div>
-
+  <div class="reels-container" id="reelsContainer">
+    <!-- المقاطع ستظهر هنا تلقائياً -->
   </div>
 
-  <!-- الشريط السفلي -->
+  <!-- نافذة إضافة ريلز -->
+  <div class="modal" id="reelModal">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+        <h3>إضافة مقطع ريلز جديد</h3>
+        <span style="cursor:pointer;" onclick="closeReelModal()">❌</span>
+      </div>
+      <input type="text" id="reelCaption" class="input-field" placeholder="الوصف / العبارة...">
+      <input type="text" id="reelUrl" class="input-field" placeholder="رابط مقطع الفيديو (MP4)...">
+      <button class="submit-btn" onclick="publishReel()">نشر المقـطع 🚀</button>
+    </div>
+  </div>
+
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item active">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
-    <a href="design-studio.html" class="nav-item">🛍️ المتجر</a>
     <a href="admin.html" class="nav-item">👤 الملف</a>
   </nav>
 
   <script>
-    function toggleLike(btn) {
-      btn.classList.toggle('liked');
+    const defaultReels = [
+      {
+        author: "@SharikiHub_Design",
+        caption: "استوديو الطباعة حسب الطلب أصبح جاهزاً الآن! صمم ملابسك بنفسك 👕🔥",
+        url: "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-in-a-neon-environment-40348-large.mp4",
+        likes: 124
+      },
+      {
+        author: "@Sports_Zone",
+        caption: "أبرز أهداف وتغطيات البطولات القادمة على منصتنا ⚽🏆",
+        url: "https://assets.mixkit.co/videos/preview/mixkit-playing-basketball-in-a-court-41582-large.mp4",
+        likes: 89
+      }
+    ];
+
+    function loadReels() {
+      const savedReels = JSON.parse(localStorage.getItem('userReels')) || [];
+      const allReels = [...savedReels, ...defaultReels];
+      const container = document.getElementById('reelsContainer');
+      container.innerHTML = '';
+
+      allReels.forEach((reel, index) => {
+        container.innerHTML += `
+          <div class="reel-card">
+            <video class="reel-video" src="${reel.url}" loop onclick="togglePlay(this)"></video>
+
+            <div class="reel-actions">
+              <div>
+                <button class="action-btn" onclick="likeReel(this)">❤️</button>
+                <div class="action-count">${reel.likes}</div>
+              </div>
+              <div>
+                <button class="action-btn" onclick="alert('تم نسخ رابط الريلز!')">🔗</button>
+              </div>
+            </div>
+
+            <div class="reel-details">
+              <div class="reel-author">${reel.author}</div>
+              <div class="reel-caption">${reel.caption}</div>
+            </div>
+          </div>
+        `;
+      });
     }
 
-    function triggerVideoUpload() {
-      document.getElementById('videoInput').click();
-    }
-
-    function handleVideoUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        alert('تم اختيار الفيديو بنجاح! جاري تحضيره للعرض.');
+    function togglePlay(video) {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
       }
     }
 
-    // تشغيل الفيديو الظاهر فقط عند التمرير
-    const videos = document.querySelectorAll('video');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.play();
-        } else {
-          entry.target.pause();
-        }
-      });
-    }, { threshold: 0.6 });
+    function likeReel(btn) {
+      btn.style.color = '#ef4444';
+      const countEl = btn.nextElementSibling;
+      countEl.innerText = parseInt(countEl.innerText) + 1;
+    }
 
-    videos.forEach(video => observer.observe(video));
+    function openReelModal() { document.getElementById('reelModal').style.display = 'flex'; }
+    function closeReelModal() { document.getElementById('reelModal').style.display = 'none'; }
+
+    function publishReel() {
+      const caption = document.getElementById('reelCaption').value.trim();
+      const url = document.getElementById('reelUrl').value.trim();
+
+      if (!url) { alert('يرجى إدخال رابط فيديو مباشر'); return; }
+
+      const user = JSON.parse(localStorage.getItem('currentUser')) || { name: 'مستخدم' };
+      const newReel = {
+        author: '@' + user.name,
+        caption: caption || 'بدون وصف',
+        url: url,
+        likes: 1
+      };
+
+      const savedReels = JSON.parse(localStorage.getItem('userReels')) || [];
+      savedReels.unshift(newReel);
+      localStorage.setItem('userReels', JSON.stringify(savedReels));
+
+      closeReelModal();
+      loadReels();
+    }
+
+    window.onload = loadReels;
   </script>
 </body>
 </html>
