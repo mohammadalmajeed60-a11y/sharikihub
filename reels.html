@@ -27,9 +27,11 @@
       color: var(--text);
       height: 100vh;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* حاوية الريلز والتمرير العمودي */
+    /* حاوية الريلز محدودة الارتفاع لترك مساحة للشريط السفلي */
     .reels-feed {
       height: calc(100vh - 60px);
       overflow-y: scroll;
@@ -57,7 +59,7 @@
     /* تفاصيل المقطع */
     .reel-overlay {
       position: absolute;
-      bottom: 20px;
+      bottom: 25px;
       right: 15px;
       left: 70px;
       z-index: 10;
@@ -90,7 +92,7 @@
     }
 
     .action-btn {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(30, 41, 59, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
       width: 48px;
@@ -100,7 +102,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
       backdrop-filter: blur(5px);
     }
@@ -111,7 +113,7 @@
       color: #cbd5e1;
     }
 
-    /* شريط التنقل السفلي */
+    /* شريط التنقل السفلي المثبت دائماً */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -123,7 +125,7 @@
       justify-content: space-around;
       align-items: center;
       border-top: 1px solid var(--border);
-      z-index: 100;
+      z-index: 999;
     }
 
     .nav-item {
@@ -151,30 +153,14 @@
       <video class="reel-video" loop autoplay muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4"></video>
       
       <div class="reel-overlay">
-        <div class="reel-user">@تصميم_المتجر</div>
-        <div class="reel-desc">استعراض لأحدث طباعة على المطبوعات في SharikiHub 🎨✨</div>
+        <div class="reel-user">mohammad_almajeed@</div>
+        <div class="reel-desc">تجربة تصميم واجهة الريلز على الهاتف 🔥🚀 #SharikiHub</div>
       </div>
 
       <div class="reel-actions">
-        <button class="action-btn" onclick="likeReel(this)">❤️ <span class="action-count">142</span></button>
-        <button class="action-btn">💬 <span class="action-count">24</span></button>
-        <button class="action-btn">🔄 <span class="action-count">8</span></button>
-      </div>
-    </div>
-
-    <!-- فيديو 2 -->
-    <div class="reel-card">
-      <video class="reel-video" loop muted playsinline src="https://assets.mixkit.co/videos/preview/mixkit-vertical-shot-of-a-neon-sign-42898-large.mp4"></video>
-      
-      <div class="reel-overlay">
-        <div class="reel-user">@مجلس_الرياضة</div>
-        <div class="reel-desc">ملخص وأبرز لحظات مباراة اليوم من مجالس الرياضة ⚽🔥</div>
-      </div>
-
-      <div class="reel-actions">
-        <button class="action-btn" onclick="likeReel(this)">❤️ <span class="action-count">380</span></button>
-        <button class="action-btn">💬 <span class="action-count">51</span></button>
-        <button class="action-btn">🔄 <span class="action-count">19</span></button>
+        <button class="action-btn" onclick="likeReel(this)">❤️ <span class="action-count">1.2K</span></button>
+        <button class="action-btn">💬 <span class="action-count">84</span></button>
+        <button class="action-btn">🔗 <span class="action-count">مشاركة</span></button>
       </div>
     </div>
 
@@ -192,8 +178,6 @@
   <script>
     function likeReel(btn) {
       let countSpan = btn.querySelector('.action-count');
-      let count = parseInt(countSpan.innerText);
-      countSpan.innerText = count + 1;
       btn.style.color = '#ef4444';
     }
   </script>
