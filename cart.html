@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - سلة الشراء والطلبات</title>
+  <title>SharikiHub - السلة</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -15,215 +15,101 @@
       --border: #334155;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Tajawal', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 
-    body {
-      background-color: var(--bg-main);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 70px;
-    }
+    body { background-color: var(--bg-main); color: var(--text); padding-bottom: 80px; }
 
-    header {
-      background-color: var(--card-bg);
-      padding: 15px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
+    header { background-color: var(--card-bg); padding: 15px; text-align: center; border-bottom: 1px solid var(--border); }
+    .header-title { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
 
-    .header-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #10b981;
-    }
+    .container { padding: 15px; }
 
-    .container {
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .cart-card {
+    /* عناصر السلة */
+    .cart-item {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
       padding: 15px;
+      border-radius: 12px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-    }
-
-    .cart-item-info {
-      display: flex;
       align-items: center;
-      gap: 12px;
+      margin-bottom: 10px;
     }
 
-    .item-icon {
-      font-size: 2.5rem;
-      background: var(--bg-main);
-      padding: 10px;
-      border-radius: 10px;
-    }
+    .item-details { display: flex; flex-direction: column; gap: 5px; }
+    .item-name { font-weight: bold; }
+    .item-price { color: var(--accent); font-size: 0.9rem; }
 
-    .item-title {
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
-    .item-sub {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .item-price {
-      font-size: 1rem;
-      font-weight: bold;
-      color: #38bdf8;
-    }
-
-    .summary-card {
+    .cart-summary {
       background: var(--card-bg);
       border: 1px solid var(--border);
+      padding: 20px;
       border-radius: 12px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      margin-top: 20px;
     }
 
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-    }
-
-    .total-row {
-      border-top: 1px solid var(--border);
-      padding-top: 10px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #10b981;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg-main);
-      color: #fff;
-      outline: none;
-      margin-top: 5px;
-    }
+    .total-price { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; display: flex; justify-content: space-between; }
 
     .btn-checkout {
       width: 100%;
       padding: 12px;
       background: #10b981;
+      color: white;
       border: none;
       border-radius: 8px;
-      color: white;
       font-weight: bold;
-      font-size: 1rem;
       cursor: pointer;
     }
 
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: var(--card-bg);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid var(--border);
-      z-index: 100;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--card-bg); display: flex; justify-content: space-around;
+      align-items: center; border-top: 1px solid var(--border); z-index: 100;
     }
-
-    .nav-item {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .nav-item.active {
-      color: var(--accent);
-      font-weight: bold;
-    }
+    .nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; display: flex; flex-direction: column; align-items: center; gap: 3px; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="header-title">🛒 سلة المشتريات والطلبات</div>
+    <div class="header-title">🛒 سلة المشتريات</div>
   </header>
 
   <div class="container">
-    <!-- عنصر في السلة -->
-    <div class="cart-card">
-      <div class="cart-item-info">
-        <div class="item-icon">🧥</div>
-        <div>
-          <div class="item-title">هودي مخصص</div>
-          <div class="item-sub">المقاس: L | اللون: أسود</div>
-        </div>
+    <!-- قائمة المنتجات -->
+    <div class="cart-item">
+      <div class="item-details">
+        <div class="item-name">تيشيرت شاركي</div>
+        <div class="item-price">120 ريال</div>
       </div>
-      <div class="item-price">$25.00</div>
+      <button onclick="alert('تم الحذف')" style="background:transparent; border:none; color:#ef4444; cursor:pointer;">حذف</button>
     </div>
 
-    <!-- ملخص الطلب -->
-    <div class="summary-card">
-      <div class="summary-row">
-        <span>مجموع المنتجات</span>
-        <span>$25.00</span>
+    <div class="cart-item">
+      <div class="item-details">
+        <div class="item-name">كوب السعادة</div>
+        <div class="item-price">45 ريال</div>
       </div>
-      <div class="summary-row">
-        <span>تكلفة الشحن</span>
-        <span>$5.00</span>
-      </div>
-      <div class="summary-row total-row">
-        <span>الإجمالي النهائي</span>
-        <span>$30.00</span>
-      </div>
+      <button onclick="alert('تم الحذف')" style="background:transparent; border:none; color:#ef4444; cursor:pointer;">حذف</button>
     </div>
 
-    <!-- معلومات الشحن -->
-    <div class="summary-card">
-      <div style="font-weight: bold; color: #38bdf8;">📍 تفاصيل الشحن والتوصيل</div>
-      <input type="text" class="form-input" placeholder="الاسم الكامل">
-      <input type="tel" class="form-input" placeholder="رقم الهاتف">
-      <input type="text" class="form-input" placeholder="العنوان والمدينة">
-      <button class="btn-checkout" onclick="completeOrder()">✅ تأكيد وإرسال الطلب</button>
+    <!-- الملخص -->
+    <div class="cart-summary">
+      <div class="total-price">
+        <span>الإجمالي:</span>
+        <span>165 ريال</span>
+      </div>
+      <button class="btn-checkout" onclick="alert('تم إتمام الطلب بنجاح!')">إتمام الطلب</button>
     </div>
   </div>
 
-  <!-- الشريط السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
-    <a href="design-studio.html" class="nav-item active">🛍️ المتجر</a>
-    <a href="admin.html" class="nav-item">👤 الملف</a>
+    <a href="design-studio.html" class="nav-item">🛍️ المتجر</a>
   </nav>
 
-  <script>
-    function completeOrder() {
-      alert('تم استلام طلبك بنجاح! سيتم التواصل معك لتأكيد التوصيل.');
-    }
-  </script>
 </body>
 </html>
