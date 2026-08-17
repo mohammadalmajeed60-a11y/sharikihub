@@ -1,55 +1,207 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - لوحة التحكم</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: #f0f2f5; padding: 20px; }
-        .dashboard { max-width: 600px; margin: auto; }
-        .header { margin-bottom: 20px; }
-        
-        /* بطاقات الإحصائيات */
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .card { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-        .card h3 { font-size: 12px; color: #777; }
-        .card p { font-size: 18px; font-weight: bold; margin-top: 5px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub - الملف الشخصي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
 
-        /* جدول الطلبات */
-        .orders { background: #fff; border-radius: 10px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: right; font-size: 13px; }
-        .status-new { color: #28a745; font-weight: bold; }
-        
-        .btn-home { display: block; margin-top: 20px; text-align: center; color: #007bff; text-decoration: none; font-weight: bold; }
-    </style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 70px;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 10px;
+    }
+
+    .profile-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .profile-handle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .container {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.9rem;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 12px;
+      background: #ef4444;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* شريط التنقل السفلي */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <div class="header">
-        <h1>لوحة التحكم</h1>
-        <p>مرحباً بك يا مدير المنصة</p>
+  <header>
+    <div class="profile-avatar">👤</div>
+    <div class="profile-name" id="userName">مستخدم SharikiHub</div>
+    <div class="profile-handle" id="userHandle">@user</div>
+  </header>
+
+  <div class="container">
+    
+    <div class="section-card">
+      <div class="section-title">📊 إحصائيات الحساب</div>
+      <div class="info-row">
+        <span>التصميمات المحفوظة</span>
+        <strong>3</strong>
+      </div>
+      <div class="info-row">
+        <span>المجالس المشترك بها</span>
+        <strong>2</strong>
+      </div>
+      <div class="info-row">
+        <span>طلبات المطبوعات</span>
+        <strong>1</strong>
+      </div>
     </div>
 
-    <div class="stats">
-        <div class="card"><h3>إجمالي الطلبات</h3><p>12</p></div>
-        <div class="card"><h3>الطلبات الجديدة</h3><p>3</p></div>
+    <div class="section-card">
+      <div class="section-title">⚙️ الإعدادات</div>
+      <div class="info-row" style="cursor:pointer;" onclick="changeName()">
+        <span>تعديل اسم المستخدم</span>
+        <span>✏️</span>
+      </div>
+      <div class="info-row">
+        <span>الإشعارات</span>
+        <span>مفعلة</span>
+      </div>
     </div>
 
-    <div class="orders">
-        <h2>أحدث الطلبات</h2>
-        <table>
-            <tr><th>العميل</th><th>المنتج</th><th>الحالة</th></tr>
-            <tr><td>أحمد س.</td><td>تيشرت</td><td class="status-new">جديد</td></tr>
-            <tr><td>سارة م.</td><td>كوب</td><td class="status-new">جديد</td></tr>
-            <tr><td>خالد ع.</td><td>تيشرت</td><td>جاري التنفيذ</td></tr>
-        </table>
-    </div>
+    <button class="btn-logout" onclick="resetUser()">إعادة تعيين التعريف</button>
 
-    <a href="index.html" class="btn-home">← العودة للرئيسية</a>
-</div>
+  </div>
 
+  <!-- شريط التنقل السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="chat.html" class="nav-item">💬 المحادثات</a>
+    <a href="design-studio.html" class="nav-item">🛍️ المتجر</a>
+    <a href="admin.html" class="nav-item active">👤 الملف</a>
+  </nav>
+
+  <script>
+    let user = localStorage.getItem('sharikihub_user') || 'مستخدم_جديد';
+    document.getElementById('userName').innerText = user;
+    document.getElementById('userHandle').innerText = '@' + user;
+
+    function changeName() {
+      let newName = prompt("أدخل اسم المستخدم الجديد:", user);
+      if (newName && newName.trim() !== "") {
+        localStorage.setItem('sharikihub_user', newName.trim());
+        location.reload();
+      }
+    }
+
+    function resetUser() {
+      localStorage.removeItem('sharikihub_user');
+      location.reload();
+    }
+  </script>
 </body>
 </html>
