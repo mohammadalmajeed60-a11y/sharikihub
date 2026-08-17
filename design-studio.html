@@ -60,6 +60,7 @@
       align-items: center;
       position: relative;
       overflow: hidden;
+      transition: background-color 0.3s ease;
     }
 
     .product-base {
@@ -165,17 +166,30 @@
       cursor: pointer;
     }
 
-    .color-picker {
+    /* خيارات الألوان */
+    .color-row {
       display: flex;
+      align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .color-dot {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       cursor: pointer;
-      border: 2px solid #fff;
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .full-color-picker {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      background: none;
     }
 
     .btn-submit {
@@ -229,7 +243,7 @@
 
   <div class="container">
     <!-- منطقة المعاينة المباشرة -->
-    <div class="preview-box">
+    <div class="preview-box" id="previewBox">
       <div class="product-base" id="productBase">🧥</div>
       <div class="custom-overlay">
         <img id="logoPreview" class="logo-preview" alt="الشعار">
@@ -251,6 +265,21 @@
         </div>
       </div>
 
+      <!-- لون المنتج -->
+      <div>
+        <div class="control-label">لون خلفية المنتج:</div>
+        <div class="color-row">
+          <div class="color-dot" style="background: #1e293b;" onclick="setProductBg('#1e293b')"></div>
+          <div class="color-dot" style="background: #ffffff;" onclick="setProductBg('#ffffff')"></div>
+          <div class="color-dot" style="background: #000000;" onclick="setProductBg('#000000')"></div>
+          <div class="color-dot" style="background: #0f172a;" onclick="setProductBg('#0f172a')"></div>
+          <div class="color-dot" style="background: #991b1b;" onclick="setProductBg('#991b1b')"></div>
+          <div class="color-dot" style="background: #065f46;" onclick="setProductBg('#065f46')"></div>
+          <!-- اختر أي لون -->
+          <input type="color" class="full-color-picker" value="#1e293b" oninput="setProductBg(this.value)" title="اختر لوناً تخصيصياً">
+        </div>
+      </div>
+
       <div>
         <div class="control-label">رفع شعار أو صورة:</div>
         <label class="upload-btn-label">
@@ -264,13 +293,17 @@
         <input type="text" class="text-input" id="inputCustomText" value="نص التصميم" oninput="updateText(this.value)">
       </div>
 
+      <!-- لون النص -->
       <div>
-        <div class="control-label">لون النص:</div>
-        <div class="color-picker">
+        <div class="control-label">لون النص المطبوع:</div>
+        <div class="color-row">
           <div class="color-dot" style="background: #ffffff;" onclick="setTextColor('#ffffff')"></div>
           <div class="color-dot" style="background: #f59e0b;" onclick="setTextColor('#f59e0b')"></div>
           <div class="color-dot" style="background: #ef4444;" onclick="setTextColor('#ef4444')"></div>
           <div class="color-dot" style="background: #38bdf8;" onclick="setTextColor('#38bdf8')"></div>
+          <div class="color-dot" style="background: #10b981;" onclick="setTextColor('#10b981')"></div>
+          <!-- اختر أي لون -->
+          <input type="color" class="full-color-picker" value="#ffffff" oninput="setTextColor(this.value)" title="اختر لون نص مخصص">
         </div>
       </div>
 
@@ -292,6 +325,10 @@
       document.getElementById('productBase').innerText = icon;
       document.querySelectorAll('.select-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+    }
+
+    function setProductBg(color) {
+      document.getElementById('previewBox').style.backgroundColor = color;
     }
 
     function updateText(val) {
