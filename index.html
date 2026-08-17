@@ -23,7 +23,6 @@
       padding-bottom: 80px;
     }
 
-    /* الشريط العلوي */
     header {
       background-color: var(--card-bg);
       padding: 15px 20px;
@@ -36,32 +35,12 @@
       z-index: 90;
     }
 
-    .brand {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #38bdf8;
-    }
+    .brand { font-size: 1.3rem; font-weight: 700; color: #38bdf8; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
 
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
+    .container { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
 
-    .icon-btn {
-      color: var(--text);
-      text-decoration: none;
-      font-size: 1.2rem;
-    }
-
-    .container {
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    /* صندوق إنشاء منشور */
     .create-post-box {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -83,14 +62,7 @@
       font-size: 0.9rem;
     }
 
-    /* أزرار الوصول السريع */
-    .quick-access {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 5px;
-    }
-
+    .quick-access { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
     .quick-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -105,7 +77,6 @@
       gap: 6px;
     }
 
-    /* بطاقات التغذية الرئيسية */
     .feed-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -113,132 +84,68 @@
       padding: 15px;
     }
 
-    .feed-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
+    .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--accent); display: flex;
+      align-items: center; justify-content: center; font-weight: bold;
     }
 
-    .feed-user {
-      font-weight: bold;
-      font-size: 0.95rem;
-    }
-
-    .feed-content {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: #cbd5e1;
-      margin-bottom: 12px;
-      white-space: pre-line;
-    }
+    .feed-user { font-weight: bold; font-size: 0.95rem; }
+    .feed-content { font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 10px; white-space: pre-line; }
+    .feed-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
 
     .feed-actions {
-      display: flex;
-      gap: 15px;
-      border-top: 1px solid var(--border);
-      padding-top: 10px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      display: flex; gap: 15px; border-top: 1px solid var(--border);
+      padding-top: 10px; font-size: 0.85rem; color: var(--text-muted);
     }
+    .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-    .action-item {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* النافذة المنبثقة للإنشاء */
     .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 200;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 200;
+      justify-content: center; align-items: center; padding: 20px;
     }
 
     .modal-content {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      width: 100%;
-      max-width: 450px;
-      padding: 20px;
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; width: 100%; max-width: 450px; padding: 20px;
     }
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .modal-textarea {
-      width: 100%;
-      height: 100px;
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      padding: 10px;
-      resize: none;
-      outline: none;
-      margin-bottom: 15px;
+      width: 100%; height: 90px; background: var(--bg-main);
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); padding: 10px; resize: none; outline: none; margin-bottom: 10px;
+    }
+
+    .file-input-wrapper { margin-bottom: 12px; }
+    .file-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #334155; color: #f8fafc; padding: 8px 12px;
+      border-radius: 6px; font-size: 0.85rem; cursor: pointer;
+    }
+    .image-preview {
+      width: 100%; max-height: 150px; object-fit: cover;
+      border-radius: 8px; display: none; margin-top: 8px;
     }
 
     .post-btn {
-      width: 100%;
-      padding: 10px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
+      width: 100%; padding: 10px; background: var(--accent);
+      color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
     }
 
-    /* الشريط السفلي الموحد */
     .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 60px;
-      background-color: var(--card-bg);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid var(--border);
-      z-index: 100;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--card-bg); display: flex; justify-content: space-around;
+      align-items: center; border-top: 1px solid var(--border); z-index: 100;
     }
 
     .nav-item {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
+      color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
     }
-
-    .nav-item.active {
-      color: var(--accent);
-      font-weight: bold;
-    }
+    .nav-item.active { color: var(--accent); font-weight: bold; }
   </style>
 </head>
 <body>
@@ -252,13 +159,11 @@
   </header>
 
   <div class="container">
-    <!-- صندوق إنشاء منشور -->
     <div class="create-post-box" onclick="openPostModal()">
-      <div class="avatar" id="userAvatar">👤</div>
-      <div class="create-post-input">بم تفكر اليوم؟ شارك المجتمع...</div>
+      <div class="avatar">👤</div>
+      <div class="create-post-input">بم تفكر اليوم؟ أضف نصاً أو صورة...</div>
     </div>
 
-    <!-- أزرار وصول سريع -->
     <div class="quick-access">
       <a href="design-studio.html" class="quick-card">🛍️ المتجر والتصاميم</a>
       <a href="reels.html" class="quick-card">🎬 أحدث الريلز</a>
@@ -266,13 +171,9 @@
       <a href="chat.html" class="quick-card">💬 مجتمع المنصة</a>
     </div>
 
-    <!-- قائمة المنشورات الديناميكية -->
-    <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;">
-      <!-- المنشورات المضافة والمحفوظة تظهر هنا -->
-    </div>
+    <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;"></div>
   </div>
 
-  <!-- النافذة المنبثقة لكتابة منشور -->
   <div class="modal" id="postModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -280,11 +181,17 @@
         <span style="cursor:pointer;" onclick="closePostModal()">❌</span>
       </div>
       <textarea id="postText" class="modal-textarea" placeholder="اكتب منشورك هنا..."></textarea>
+      
+      <div class="file-input-wrapper">
+        <label for="postImageInput" class="file-label">🖼️ إرفاق صورة</label>
+        <input type="file" id="postImageInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+        <img id="imgPreview" class="image-preview" alt="معاينة الصورة">
+      </div>
+
       <button class="post-btn" onclick="publishPost()">نشر الآن 🚀</button>
     </div>
   </div>
 
-  <!-- الشريط السفلي الموحد -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item active">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
@@ -294,21 +201,31 @@
   </nav>
 
   <script>
-    // المنشورات المفتراضية
+    let base64Image = "";
+
     const defaultPosts = [
       {
         author: "إدارة SharikiHub",
         avatar: "S",
         time: "منذ ساعة",
-        content: "مرحباً بكم في المنصة الشاملة! تم إطلاق استوديو التصاميم والمطبوعات بالإضافة للأقسام الترفيهية ومقاطع الريلز. استكشف التطبيق الآن! 🔥👕"
-      },
-      {
-        author: "مجتمع المصممين",
-        avatar: "A",
-        time: "منذ 3 ساعات",
-        content: "تمت إضافة تصاميم جديدة للملابس والأكواب داخل المتجر. يمكنك الآن طلب الطباعة المباشرة حسب الطلب مع التوصيل!"
+        content: "مرحباً بكم في المنصة الشاملة! تم إطلاق استوديو التصاميم والمطبوعات بالإضافة للأقسام الترفيهية ومقاطع الريلز. 🔥👕",
+        image: ""
       }
     ];
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          base64Image = e.target.result;
+          const imgElement = document.getElementById('imgPreview');
+          imgElement.src = base64Image;
+          imgElement.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
 
     function loadPosts() {
       const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
@@ -317,6 +234,7 @@
       feed.innerHTML = '';
 
       allPosts.forEach(post => {
+        const imgTag = post.image ? `<img src="${post.image}" class="feed-img" alt="صورة المنشور">` : '';
         feed.innerHTML += `
           <div class="feed-card">
             <div class="feed-header">
@@ -327,6 +245,7 @@
               </div>
             </div>
             <div class="feed-content">${post.content}</div>
+            ${imgTag}
             <div class="feed-actions">
               <span class="action-item" onclick="this.style.color='#ef4444'">❤️ إعجاب</span>
               <span class="action-item" onclick="alert('قسم التعليقات قريباً!')">💬 تعليق</span>
@@ -343,18 +262,22 @@
     function closePostModal() {
       document.getElementById('postModal').style.display = 'none';
       document.getElementById('postText').value = '';
+      document.getElementById('postImageInput').value = '';
+      document.getElementById('imgPreview').style.display = 'none';
+      base64Image = "";
     }
 
     function publishPost() {
       const text = document.getElementById('postText').value.trim();
-      if (!text) { alert('يرجى كتابة نص المنشور'); return; }
+      if (!text && !base64Image) { alert('يرجى كتابة نص أو إرفاق صورة'); return; }
 
       const user = JSON.parse(localStorage.getItem('currentUser')) || { name: 'مستخدم جديد' };
       const newPost = {
         author: user.name,
         avatar: user.name.charAt(0).toUpperCase(),
         time: "الآن",
-        content: text
+        content: text,
+        image: base64Image
       };
 
       const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
