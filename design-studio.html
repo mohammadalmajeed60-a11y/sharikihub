@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - استديو التصميم والطباعة</title>
+  <title>SharikiHub - المتجر</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -15,354 +15,109 @@
       --border: #334155;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Tajawal', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 
-    body {
-      background-color: var(--bg-main);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 70px;
-    }
+    body { background-color: var(--bg-main); color: var(--text); padding-bottom: 80px; }
 
-    header {
-      background-color: var(--card-bg);
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
+    header { background-color: var(--card-bg); padding: 15px; text-align: center; border-bottom: 1px solid var(--border); }
+    .header-title { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
 
-    .header-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #38bdf8;
-    }
+    .container { padding: 15px; }
 
-    .cart-btn-head {
-      background: var(--bg-main);
-      color: #10b981;
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 0.85rem;
-    }
+    /* شبكة المنتجات */
+    .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
-    .container {
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    /* منطقة المعاينة المباشرة */
-    .preview-box {
+    .product-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      height: 260px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      border-radius: 15px;
       overflow: hidden;
-      transition: background-color 0.3s ease;
+      transition: transform 0.2s;
     }
 
-    .product-base {
-      font-size: 7.5rem;
-      user-select: none;
-    }
+    .product-img { width: 100%; height: 140px; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
 
-    .custom-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      max-width: 75%;
-      z-index: 10;
-    }
-
-    .logo-preview {
-      max-width: 70px;
-      max-height: 70px;
-      object-fit: contain;
-      display: none;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-    }
-
-    .custom-text-overlay {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #ffffff;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-      word-break: break-word;
-      text-align: center;
-    }
-
-    /* أدوات التحكم والتخصيص */
-    .controls-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .control-label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .product-grid-selector {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .select-btn {
-      padding: 10px 5px;
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .select-btn.active {
-      border-color: var(--accent);
-      background: var(--accent);
-    }
-
-    .text-input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg-main);
-      color: #fff;
-      outline: none;
-    }
-
-    .upload-btn-label {
+    .product-info { padding: 10px; }
+    .product-name { font-weight: bold; font-size: 0.9rem; }
+    .product-price { color: var(--accent); font-weight: bold; margin: 5px 0; }
+    
+    .btn-buy {
       display: block;
       width: 100%;
-      padding: 10px;
-      background: var(--bg-main);
-      border: 1px dashed var(--accent);
-      color: #38bdf8;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 0.85rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .color-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .color-dot {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid rgba(255,255,255,0.8);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .full-color-picker {
-      width: 36px;
-      height: 36px;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      background: none;
-    }
-
-    .btn-submit {
-      width: 100%;
-      padding: 12px;
-      background: #10b981;
-      border: none;
-      border-radius: 8px;
+      padding: 8px;
+      background: var(--accent);
       color: white;
-      font-weight: bold;
-      font-size: 0.95rem;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 0.85rem;
       margin-top: 5px;
     }
 
+    /* الشريط السفلي */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: var(--card-bg);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid var(--border);
-      z-index: 100;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--card-bg); display: flex; justify-content: space-around;
+      align-items: center; border-top: 1px solid var(--border); z-index: 100;
     }
-
-    .nav-item {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .nav-item.active {
-      color: var(--accent);
-      font-weight: bold;
-    }
+    .nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .nav-item.active { color: var(--accent); font-weight: bold; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="header-title">🎨 استديو التصميم والطباعة</div>
-    <a href="cart.html" class="cart-btn-head">🛒 السلة</a>
+    <div class="header-title">🛍️ استوديو التصاميم</div>
   </header>
 
   <div class="container">
-    <!-- منطقة المعاينة المباشرة -->
-    <div class="preview-box" id="previewBox">
-      <div class="product-base" id="productBase">🧥</div>
-      <div class="custom-overlay">
-        <img id="logoPreview" class="logo-preview" alt="الشعار">
-        <div class="custom-text-overlay" id="textOverlay">نص التصميم</div>
-      </div>
-    </div>
-
-    <!-- لوحة التحكم -->
-    <div class="controls-card">
-      <div>
-        <div class="control-label">اختر المنتج:</div>
-        <div class="product-grid-selector">
-          <button class="select-btn active" onclick="setProduct('🧥', this)">🧥 هودي</button>
-          <button class="select-btn" onclick="setProduct('📱', this)">📱 كفر جوال</button>
-          <button class="select-btn" onclick="setProduct('👔', this)">👔 قميص</button>
-          <button class="select-btn" onclick="setProduct('👕', this)">👕 تيشرت</button>
-          <button class="select-btn" onclick="setProduct('☕', this)">☕ كوب</button>
-          <button class="select-btn" onclick="setProduct('🧢', this)">🧢 قبعة</button>
+    <div class="shop-grid">
+      <!-- منتج 1 -->
+      <div class="product-card">
+        <div class="product-img">👕</div>
+        <div class="product-info">
+          <div class="product-name">تيشيرت شاركي</div>
+          <div class="product-price">120 ريال</div>
+          <button class="btn-buy" onclick="alert('تمت إضافة التيشيرت للسلة!')">إضافة للسلة</button>
         </div>
       </div>
-
-      <!-- لون المنتج -->
-      <div>
-        <div class="control-label">لون خلفية المنتج:</div>
-        <div class="color-row">
-          <div class="color-dot" style="background: #1e293b;" onclick="setProductBg('#1e293b')"></div>
-          <div class="color-dot" style="background: #ffffff;" onclick="setProductBg('#ffffff')"></div>
-          <div class="color-dot" style="background: #000000;" onclick="setProductBg('#000000')"></div>
-          <div class="color-dot" style="background: #0f172a;" onclick="setProductBg('#0f172a')"></div>
-          <div class="color-dot" style="background: #991b1b;" onclick="setProductBg('#991b1b')"></div>
-          <div class="color-dot" style="background: #065f46;" onclick="setProductBg('#065f46')"></div>
-          <input type="color" class="full-color-picker" value="#1e293b" oninput="setProductBg(this.value)">
+      <!-- منتج 2 -->
+      <div class="product-card">
+        <div class="product-img">☕</div>
+        <div class="product-info">
+          <div class="product-name">كوب السعادة</div>
+          <div class="product-price">45 ريال</div>
+          <button class="btn-buy" onclick="alert('تمت إضافة الكوب للسلة!')">إضافة للسلة</button>
         </div>
       </div>
-
-      <div>
-        <div class="control-label">رفع شعار أو صورة:</div>
-        <label class="upload-btn-label">
-          📷 اضغط لرفع صورة من الاستوديو
-          <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
-        </label>
-      </div>
-
-      <div>
-        <div class="control-label">اكتب النص المطبوع:</div>
-        <input type="text" class="text-input" id="inputCustomText" value="نص التصميم" oninput="updateText(this.value)">
-      </div>
-
-      <!-- لون النص -->
-      <div>
-        <div class="control-label">لون النص المطبوع:</div>
-        <div class="color-row">
-          <div class="color-dot" style="background: #ffffff;" onclick="setTextColor('#ffffff')"></div>
-          <div class="color-dot" style="background: #f59e0b;" onclick="setTextColor('#f59e0b')"></div>
-          <div class="color-dot" style="background: #ef4444;" onclick="setTextColor('#ef4444')"></div>
-          <div class="color-dot" style="background: #38bdf8;" onclick="setTextColor('#38bdf8')"></div>
-          <div class="color-dot" style="background: #10b981;" onclick="setTextColor('#10b981')"></div>
-          <input type="color" class="full-color-picker" value="#ffffff" oninput="setTextColor(this.value)">
+      <!-- منتج 3 -->
+      <div class="product-card">
+        <div class="product-img">🖼️</div>
+        <div class="product-info">
+          <div class="product-name">لوحة حائطية</div>
+          <div class="product-price">85 ريال</div>
+          <button class="btn-buy" onclick="alert('تمت إضافة اللوحة للسلة!')">إضافة للسلة</button>
         </div>
       </div>
-
-      <button class="btn-submit" onclick="orderDesign()">🛍️ حفظ التصميم وإضافته للسلة</button>
+      <!-- منتج 4 -->
+      <div class="product-card">
+        <div class="product-img">📱</div>
+        <div class="product-info">
+          <div class="product-name">كفر جوال مميز</div>
+          <div class="product-price">60 ريال</div>
+          <button class="btn-buy" onclick="alert('تمت إضافة الكفر للسلة!')">إضافة للسلة</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- الشريط السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
     <a href="design-studio.html" class="nav-item active">🛍️ المتجر</a>
-    <a href="admin.html" class="nav-item">👤 الملف</a>
   </nav>
 
-  <script>
-    function setProduct(icon, btn) {
-      document.getElementById('productBase').innerText = icon;
-      document.querySelectorAll('.select-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function setProductBg(color) {
-      document.getElementById('previewBox').style.backgroundColor = color;
-    }
-
-    function updateText(val) {
-      document.getElementById('textOverlay').innerText = val;
-    }
-
-    function setTextColor(color) {
-      document.getElementById('textOverlay').style.color = color;
-    }
-
-    function handleLogoUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const logoImg = document.getElementById('logoPreview');
-        logoImg.src = URL.createObjectURL(file);
-        logoImg.style.display = 'block';
-      }
-    }
-
-    function orderDesign() {
-      alert('تم إضافة المنتج وتصميمك إلى السلة بنجاح!');
-      window.location.href = 'cart.html';
-    }
-  </script>
 </body>
 </html>
