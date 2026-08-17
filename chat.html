@@ -67,15 +67,6 @@
       color: #fff;
     }
 
-    /* منطقة الرسائل والإدخال */
-    .chat-view {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 120px);
-      padding-bottom: 60px;
-    }
-
     .messages-container {
       flex: 1;
       padding: 15px;
@@ -83,6 +74,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-bottom: 120px; /* مساحة لضمان عدم تغطية الرسائل بالمدخلات */
     }
 
     .msg-card {
@@ -109,12 +101,18 @@
       font-weight: bold;
     }
 
+    /* تثبيت حقل الإرسال فوق الشريط السفلي تماماً */
     .input-bar {
+      position: fixed;
+      bottom: 60px;
+      left: 0;
+      right: 0;
       background: var(--card-bg);
       padding: 10px;
       display: flex;
       gap: 8px;
       border-top: 1px solid var(--border);
+      z-index: 90;
     }
 
     .input-bar input {
@@ -176,13 +174,11 @@
     <button class="tab-btn">المجالس الجماعية</button>
   </div>
 
-  <div class="chat-view">
-    <div class="messages-container" id="messagesBox"></div>
+  <div class="messages-container" id="messagesBox"></div>
 
-    <div class="input-bar">
-      <input type="text" id="msgInput" placeholder="اكتب رسالتك..." onkeydown="if(event.key==='Enter') sendMsg()">
-      <button onclick="sendMsg()">إرسال</button>
-    </div>
+  <div class="input-bar">
+    <input type="text" id="msgInput" placeholder="اكتب رسالتك..." onkeydown="if(event.key==='Enter') sendMsg()">
+    <button onclick="sendMsg()">إرسال</button>
   </div>
 
   <nav class="bottom-nav">
