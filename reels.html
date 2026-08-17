@@ -29,6 +29,41 @@
       overflow: hidden;
     }
 
+    /* شريط علوي لزر إضافة ريلز */
+    .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+    }
+
+    .top-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .add-reel-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
     /* حاوي الفيديوهات الرأسي */
     .reels-container {
       height: calc(100vh - 60px);
@@ -148,6 +183,15 @@
 </head>
 <body>
 
+  <!-- شريط علوي يحتوي على زر إضافة فيديو -->
+  <div class="top-bar">
+    <div class="top-title">🎬 ريلز SharikiHub</div>
+    <button class="add-reel-btn" onclick="triggerVideoUpload()">➕ إضافة فيديو</button>
+  </div>
+
+  <!-- حقل رفع الفيديو المخفي -->
+  <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleVideoUpload(event)">
+
   <div class="reels-container">
     
     <!-- فيديو 1 -->
@@ -196,7 +240,7 @@
 
       <div class="reel-info">
         <div class="reel-user">@tech_hub</div>
-        <div class="reel-desc">تصميم كفرات الجواتف والتخصيص المباشر من التطبيق 📱✨</div>
+        <div class="reel-desc">تصميم كفرات الهواتف والتخصيص المباشر من التطبيق 📱✨</div>
       </div>
     </div>
 
@@ -214,6 +258,17 @@
   <script>
     function toggleLike(btn) {
       btn.classList.toggle('liked');
+    }
+
+    function triggerVideoUpload() {
+      document.getElementById('videoInput').click();
+    }
+
+    function handleVideoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        alert('تم اختيار الفيديو بنجاح! جاري تحضيره للعرض.');
+      }
     }
 
     // تشغيل الفيديو الظاهر فقط عند التمرير
