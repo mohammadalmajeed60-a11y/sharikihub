@@ -32,14 +32,27 @@
     header {
       background-color: var(--card-bg);
       padding: 15px;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid var(--border);
     }
 
     .header-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: #38bdf8;
+    }
+
+    .cart-btn-head {
+      background: var(--bg-main);
+      color: #10b981;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.85rem;
     }
 
     .container {
@@ -166,7 +179,6 @@
       cursor: pointer;
     }
 
-    /* خيارات الألوان */
     .color-row {
       display: flex;
       align-items: center;
@@ -238,7 +250,8 @@
 <body>
 
   <header>
-    <div class="header-title">🎨 استديو الطباعة والتصميم</div>
+    <div class="header-title">🎨 استديو التصميم والطباعة</div>
+    <a href="cart.html" class="cart-btn-head">🛒 السلة</a>
   </header>
 
   <div class="container">
@@ -275,8 +288,7 @@
           <div class="color-dot" style="background: #0f172a;" onclick="setProductBg('#0f172a')"></div>
           <div class="color-dot" style="background: #991b1b;" onclick="setProductBg('#991b1b')"></div>
           <div class="color-dot" style="background: #065f46;" onclick="setProductBg('#065f46')"></div>
-          <!-- اختر أي لون -->
-          <input type="color" class="full-color-picker" value="#1e293b" oninput="setProductBg(this.value)" title="اختر لوناً تخصيصياً">
+          <input type="color" class="full-color-picker" value="#1e293b" oninput="setProductBg(this.value)">
         </div>
       </div>
 
@@ -302,12 +314,11 @@
           <div class="color-dot" style="background: #ef4444;" onclick="setTextColor('#ef4444')"></div>
           <div class="color-dot" style="background: #38bdf8;" onclick="setTextColor('#38bdf8')"></div>
           <div class="color-dot" style="background: #10b981;" onclick="setTextColor('#10b981')"></div>
-          <!-- اختر أي لون -->
-          <input type="color" class="full-color-picker" value="#ffffff" oninput="setTextColor(this.value)" title="اختر لون نص مخصص">
+          <input type="color" class="full-color-picker" value="#ffffff" oninput="setTextColor(this.value)">
         </div>
       </div>
 
-      <button class="btn-submit" onclick="orderDesign()">🛍️ حفظ التصميم وطلب المنتج</button>
+      <button class="btn-submit" onclick="orderDesign()">🛍️ حفظ التصميم وإضافته للسلة</button>
     </div>
   </div>
 
@@ -349,7 +360,8 @@
     }
 
     function orderDesign() {
-      alert('تم حفظ تصميمك وشعارك بنجاح ونقله إلى طلباتك!');
+      alert('تم إضافة المنتج وتصميمك إلى السلة بنجاح!');
+      window.location.href = 'cart.html';
     }
   </script>
 </body>
