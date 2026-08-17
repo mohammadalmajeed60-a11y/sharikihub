@@ -54,7 +54,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      height: 250px;
+      height: 260px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -67,18 +67,35 @@
       user-select: none;
     }
 
-    .custom-text-overlay {
+    .custom-overlay {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      max-width: 75%;
+      z-index: 10;
+    }
+
+    .logo-preview {
+      max-width: 70px;
+      max-height: 70px;
+      object-fit: contain;
+      display: none;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+
+    .custom-text-overlay {
       font-size: 1.1rem;
       font-weight: bold;
       color: #ffffff;
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
       word-break: break-word;
       text-align: center;
-      max-width: 75%;
     }
 
     /* أدوات التحكم والتخصيص */
@@ -98,7 +115,6 @@
       margin-bottom: 6px;
     }
 
-    /* شبكة اختيار المنتجات */
     .product-grid-selector {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -135,6 +151,20 @@
       outline: none;
     }
 
+    .upload-btn-label {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: var(--bg-main);
+      border: 1px dashed var(--accent);
+      color: #38bdf8;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .color-picker {
       display: flex;
       gap: 10px;
@@ -161,7 +191,6 @@
       margin-top: 5px;
     }
 
-    /* شريط التنقل السفلي */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -199,16 +228,19 @@
   </header>
 
   <div class="container">
-    <!-- منطقة المعاينة -->
+    <!-- منطقة المعاينة المباشرة -->
     <div class="preview-box">
       <div class="product-base" id="productBase">🧥</div>
-      <div class="custom-text-overlay" id="textOverlay">نص التصميم</div>
+      <div class="custom-overlay">
+        <img id="logoPreview" class="logo-preview" alt="الشعار">
+        <div class="custom-text-overlay" id="textOverlay">نص التصميم</div>
+      </div>
     </div>
 
     <!-- لوحة التحكم -->
     <div class="controls-card">
       <div>
-        <div class="control-label">اختر المنتج للتخصيص:</div>
+        <div class="control-label">اختر المنتج:</div>
         <div class="product-grid-selector">
           <button class="select-btn active" onclick="setProduct('🧥', this)">🧥 هودي</button>
           <button class="select-btn" onclick="setProduct('📱', this)">📱 كفر جوال</button>
@@ -217,6 +249,14 @@
           <button class="select-btn" onclick="setProduct('☕', this)">☕ كوب</button>
           <button class="select-btn" onclick="setProduct('🧢', this)">🧢 قبعة</button>
         </div>
+      </div>
+
+      <div>
+        <div class="control-label">رفع شعار أو صورة:</div>
+        <label class="upload-btn-label">
+          📷 اضغط لرفع صورة من الاستوديو
+          <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
+        </label>
       </div>
 
       <div>
@@ -255,15 +295,24 @@
     }
 
     function updateText(val) {
-      document.getElementById('textOverlay').innerText = val || 'نص التصميم';
+      document.getElementById('textOverlay').innerText = val;
     }
 
     function setTextColor(color) {
       document.getElementById('textOverlay').style.color = color;
     }
 
+    function handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const logoImg = document.getElementById('logoPreview');
+        logoImg.src = URL.createObjectURL(file);
+        logoImg.style.display = 'block';
+      }
+    }
+
     function orderDesign() {
-      alert('تم حفظ تصميمك بنجاح ونقله إلى قائمة الطلبات الخاصة بك!');
+      alert('تم حفظ تصميمك وشعارك بنجاح ونقله إلى طلباتك!');
     }
   </script>
 </body>
