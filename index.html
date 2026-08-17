@@ -3,54 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - الرئيسية</title>
+    <title>منصتك المتكاملة</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background-color: #f4f4f9; color: #333; padding: 20px; }
-        
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-size: 28px; color: #007bff; }
-        
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .menu-item { background: #fff; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-decoration: none; color: #333; transition: transform 0.2s; }
-        .menu-item:active { transform: scale(0.95); }
-        .menu-item span { display: block; font-size: 30px; margin-bottom: 10px; }
-        .menu-item h3 { font-size: 16px; }
+        :root {
+            --bg-color: #0f0f12;
+            --card-bg: #1a1a24;
+            --accent-color: #7c3aed;
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --border-color: #2e2e3e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 70px; }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { font-size: 1.2rem; font-weight: bold; color: var(--accent-color); }
+
+        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+
+        /* شريط التنقل السفلي المحدث مع قسم الريلز */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%;
+            background-color: var(--card-bg);
+            display: flex; justify-content: space-around;
+            padding: 10px 0; border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-item {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.75rem; display: flex; flex-direction: column;
+            align-items: center; gap: 4px;
+        }
+
+        .nav-item.active { color: var(--accent-color); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>مرحباً بك في SharikiHub</h1>
-    <p>بوابتك للتصميم، الترفيه، والإبداع</p>
-</div>
+    <header>
+        <div class="logo">منصتنا</div>
+        <div>🔍</div>
+    </header>
 
-<div class="menu-grid">
-    <a href="design-studio.html" class="menu-item">
-        <span>🎨</span>
-        <h3>استوديو التصميم</h3>
-    </a>
-    <a href="entertainment.html" class="menu-item">
-        <span>🎭</span>
-        <h3>الترفيه</h3>
-    </a>
-    <a href="reels.html" class="menu-item">
-        <span>⚡</span>
-        <h3>الريلز</h3>
-    </a>
-    <a href="about.html" class="menu-item">
-        <span>ℹ️</span>
-        <h3>من نحن</h3>
-    </a>
-    <a href="admin.html" class="menu-item">
-        <span>⚙️</span>
-        <h3>لوحة التحكم</h3>
-    </a>
-    <a href="privacy.html" class="menu-item">
-        <span>🔒</span>
-        <h3>الخصوصية</h3>
-    </a>
-</div>
+    <div class="container">
+        <div style="text-align: center; color: var(--text-muted); margin-top: 50px;">
+            🎬 قسم الريلز والمنشورات التفاعلية قيد التطوير...
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي يشمل الريلز الآن -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">🏠 الرئيسية</a>
+        <a href="#" class="nav-item">🎬 ريلز</a>
+        <a href="#" class="nav-item">💬 المحادثات</a>
+        <a href="#" class="nav-item">🛍️ المتجر</a>
+        <a href="#" class="nav-item">👤 الملف</a>
+    </nav>
 
 </body>
 </html>
