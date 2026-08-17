@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub - سلة الشراء والطلبات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 70px;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #10b981;
+    }
+
+    .container {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .cart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cart-item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .item-icon {
+      font-size: 2.5rem;
+      background: var(--bg-main);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .item-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .item-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .item-price {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #38bdf8;
+    }
+
+    .summary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .total-row {
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #10b981;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg-main);
+      color: #fff;
+      outline: none;
+      margin-top: 5px;
+    }
+
+    .btn-checkout {
+      width: 100%;
+      padding: 12px;
+      background: #10b981;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-title">🛒 سلة المشتريات والطلبات</div>
+  </header>
+
+  <div class="container">
+    <!-- عنصر في السلة -->
+    <div class="cart-card">
+      <div class="cart-item-info">
+        <div class="item-icon">🧥</div>
+        <div>
+          <div class="item-title">هودي مخصص</div>
+          <div class="item-sub">المقاس: L | اللون: أسود</div>
+        </div>
+      </div>
+      <div class="item-price">$25.00</div>
+    </div>
+
+    <!-- ملخص الطلب -->
+    <div class="summary-card">
+      <div class="summary-row">
+        <span>مجموع المنتجات</span>
+        <span>$25.00</span>
+      </div>
+      <div class="summary-row">
+        <span>تكلفة الشحن</span>
+        <span>$5.00</span>
+      </div>
+      <div class="summary-row total-row">
+        <span>الإجمالي النهائي</span>
+        <span>$30.00</span>
+      </div>
+    </div>
+
+    <!-- معلومات الشحن -->
+    <div class="summary-card">
+      <div style="font-weight: bold; color: #38bdf8;">📍 تفاصيل الشحن والتوصيل</div>
+      <input type="text" class="form-input" placeholder="الاسم الكامل">
+      <input type="tel" class="form-input" placeholder="رقم الهاتف">
+      <input type="text" class="form-input" placeholder="العنوان والمدينة">
+      <button class="btn-checkout" onclick="completeOrder()">✅ تأكيد وإرسال الطلب</button>
+    </div>
+  </div>
+
+  <!-- الشريط السفلي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="chat.html" class="nav-item">💬 المحادثات</a>
+    <a href="design-studio.html" class="nav-item active">🛍️ المتجر</a>
+    <a href="admin.html" class="nav-item">👤 الملف</a>
+  </nav>
+
+  <script>
+    function completeOrder() {
+      alert('تم استلام طلبك بنجاح! سيتم التواصل معك لتأكيد التوصيل.');
+    }
+  </script>
+</body>
+</html>
