@@ -68,6 +68,48 @@
       color: #fff;
     }
 
+    /* منطقة الرسائل */
+    .chat-view {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .messages-container {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 130px;
+    }
+
+    .msg-card {
+      background: var(--card-bg);
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 80%;
+      border: 1px solid var(--border);
+    }
+
+    .msg-card.me {
+      align-self: flex-start;
+      background: var(--accent);
+    }
+
+    .msg-card.other {
+      align-self: flex-end;
+    }
+
+    .msg-sender {
+      font-size: 0.75rem;
+      color: #fbbf24;
+      margin-bottom: 2px;
+      font-weight: bold;
+    }
+
     /* قائمة المجالس الجماعية */
     .groups-list {
       display: none;
@@ -81,7 +123,7 @@
     .group-item {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      padding: 12px 15px;
+      padding: 15px;
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -112,48 +154,7 @@
       color: var(--text-muted);
     }
 
-    /* منطقة الرسائل والإدخال */
-    .chat-view {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .messages-container {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 120px;
-    }
-
-    .msg-card {
-      background: var(--card-bg);
-      padding: 10px 14px;
-      border-radius: 12px;
-      max-width: 80%;
-      border: 1px solid var(--border);
-    }
-
-    .msg-card.me {
-      align-self: flex-start;
-      background: var(--accent);
-    }
-
-    .msg-card.other {
-      align-self: flex-end;
-    }
-
-    .msg-sender {
-      font-size: 0.75rem;
-      color: #fbbf24;
-      margin-bottom: 2px;
-      font-weight: bold;
-    }
-
+    /* شريط الكتابة */
     .input-bar {
       position: fixed;
       bottom: 60px;
@@ -184,8 +185,10 @@
       border-radius: 8px;
       color: #fff;
       font-weight: bold;
+      cursor: pointer;
     }
 
+    /* الشريط السفلي */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -222,15 +225,15 @@
   </header>
 
   <div class="chat-tabs">
-    <button class="tab-btn active" id="btnPrivate" onclick="switchTab('private')">الخاص (الأصدقاء)</button>
-    <button class="tab-btn" id="btnGroups" onclick="switchTab('groups')">المجالس الجماعية</button>
+    <button class="tab-btn active" id="btnPrivate">الخاص (الأصدقاء)</button>
+    <button class="tab-btn" id="btnGroups">المجالس الجماعية</button>
   </div>
 
-  <!-- عرض المحادثة الخفية المباشرة -->
+  <!-- عرض المحادثات -->
   <div class="chat-view" id="chatView">
     <div class="messages-container" id="messagesBox"></div>
 
-    <div class="input-bar">
+    <div class="input-bar" id="inputBar">
       <input type="text" id="msgInput" placeholder="اكتب رسالتك..." onkeydown="if(event.key==='Enter') sendMsg()">
       <button onclick="sendMsg()">إرسال</button>
     </div>
@@ -298,7 +301,7 @@
 
     function loadRoomMessages(room) {
       messagesBox.innerHTML = '';
-      db.ref('rooms/' + room).off(); // إيقاف الاستماع للغرفة القديمة
+      db.ref('rooms/' + room).off();
       
       db.ref('rooms/' + room).on('child_added', (snapshot) => {
         const data = snapshot.val();
@@ -329,32 +332,38 @@
       }
     }
 
-    function switchTab(tab) {
-      if(tab === 'private') {
-        document.getElementById('btnPrivate').classList.add('active');
-        document.getElementById('btnGroups').classList.remove('active');
-        document.getElementById('chatView').style.display = 'flex';
-        document.getElementById('groupsList').style.display = 'none';
-        document.getElementById('roomTitle').innerText = '💬 المحادثات العامة';
-        currentRoom = 'global';
-        loadRoomMessages(currentRoom);
-      } else {
-        document.getElementById('btnGroups').classList.add('active');
-        document.getElementById('btnPrivate').classList.remove('active');
-        document.getElementById('chatView').style.display = 'none';
-        document.getElementById('groupsList').style.display = 'flex';
-      }
-    }
+    const btnPrivate = document.getElementById('btnPrivate');
+    const btnGroups = document.getElementById('btnGroups');
+    const chatView = document.getElementById('chatView');
+    const groupsList = document.getElementById('groupsList');
+    const roomTitle = document.getElementById('roomTitle');
+
+    btnPrivate.addEventListener('click', () => {
+      btnPrivate.classList.add('active');
+      btnGroups.classList.remove('active');
+      chatView.style.display = 'flex';
+      groupsList.style.display = 'none';
+      roomTitle.innerText = '💬 المحادثات العامة';
+      currentRoom = 'global';
+      loadRoomMessages(currentRoom);
+    });
+
+    btnGroups.addEventListener('click', () => {
+      btnGroups.classList.add('active');
+      btnPrivate.classList.remove('active');
+      chatView.style.display = 'none';
+      groupsList.style.display = 'flex';
+      roomTitle.innerText = '👥 اختر المجلس الجماعي';
+    });
 
     function joinRoom(name, roomId) {
       currentRoom = roomId;
-      document.getElementById('roomTitle').innerText = '💬 ' + name;
-      document.getElementById('chatView').style.display = 'flex';
-      document.getElementById('groupsList').style.display = 'none';
+      roomTitle.innerText = '💬 ' + name;
+      chatView.style.display = 'flex';
+      groupsList.style.display = 'none';
       loadRoomMessages(currentRoom);
     }
 
-    // التحميل الأولي
     loadRoomMessages('global');
   </script>
 </body>
