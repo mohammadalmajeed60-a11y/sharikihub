@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub - الترفيه والاستكشاف</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 70px;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .container {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* شبكة الأقسام الترفيهية */
+    .sections-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .section-card:active {
+      transform: scale(0.98);
+      border-color: var(--accent);
+    }
+
+    .section-icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .section-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* قسم الأخبار المميزة */
+    .featured-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .featured-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .featured-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .featured-item:last-child {
+      border-bottom: none;
+    }
+
+    /* الشريط السفلي */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-title">🎈 الأقسام الترفيهية والاستكشاف</div>
+  </header>
+
+  <div class="container">
+    <!-- الشبكة الأربعة -->
+    <div class="sections-grid">
+      <div class="section-card" onclick="alert('مرحباً بك في قسم الكتب! ترشيحات الكتب قريباً.')">
+        <div class="section-icon">📚</div>
+        <div class="section-title">الكتب</div>
+        <div class="section-desc">ملخصات وتوصيات</div>
+      </div>
+
+      <div class="section-card" onclick="alert('مرحباً بك في قسم الرياضة! مواعيد المباريات قريباً.')">
+        <div class="section-icon">⚽</div>
+        <div class="section-title">الرياضة</div>
+        <div class="section-desc">أخبار وبطولات</div>
+      </div>
+
+      <div class="section-card" onclick="alert('مرحباً بك في قسم الأزياء! أحدث الصيحات قريباً.')">
+        <div class="section-icon">👗</div>
+        <div class="section-title">الأزياء</div>
+        <div class="section-desc">موضة وتصاميم</div>
+      </div>
+
+      <div class="section-card" onclick="alert('مرحباً بك في قسم الأفلام! المراجعات والترشيحات قريباً.')">
+        <div class="section-icon">🎬</div>
+        <div class="section-title">الأفلام</div>
+        <div class="section-desc">سينما ومراجعات</div>
+      </div>
+    </div>
+
+    <!-- بطاقة التحديثات والمقالات -->
+    <div class="featured-card">
+      <div class="featured-title">🔥 الأكثر تداولاً اليوم</div>
+      <div class="featured-item">⚽ جدول مباريات دوري أبطال أوروبا والأحداث الرياضية القادمة.</div>
+      <div class="featured-item">📚 أفضل 5 كتب في تطوير الذات وإدارة الوقت لهذا العام.</div>
+      <div class="featured-item">👗 صيحات الموضة والألوان الأكثر انتشاراً في هذا الموسم.</div>
+    </div>
+  </div>
+
+  <!-- الشريط السفلي المحدث -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item active">🎈 الترفيه</a>
+    <a href="chat.html" class="nav-item">💬 المحادثات</a>
+    <a href="design-studio.html" class="nav-item">🛍️ المتجر</a>
+  </nav>
+
+</body>
+</html>
