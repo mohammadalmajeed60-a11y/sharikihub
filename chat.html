@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - المحادثات والمجالس</title>
+  <title>SharikiHub - المحادثات</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-main: #0f172a;
       --card-bg: #1e293b;
       --accent: #8b5cf6;
-      --accent-hover: #7c3aed;
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --border: #334155;
@@ -32,26 +31,19 @@
       overflow: hidden;
     }
 
-    /* Header */
     header {
       background-color: var(--card-bg);
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 12px 16px;
+      text-align: center;
       border-bottom: 1px solid var(--border);
     }
 
     .header-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #f59e0b;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    /* Tabs */
     .chat-tabs {
       display: flex;
       background: var(--card-bg);
@@ -62,13 +54,12 @@
 
     .tab-btn {
       flex: 1;
-      padding: 10px;
+      padding: 8px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background: transparent;
       color: var(--text-muted);
       font-weight: bold;
-      cursor: pointer;
     }
 
     .tab-btn.active {
@@ -76,12 +67,13 @@
       color: #fff;
     }
 
-    /* Chat Area */
+    /* منطقة الرسائل والإدخال */
     .chat-view {
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      height: calc(100vh - 120px);
+      padding-bottom: 60px;
     }
 
     .messages-container {
@@ -95,7 +87,7 @@
 
     .msg-card {
       background: var(--card-bg);
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-radius: 12px;
       max-width: 80%;
       border: 1px solid var(--border);
@@ -104,7 +96,6 @@
     .msg-card.me {
       align-self: flex-start;
       background: var(--accent);
-      border-color: var(--accent-hover);
     }
 
     .msg-card.other {
@@ -114,29 +105,22 @@
     .msg-sender {
       font-size: 0.75rem;
       color: #fbbf24;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       font-weight: bold;
     }
 
-    .msg-text {
-      font-size: 0.95rem;
-      line-height: 1.4;
-    }
-
-    /* Input Area */
     .input-bar {
       background: var(--card-bg);
-      padding: 12px;
+      padding: 10px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       border-top: 1px solid var(--border);
-      margin-bottom: 60px;
     }
 
     .input-bar input {
       flex: 1;
-      padding: 12px 15px;
-      border-radius: 10px;
+      padding: 10px;
+      border-radius: 8px;
       border: 1px solid var(--border);
       background: var(--bg-main);
       color: #fff;
@@ -144,16 +128,14 @@
     }
 
     .input-bar button {
-      padding: 0 20px;
+      padding: 0 16px;
       background: var(--accent);
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       color: #fff;
       font-weight: bold;
-      cursor: pointer;
     }
 
-    /* Bottom Nav */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -175,7 +157,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
     }
 
     .nav-item.active {
@@ -196,9 +177,7 @@
   </div>
 
   <div class="chat-view">
-    <div class="messages-container" id="messagesBox">
-      <!-- الرسائل الحية ستظهر هنا -->
-    </div>
+    <div class="messages-container" id="messagesBox"></div>
 
     <div class="input-bar">
       <input type="text" id="msgInput" placeholder="اكتب رسالتك..." onkeydown="if(event.key==='Enter') sendMsg()">
@@ -206,7 +185,6 @@
     </div>
   </div>
 
-  <!-- شريط التنقل السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
@@ -215,25 +193,21 @@
     <a href="admin.html" class="nav-item">👤 الملف</a>
   </nav>
 
-  <!-- Firebase JavaScript SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <script>
-    // ربط Firebase ببيانات مشروعك
     const firebaseConfig = {
       databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // اسم المستخدم تلقائي
     let user = localStorage.getItem('sharikihub_user') || 'مستخدم_' + Math.floor(Math.random() * 1000);
     localStorage.setItem('sharikihub_user', user);
 
     const messagesBox = document.getElementById('messagesBox');
 
-    // استقبال الرسائل المباشرة فور ورودها
     db.ref('messages').on('child_added', (snapshot) => {
       const data = snapshot.val();
       const isMe = data.sender === user;
@@ -242,14 +216,13 @@
       msgCard.className = `msg-card ${isMe ? 'me' : 'other'}`;
       msgCard.innerHTML = `
         <div class="msg-sender">${data.sender}</div>
-        <div class="msg-text">${data.text}</div>
+        <div>${data.text}</div>
       `;
       
       messagesBox.appendChild(msgCard);
       messagesBox.scrollTop = messagesBox.scrollHeight;
     });
 
-    // إرسال الرسالة إلى Firebase
     function sendMsg() {
       const input = document.getElementById('msgInput');
       const text = input.value.trim();
