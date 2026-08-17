@@ -1,154 +1,197 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محادثات بيتنا الدافئ</title>
-    <style>
-        :root {
-            --bg-color: #0f0f12;
-            --card-bg: #1a1a24;
-            --accent-color: #7c3aed;
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            --border-color: #2e2e3e;
-            --warm-highlight: #f59e0b;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub - المحادثات الفورية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 75px; }
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        /* الشريط العلوي */
-        header {
-            background-color: var(--card-bg);
-            padding: 12px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .logo { font-size: 1.2rem; font-weight: bold; color: var(--warm-highlight); }
+    header {
+      background: #1e293b;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
 
-        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+    header h1 {
+      font-size: 1.2rem;
+      color: #38bdf8;
+    }
 
-        /* تبويبات المحادثات والمجالس */
-        .chat-tabs {
-            display: flex; background: var(--card-bg); border-radius: 10px;
-            padding: 4px; margin-bottom: 15px; border: 1px solid var(--border-color);
-        }
-        .chat-tab-btn {
-            flex: 1; padding: 8px; border: none; background: transparent;
-            color: var(--text-muted); font-size: 0.85rem; font-weight: bold; cursor: pointer;
-            border-radius: 8px; text-align: center;
-        }
-        .chat-tab-btn.active { background: var(--accent-color); color: white; }
+    .user-info {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
 
-        /* قائمة المحادثات / الغرف */
-        .chat-list { display: flex; flex-direction: column; gap: 10px; }
-        
-        .chat-item {
-            background-color: var(--card-bg); border: 1px solid var(--border-color);
-            padding: 12px 15px; border-radius: 12px; display: flex; align-items: center;
-            gap: 12px; text-decoration: none; color: var(--text-main);
-            transition: border-color 0.2s;
-        }
-        .chat-item:hover { border-color: var(--warm-highlight); }
+    .chat-container {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-        .chat-avatar {
-            width: 45px; height: 45px; border-radius: 50%; background: #252533;
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-            flex-shrink: 0; position: relative;
-        }
-        
-        .online-dot {
-            width: 12px; height: 12px; background: #10b981; border-radius: 50%;
-            position: absolute; bottom: 0; left: 0; border: 2px solid var(--card-bg);
-        }
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
 
-        .chat-info { flex: 1; overflow: hidden; }
-        .chat-name { font-weight: bold; font-size: 0.95rem; margin-bottom: 3px; }
-        .chat-last-msg { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .message.sent {
+      align-self: flex-start;
+      background-color: #0284c7;
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+    }
 
-        .chat-meta { text-align: left; font-size: 0.7rem; color: var(--text-muted); }
-        .badge { background: var(--warm-highlight); color: #000; padding: 2px 6px; border-radius: 10px; font-weight: bold; font-size: 0.65rem; display: inline-block; margin-top: 4px; }
+    .message.received {
+      align-self: flex-end;
+      background-color: #334155;
+      color: #f8fafc;
+      border-bottom-left-radius: 2px;
+    }
 
-        /* شريط التنقل السفلي */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; background-color: var(--card-bg);
-            display: flex; justify-content: space-around; padding: 10px 0;
-            border-top: 1px solid var(--border-color); z-index: 100;
-        }
-        .nav-item {
-            color: var(--text-muted); text-decoration: none; font-size: 0.75rem;
-            display: flex; flex-direction: column; align-items: center; gap: 3px;
-        }
-        .nav-item.active { color: var(--warm-highlight); font-weight: bold; }
-    </style>
+    .message-author {
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+      opacity: 0.8;
+      font-weight: bold;
+    }
+
+    .chat-input-area {
+      background: #1e293b;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      border-top: 1px solid #334155;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      background: #0f172a;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .chat-input-area input:focus {
+      border-color: #38bdf8;
+    }
+
+    .chat-input-area button {
+      padding: 0 20px;
+      background-color: #0284c7;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .chat-input-area button:hover {
+      background-color: #0369a1;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">💬 المحادثات والمجالس</div>
-        <div style="font-size: 1.1rem; color: var(--text-muted);">➕</div>
-    </header>
+  <header>
+    <h1>SharikiHub - غرفة الدردشة</h1>
+    <div class="user-info" id="userInfo">جاري التعرف على المستخدم...</div>
+  </header>
 
-    <div class="container">
-        <!-- التبويبات -->
-        <div class="chat-tabs">
-            <button class="chat-tab-btn active">الخاص (الأصدقاء)</button>
-            <button class="chat-tab-btn">المجالس الجماعية</button>
-        </div>
+  <div class="chat-container" id="chatContainer">
+    <!-- Messages will appear here -->
+  </div>
 
-        <!-- قائمة المحادثات -->
-        <div class="chat-list">
-            <!-- محادثة فردية -->
-            <a href="#" class="chat-item">
-                <div class="chat-avatar">
-                    🎨
-                    <div class="online-dot"></div>
-                </div>
-                <div class="chat-info">
-                    <div class="chat-name">ورشة التصميم المشترك</div>
-                    <div class="chat-last-msg">هل أرسلت لك ملف التيشرت الجديد لنقوم بتعديله؟</div>
-                </div>
-                <div class="chat-meta">
-                    12:30 م
-                    <br><span class="badge">2</span>
-                </div>
-            </a>
+  <div class="chat-input-area">
+    <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا..." onkeydown="if(event.key==='Enter') sendMessage()">
+    <button onclick="sendMessage()">إرسال</button>
+  </div>
 
-            <!-- مجلس تفاعلي -->
-            <a href="#" class="chat-item">
-                <div class="chat-avatar">⚽</div>
-                <div class="chat-info">
-                    <div class="chat-name">مجلس الرياضة الحي</div>
-                    <div class="chat-last-msg">أحمد: توقعاتي لمباراة القمة اليوم هي التعادل الإيجابي...</div>
-                </div>
-                <div class="chat-meta">منذ قليل</div>
-            </a>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-            <!-- محادثة شخصية -->
-            <a href="#" class="chat-item">
-                <div class="chat-avatar">
-                    👤
-                    <div class="online-dot"></div>
-                </div>
-                <div class="chat-info">
-                    <div class="chat-name">سارة محمد</div>
-                    <div class="chat-last-msg">شكراً على ترشيح الكتاب، بدأته اليوم وأعجبني جداً!</div>
-                </div>
-                <div class="chat-meta">أمس</div>
-            </a>
-        </div>
-    </div>
+  <script>
+    // تهيئة Firebase
+    const firebaseConfig = {
+      databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-    <!-- شريط التنقل السفلي المحدث -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">🏠 الرئيسية</a>
-        <a href="reels.html" class="nav-item">🎬 ريلز</a>
-        <a href="chat.html" class="nav-item active">💬 المحادثات</a>
-        <a href="#" class="nav-item">🛍️ المتجر</a>
-        <a href="#" class="nav-item">👤 الملف</a>
-    </nav>
+    // معرف المستخدم الحالي
+    let username = localStorage.getItem('sharikihub_user');
+    if (!username) {
+      username = 'زائر_' + Math.floor(Math.random() * 1000);
+      localStorage.setItem('sharikihub_user', username);
+    }
+    document.getElementById('userInfo').innerText = 'المستخدم: ' + username;
 
+    const chatContainer = document.getElementById('chatContainer');
+
+    // استماع للرسائل في الوقت الفعلي
+    database.ref('messages').on('child_added', (snapshot) => {
+      const msg = snapshot.val();
+      displayMessage(msg);
+    });
+
+    function displayMessage(msg) {
+      const msgDiv = document.createElement('div');
+      const isMe = msg.sender === username;
+      msgDiv.className = `message ${isMe ? 'sent' : 'received'}`;
+
+      msgDiv.innerHTML = `
+        <div class="message-author">${msg.sender}</div>
+        <div>${msg.text}</div>
+      `;
+
+      chatContainer.appendChild(msgDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const text = input.value.trim();
+
+      if (text !== '') {
+        database.ref('messages').push({
+          sender: username,
+          text: text,
+          timestamp: Date.now()
+        });
+        input.value = '';
+      }
+    }
+  </script>
 </body>
 </html>
