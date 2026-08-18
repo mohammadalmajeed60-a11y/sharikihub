@@ -6,11 +6,13 @@
     <title>SharikiHub</title>
     <style>
         :root {
-            --bg-color: #0d1b2a;
-            --card-bg: #1b263b;
-            --accent-yellow: #f4c430;
-            --text-color: #ffffff;
-            --border-color: #2a3d52;
+            --bg-dark: #0a131d;
+            --card-dark: #121e2d;
+            --yellow-btn: #f5c518;
+            --blue-accent: #38bdf8;
+            --text-light: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: #1e2d3d;
         }
 
         * {
@@ -21,55 +23,60 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             padding-bottom: 70px;
         }
 
-        /* Navbar */
+        /* Navbar Fixing Alignment */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            background-color: var(--bg-color);
+            padding: 15px;
+            background-color: var(--bg-dark);
         }
 
-        .logo {
-            color: #38bdf8;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .nav-right {
+        /* Left Side: Shopping Cart, Search, Login Button */
+        .nav-left {
             display: flex;
             align-items: center;
-            gap: 15px;
-        }
-
-        .btn-login {
-            background-color: var(--accent-yellow);
-            color: #000;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(244, 196, 48, 0.4);
+            gap: 12px;
         }
 
         .icon-btn {
             background: none;
             border: none;
-            color: #fff;
+            color: #94a3b8;
             font-size: 18px;
             cursor: pointer;
         }
 
-        /* Create Post Input */
+        .btn-login {
+            background-color: var(--yellow-btn);
+            color: #000;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 0 12px rgba(245, 197, 24, 0.3);
+        }
+
+        /* Right Side: Logo */
+        .logo {
+            color: var(--blue-accent);
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Create Post Area */
         .post-input-container {
             margin: 10px 15px;
-            background-color: #162436;
+            background-color: var(--card-dark);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 12px;
@@ -91,11 +98,11 @@
         }
 
         .post-input-text {
-            color: #94a3b8;
+            color: #64748b;
             font-size: 14px;
         }
 
-        /* Horizontal Quick Categories */
+        /* Horizontal Scrolling Chips */
         .quick-nav {
             display: flex;
             gap: 10px;
@@ -105,48 +112,22 @@
         }
 
         .quick-btn {
-            background-color: #1e293b;
+            background-color: var(--card-dark);
             border: 1px solid var(--border-color);
-            color: #fff;
-            padding: 8px 16px;
+            color: #cbd5e1;
+            padding: 8px 14px;
             border-radius: 8px;
             font-size: 13px;
         }
 
-        /* Post Card */
-        .post-card {
-            margin: 15px;
-            background-color: #162436;
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .user-name {
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .post-time {
-            font-size: 11px;
-            color: #94a3b8;
-        }
-
-        /* Popup Modal */
+        /* Modal Overlay & Card */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -155,12 +136,12 @@
 
         .modal-content {
             background-color: #ffffff;
-            color: #333333;
-            width: 85%;
-            max-width: 380px;
+            color: #1e293b;
+            width: 88%;
+            max-width: 360px;
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .categories-grid {
@@ -174,9 +155,9 @@
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 20px 10px;
+            padding: 18px 10px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
         }
 
         .category-icon {
@@ -192,21 +173,25 @@
 
         .modal-footer {
             text-align: center;
-            padding-top: 10px;
+            padding-top: 12px;
             border-top: 1px solid #f1f5f9;
             font-size: 14px;
             font-weight: bold;
             color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
-        /* Bottom Navigation Bar */
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             height: 60px;
-            background-color: #0f172a;
+            background-color: #060d14;
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
@@ -218,25 +203,25 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #94a3b8;
+            color: #64748b;
             text-decoration: none;
             font-size: 11px;
             gap: 4px;
         }
 
         .nav-item.active {
-            color: #38bdf8;
+            color: var(--blue-accent);
         }
     </style>
 </head>
 <body>
 
-    <!-- Header / Navbar -->
+    <!-- Header Navbar -->
     <div class="navbar">
-        <div class="nav-right">
+        <div class="nav-left">
             <button class="icon-btn">🛒</button>
             <button class="icon-btn">🔍</button>
-            <button class="btn-login">دخول 🔑</button>
+            <button class="btn-login">🔑 دخول</button>
         </div>
         <div class="logo">SharikiHub</div>
     </div>
@@ -254,19 +239,7 @@
         <button class="quick-btn">🎈 قسم 1</button>
     </div>
 
-    <!-- Post Item Background -->
-    <div class="post-card">
-        <div class="user-info">
-            <div class="avatar">M</div>
-            <div>
-                <div class="user-name">mohammadalmajeed60</div>
-                <div class="post-time">الآن</div>
-            </div>
-        </div>
-        <div style="font-size: 14px;">سنصل</div>
-    </div>
-
-    <!-- Entertainment Popup Modal -->
+    <!-- Center Categories Modal -->
     <div class="modal-overlay">
         <div class="modal-content">
             <div class="categories-grid">
@@ -279,12 +252,12 @@
                     <div class="category-title">الكتب والقراءة</div>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">🎬</div>
-                    <div class="category-title">الأفلام والسينما</div>
-                </div>
-                <div class="category-card">
                     <div class="category-icon">👗</div>
                     <div class="category-title">عالم الموضة</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎬</div>
+                    <div class="category-title">الأفلام والسينما</div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -293,7 +266,7 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">
         <a href="#" class="nav-item active">
             <span>🏠</span>
