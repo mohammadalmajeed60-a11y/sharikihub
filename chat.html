@@ -3,263 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شريكي Hub - المحادثات</title>
+    <title>SharikiHub - المحادثات</title>
     <style>
         :root {
-            --bg-color: #f4f6f9;
-            --primary-color: #2563eb;
-            --sidebar-bg: #ffffff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
+            --bg-main: #0f172a;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --text: #f8fafc;
+            --gold-start: #ffd700;
+            --gold-end: #b8860b;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
+        body { background-color: var(--bg-main); color: var(--text); font-family: system-ui; margin: 0; padding: 20px; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h2 { color: var(--text); }
 
-        /* القائمة الجانبية */
-        .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            border-left: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-        }
-
-        .sidebar h2 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            text-align: center;
-            color: var(--primary-color);
-        }
-
-        .nav-button {
-            width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 8px;
+        /* ستايل المفتاح الذهبي */
+        .gold-key-btn {
+            background: linear-gradient(45deg, var(--gold-start), var(--gold-end));
+            color: #000;
             border: none;
-            border-radius: 8px;
-            background: transparent;
-            text-align: right;
-            font-size: 0.95rem;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
             cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: transform 0.2s;
         }
+        .gold-key-btn:hover { transform: scale(1.05); }
 
-        .nav-button:hover {
-            background-color: #f1f5f9;
-        }
-
-        .nav-button.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        /* منطقة المحتوى والدردشة */
-        .main-chat {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: #ffffff;
-        }
-
-        .chat-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: bold;
-        }
-
-        .chat-body {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .message {
-            max-width: 70%;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .message.received {
-            background-color: #f1f5f9;
-            align-self: flex-start;
-        }
-
-        .message.sent {
-            background-color: var(--primary-color);
-            color: white;
-            align-self: flex-end;
-        }
-
-        .chat-input {
-            padding: 15px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            outline: none;
-        }
-
-        .chat-input button {
-            padding: 10px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        /* نافذة تنبيه تسجيل الدخول Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            max-width: 320px;
-            width: 90%;
-        }
-
-        .modal-content button {
-            margin-top: 15px;
-            padding: 8px 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+        /* منطقة الشات */
+        .chat-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; height: 60vh; padding: 15px; overflow-y: auto; margin-bottom: 15px; }
+        .msg { padding: 10px; margin-bottom: 10px; border-radius: 10px; background: #334155; max-width: 80%; }
+        
+        .input-area { display: flex; gap: 10px; }
+        input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: white; }
+        button#send-btn { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- القائمة الجانبية -->
-    <div class="sidebar">
-        <h2>SharikiHub Chat</h2>
-        
-        <button class="nav-button" onclick="switchSection('communities')">
-            🌐 المجتمعات
-        </button>
-        
-        <button class="nav-button" onclick="switchSection('messages')">
-            💬 المحادثات الشخصية
-        </button>
-        
-        <button class="nav-button active" id="btn-support" onclick="switchSection('support')">
-            🛠️ الدعم الفني
-        </button>
+    <header>
+        <h2>مركز المحادثات</h2>
+        <!-- المفتاح الذهبي -->
+        <button class="gold-key-btn" onclick="alert('جاري التوجيه لبوابة الدخول الذهبية...')">🗝️ المفتاح الذهبي</button>
+    </header>
+
+    <div class="chat-container" id="chat-box">
+        <div id="messages"></div>
     </div>
 
-    <!-- واجهة المحادثة الرئيسية -->
-    <div class="main-chat">
-        <div class="chat-header" id="chat-title">
-            قسم الدعم الفني
-        </div>
-        
-        <div class="chat-body" id="chat-messages">
-            <div class="message received">مرحباً بك! كيف يمكن لفريق الدعم الفني مساعدتك اليوم؟</div>
-        </div>
-
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="اكتب رسالتك هنا...">
-            <button onclick="sendMessage()">إرسال</button>
-        </div>
+    <div class="input-area">
+        <input type="text" id="msg-input" placeholder="اكتب رسالتك...">
+        <button id="send-btn" onclick="sendMessage()">إرسال</button>
     </div>
 
-    <!-- نافذة التنبيه عند عدم تسجيل الدخول -->
-    <div class="modal" id="auth-modal">
-        <div class="modal-content">
-            <h3>تنبيه</h3>
-            <p>يرجى تسجيل الدخول للوصول إلى هذا القسم واستخدامه.</p>
-            <button onclick="closeModal()">حسناً</button>
-        </div>
-    </div>
+    <!-- ربط Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    <script>
-        // محاكاة حالة تسجيل الدخول (غير مسجل حالياً)
-        let isLoggedIn = false;
+        const firebaseConfig = {
+            databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        function switchSection(section) {
-            // التحقق من الصلاحيات للأقسام المغلقة
-            if ((section === 'communities' || section === 'messages') && !isLoggedIn) {
-                document.getElementById('auth-modal').style.display = 'flex';
-                return;
+        const chatBox = document.getElementById('chat-box');
+        const msgContainer = document.getElementById('messages');
+
+        // جلب الرسائل
+        onValue(ref(db, 'messages'), (snapshot) => {
+            msgContainer.innerHTML = '';
+            const data = snapshot.val();
+            if (data) {
+                Object.values(data).forEach(m => {
+                    msgContainer.innerHTML += `<div class="msg">${m.text}</div>`;
+                });
             }
+        });
 
-            // تحديث تصميم الأزرار النشطة
-            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
-            
-            const title = document.getElementById('chat-title');
-            const messages = document.getElementById('chat-messages');
-
-            if (section === 'support') {
-                document.getElementById('btn-support').classList.add('active');
-                title.innerText = "قسم الدعم الفني";
-                messages.innerHTML = `<div class="message received">مرحباً بك! كيف يمكن لفريق الدعم الفني مساعدتك اليوم؟</div>`;
-            } else if (section === 'communities') {
-                title.innerText = "مجتمع الطباعة والتصميم";
-                messages.innerHTML = `<div class="message received">أهلاً بك في مجتمع التصميم والطباعة!</div>`;
-            } else if (section === 'messages') {
-                title.innerText = "المحادثات الشخصية";
-                messages.innerHTML = `<div class="message received">اختر جهة اتصال لبدء المحادثة.</div>`;
+        window.sendMessage = () => {
+            const input = document.getElementById('msg-input');
+            if (input.value) {
+                push(ref(db, 'messages'), { text: input.value });
+                input.value = '';
             }
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('user-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const messages = document.getElementById('chat-messages');
-            
-            // إضافة رسالة المستخدم
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message sent';
-            userMsg.innerText = text;
-            messages.appendChild(userMsg);
-
-            input.value = '';
-            messages.scrollTop = messages.scrollHeight;
-        }
-
-        function closeModal() {
-            document.getElementById('auth-modal').style.display = 'none';
-        }
+        };
     </script>
 </body>
 </html>
