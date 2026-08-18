@@ -12,14 +12,10 @@
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #2563eb;
+      --gold-gradient: linear-gradient(135deg, #ffd700, #b8860b);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 
     body {
       background-color: var(--bg-main);
@@ -44,9 +40,25 @@
     .header-actions { display: flex; gap: 12px; align-items: center; }
     .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
 
+    /* زر المفتاح الذهبي المضاف للهيدر */
+    .gold-key-header {
+      background: var(--gold-gradient);
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+    }
+
     .container { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
 
-    /* صندوق إنشاء منشور */
     .create-post-box {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -58,12 +70,8 @@
       cursor: pointer;
     }
 
-    .create-post-input {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
+    .create-post-input { color: var(--text-muted); font-size: 0.9rem; }
 
-    /* أزرار الوصول السريع */
     .quick-access { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
     .quick-card {
       background: var(--card-bg);
@@ -79,7 +87,6 @@
       gap: 6px;
     }
 
-    /* بطاقات التغذية الرئيسية */
     .feed-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -104,7 +111,6 @@
     }
     .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-    /* النافذة المنبثقة للإنشاء */
     .modal {
       display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.7); z-index: 200;
@@ -140,7 +146,6 @@
       color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
     }
 
-    /* الشريط السفلي الموحد */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
       background-color: var(--card-bg); display: flex; justify-content: space-around;
@@ -159,19 +164,19 @@
   <header>
     <div class="brand">SharikiHub</div>
     <div class="header-actions">
+      <!-- المفتاح الذهبي المباشر لصفحة التسجيل -->
+      <a href="auth.html" class="gold-key-header">🗝️ دخول</a>
       <a href="search.html" class="icon-btn">🔍</a>
       <a href="cart.html" class="icon-btn">🛒</a>
     </div>
   </header>
 
   <div class="container">
-    <!-- صندوق إنشاء منشور -->
     <div class="create-post-box" onclick="openPostModal()">
       <div class="avatar">👤</div>
       <div class="create-post-input">بم تفكر اليوم؟ أضف نصاً أو صورة...</div>
     </div>
 
-    <!-- أزرار وصول سريع -->
     <div class="quick-access">
       <a href="design-studio.html" class="quick-card">🛍️ المتجر والتصاميم</a>
       <a href="reels.html" class="quick-card">🎬 أحدث الريلز</a>
@@ -179,11 +184,9 @@
       <a href="chat.html" class="quick-card">💬 مجتمع المنصة</a>
     </div>
 
-    <!-- قائمة المنشورات الديناميكية -->
     <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;"></div>
   </div>
 
-  <!-- النافذة المنبثقة لكتابة منشور -->
   <div class="modal" id="postModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -201,12 +204,12 @@
     </div>
   </div>
 
-  <!-- الشريط السفلي الموحد -->
+  <!-- الشريط السفلي بعد تعديل قسم حسابي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item active">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
-    <a href="profile.html" class="nav-item">👤 حسابي</a>
+    <a href="auth.html" class="nav-item">👤 حسابي</a>
   </nav>
 
   <script>
