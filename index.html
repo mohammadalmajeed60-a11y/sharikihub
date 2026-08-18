@@ -1,357 +1,317 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SharikiHub</title>
-  <style>
-    :root {
-      --bg-main: #090d16;
-      --card-bg: #1a2232;
-      --border: #2a364f;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent: #2563eb;
-      --purple-accent: #8b5cf6;
-      --gold-gradient: linear-gradient(135deg, #ffd700, #b8860b);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharikiHub</title>
+    <style>
+        :root {
+            --bg-color: #0d1b2a;
+            --card-bg: #1b263b;
+            --accent-yellow: #f4c430;
+            --text-color: #ffffff;
+            --border-color: #2a3d52;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
 
-    html, body {
-      background-color: var(--bg-main);
-      color: var(--text);
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 70px;
+        }
 
-    body { display: flex; flex-direction: column; }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--bg-color);
+        }
 
-    header {
-      background-color: var(--card-bg);
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      height: 60px;
-    }
+        .logo {
+            color: #38bdf8;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-    .brand-title { font-size: 1.1rem; font-weight: bold; color: #38bdf8; }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-    .gold-key-btn {
-      background: var(--gold-gradient);
-      color: #000;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
+        .btn-login {
+            background-color: var(--accent-yellow);
+            color: #000;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(244, 196, 48, 0.4);
+        }
 
-    /* حاوية السحب */
-    .swipe-container {
-      flex: 1;
-      display: flex;
-      width: 100%;
-      height: calc(100vh - 120px);
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-    }
+        .icon-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
 
-    .swipe-container::-webkit-scrollbar { display: none; }
+        /* Create Post Input */
+        .post-input-container {
+            margin: 10px 15px;
+            background-color: #162436;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-    .page-section {
-      min-width: 100%;
-      max-width: 100%;
-      height: 100%;
-      scroll-snap-align: start;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
 
-    /* 1. الرئيسية */
-    .home-content { padding: 15px; }
-    .hero-card {
-      background: linear-gradient(135deg, #1e1b4b, #311b92);
-      border: 1px solid var(--purple-accent);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    .hero-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; }
-    .hero-desc { font-size: 0.85rem; color: #cbd5e1; }
+        .post-input-text {
+            color: #94a3b8;
+            font-size: 14px;
+        }
 
-    .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .menu-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      text-align: center;
-    }
+        /* Horizontal Quick Categories */
+        .quick-nav {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 15px;
+            white-space: nowrap;
+        }
 
-    /* 2. الاستوديو */
-    .studio-box { padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-    .prod-selector { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
-    .prod-btn {
-      background: var(--card-bg); border: 1px solid var(--border); color: var(--text);
-      padding: 8px 14px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; cursor: pointer;
-    }
-    .prod-btn.active { border-color: var(--purple-accent); color: var(--purple-accent); font-weight: bold; }
-    .canvas-card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
-      height: 220px; display: flex; align-items: center; justify-content: center; position: relative;
-    }
-    .mockup-icon { font-size: 6rem; }
-    .overlay-txt { position: absolute; font-weight: bold; font-size: 1.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .quick-btn {
+            background-color: #1e293b;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
 
-    /* 3. المحادثات والأقسام */
-    .tab-nav { display: flex; background: var(--card-bg); border-bottom: 1px solid var(--border); }
-    .tab-btn {
-      flex: 1; padding: 10px; text-align: center; background: transparent; border: none;
-      color: var(--text-muted); font-weight: bold; font-size: 0.85rem; cursor: pointer;
-    }
-    .tab-btn.active { color: var(--purple-accent); border-bottom: 2px solid var(--purple-accent); }
-    .chat-area { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; }
-    .sections-list { padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
-    .section-card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
-      padding: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer;
-    }
-    .chat-room {
-      position: absolute; top:0; left:0; right:0; bottom:0; background: var(--bg-main);
-      display: none; flex-direction: column; z-index: 10;
-    }
-    .messages-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .msg { max-width: 80%; padding: 10px; border-radius: 12px; font-size: 0.85rem; }
-    .msg.received { background: var(--card-bg); border: 1px solid var(--border); align-self: flex-start; }
-    .msg.sent { background: var(--accent); color: white; align-self: flex-end; }
-    .input-wrapper { padding: 10px; background: var(--card-bg); display: flex; gap: 8px; }
-    .chat-input { flex: 1; padding: 8px 12px; background: #0f172a; border: 1px solid var(--border); border-radius: 20px; color: white; outline: none; }
+        /* Post Card */
+        .post-card {
+            margin: 15px;
+            background-color: #162436;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
 
-    /* 4. الريلز */
-    .reel-card {
-      height: 100%; position: relative; background: #000; display: flex; align-items: center; justify-content: center;
-    }
-    .reel-overlay { position: absolute; bottom: 20px; right: 15px; left: 70px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-    .action-bar { position: absolute; left: 15px; bottom: 30px; display: flex; flex-direction: column; gap: 15px; }
-    .action-btn { background: rgba(26,34,50,0.6); border: 1px solid var(--border); color: white; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
 
-    /* الشريط السفلي */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
-      background-color: var(--card-bg); display: flex; justify-content: space-around; align-items: center;
-      border-top: 1px solid var(--border); z-index: 100;
-    }
-    .nav-item {
-      color: var(--text-muted); background: none; border: none; font-size: 0.75rem;
-      display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;
-    }
-    .nav-item.active { color: var(--purple-accent); font-weight: bold; }
-  </style>
+        .user-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .post-time {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        /* Popup Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            color: #333333;
+            width: 85%;
+            max-width: 380px;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .category-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .category-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .category-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .modal-footer {
+            text-align: center;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 14px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: #0f172a;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 99;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 11px;
+            gap: 4px;
+        }
+
+        .nav-item.active {
+            color: #38bdf8;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand-title" id="pageTitle">🌐 SharikiHub</div>
-    <button class="gold-key-btn" onclick="alert('🔑 المفتاح الذهبي فعال')">🔑 المفتاح الذهبي</button>
-  </header>
-
-  <div class="swipe-container" id="swipeContainer">
-    
-    <!-- قسم 1: الرئيسية -->
-    <section class="page-section">
-      <div class="home-content">
-        <div class="hero-card">
-          <div class="hero-title">مرحباً بك في SharikiHub 👋</div>
-          <div class="hero-desc">منصتك الجامعة للتواصل، الترفيه، والتصميم حسب الطلب.</div>
+    <!-- Header / Navbar -->
+    <div class="navbar">
+        <div class="nav-right">
+            <button class="icon-btn">🛒</button>
+            <button class="icon-btn">🔍</button>
+            <button class="btn-login">دخول 🔑</button>
         </div>
-        <div class="grid-menu">
-          <div class="menu-card" onclick="scrollToSection(1)">
-            <span style="font-size: 1.8rem;">🎨</span>
-            <span style="font-size:0.85rem; font-weight:bold;">استوديو الطباعة</span>
-          </div>
-          <div class="menu-card" onclick="scrollToSection(2)">
-            <span style="font-size: 1.8rem;">💬</span>
-            <span style="font-size:0.85rem; font-weight:bold;">المحادثات والمجتمعات</span>
-          </div>
-          <div class="menu-card" onclick="scrollToSection(3)">
-            <span style="font-size: 1.8rem;">🎬</span>
-            <span style="font-size:0.85rem; font-weight:bold;">قسم الريلز</span>
-          </div>
-          <div class="menu-card" onclick="alert('قسم الألعاب قيد التطوير')">
-            <span style="font-size: 1.8rem;">🏆</span>
-            <span style="font-size:0.85rem; font-weight:bold;">الرياضة والترفيه</span>
-          </div>
-        </div>
-      </div>
-    </section>
+        <div class="logo">SharikiHub</div>
+    </div>
 
-    <!-- قسم 2: استوديو الطباعة -->
-    <section class="page-section">
-      <div class="studio-box">
-        <div class="prod-selector">
-          <button class="prod-btn active" onclick="setMockup('👕')">👕 تيشيرت</button>
-          <button class="prod-btn" onclick="setMockup('☕')">☕ كوب</button>
-          <button class="prod-btn" onclick="setMockup('📱')">📱 كفر هاتف</button>
-        </div>
-        <div class="canvas-card">
-          <div class="mockup-icon" id="mockupIcon">👕</div>
-          <div class="overlay-txt" id="txtPreview">نص تصميمك</div>
-        </div>
-        <input type="text" class="chat-input" value="نص تصميمك" oninput="document.getElementById('txtPreview').textContent=this.value" placeholder="اكتب تصميمك...">
-        <button style="background:var(--purple-accent); color:white; border:none; padding:12px; border-radius:10px; font-weight:bold;" onclick="alert('تمت الإضافة للسلة!')">🛒 حفظ والطباعة</button>
-      </div>
-    </section>
+    <!-- Create Post Input -->
+    <div class="post-input-container">
+        <div class="avatar">👤</div>
+        <div class="post-input-text">بم تفكر اليوم؟ أضف نصاً أو صورة...</div>
+    </div>
 
-    <!-- قسم 3: المحادثات والمجتمعات -->
-    <section class="page-section">
-      <div class="tab-nav">
-        <button class="tab-btn active" onclick="switchTab('cat')">🌐 الأقسام والمجتمعات</button>
-        <button class="tab-btn" onclick="switchTab('dir')">👤 المحادثات الشخصية</button>
-      </div>
-      <div class="chat-area">
-        <div class="sections-list" id="chatList"></div>
+    <!-- Quick Horizontal Options -->
+    <div class="quick-nav">
+        <button class="quick-btn">🛍️ المتجر والتصاميم</button>
+        <button class="quick-btn">🎬 أحدث الريلز</button>
+        <button class="quick-btn">🎈 قسم 1</button>
+    </div>
 
-        <div class="chat-room" id="chatRoom">
-          <div style="padding:10px; background:var(--card-bg); display:flex; justify-space-between; align-items:center; border-bottom:1px solid var(--border);">
-            <span id="roomTitle" style="font-weight:bold; font-size:0.9rem;"></span>
-            <button onclick="closeChat()" style="background:none; border:none; color:#ef4444; font-weight:bold; cursor:pointer;">⬅️ رجوع</button>
-          </div>
-          <div class="messages-box" id="msgBox"></div>
-          <div class="input-wrapper">
-            <input type="text" id="chatInp" class="chat-input" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendChatMsg()">
-            <button style="background:var(--accent); color:white; border:none; padding:0 15px; border-radius:20px;" onclick="sendChatMsg()">إرسال</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- قسم 4: الريلز -->
-    <section class="page-section">
-      <div class="reel-card">
-        <div style="font-size: 5rem;">👕🎨</div>
-        <div class="reel-overlay">
-          <div style="font-weight:bold;">@استوديو_الطباعة</div>
-          <div style="font-size:0.8rem; color:#cbd5e1;">استعراض أحدث التصاميم المطبوعة ⚽🔥</div>
-        </div>
-        <div class="action-bar">
-          <button class="action-btn" onclick="this.style.color=this.style.color==='red'?'white':'red'">❤️</button>
-          <button class="action-btn" onclick="alert('التعليقات قيد التطوير')">💬</button>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="scrollToSection(0)">🏠 الرئيسية</button>
-    <button class="nav-item" onclick="scrollToSection(1)">🎨 الاستوديو</button>
-    <button class="nav-item" onclick="scrollToSection(2)">💬 المحادثات</button>
-    <button class="nav-item" onclick="scrollToSection(3)">🎬 ريلز</button>
-  </nav>
-
-  <script>
-    const container = document.getElementById('swipeContainer');
-    const navs = document.querySelectorAll('.nav-item');
-    const titles = ['🌐 SharikiHub', '🎨 استوديو التصميم', '💬 مركز المحادثات', '🎬 ريلز SharikiHub'];
-
-    const categories = [
-      { title: "قسم الأزياء والتصاميم 👕", desc: "مناقشات استوديو المطبوعات والتصاميم", icon: "🎨" },
-      { title: "قسم الرياضة والكرة ⚽", desc: "تحليلات وأخبار البطولات والمباريات", icon: "🏆" },
-      { title: "قسم الكتب والثقافة 📚", desc: "مشاركات وترشيحات الكتب والروايات", icon: "📖" },
-      { title: "قسم الأفلام والسينما 🎬", desc: "آراء ومراجعات أحدث الأفلام والمسلسلات", icon: "🍿" }
-    ];
-
-    const directChats = [
-      { title: "الدعم الفني", desc: "استفسارات الطلبات والتصميم", icon: "🛠️" },
-      { title: "مستخدم تجريبي", desc: "محادثة شخصية مباشرة", icon: "👤" }
-    ];
-
-    let currentTab = 'cat';
-
-    function renderChatList() {
-      const list = document.getElementById('chatList');
-      const data = currentTab === 'cat' ? categories : directChats;
-      list.innerHTML = '';
-      data.forEach(item => {
-        list.innerHTML += `
-          <div class="section-card" onclick="openChat('${item.title}')">
-            <div style="width:36px; height:36px; border-radius:50%; background:rgba(139,92,246,0.2); display:flex; align-items:center; justify-content:center;">${item.icon}</div>
+    <!-- Post Item Background -->
+    <div class="post-card">
+        <div class="user-info">
+            <div class="avatar">M</div>
             <div>
-              <div style="font-weight:bold; font-size:0.85rem;">${item.title}</div>
-              <div style="font-size:0.75rem; color:var(--text-muted);">${item.desc}</div>
+                <div class="user-name">mohammadalmajeed60</div>
+                <div class="post-time">الآن</div>
             </div>
-          </div>
-        `;
-      });
-    }
+        </div>
+        <div style="font-size: 14px;">سنصل</div>
+    </div>
 
-    function switchTab(tab) {
-      currentTab = tab;
-      const btns = document.querySelectorAll('.tab-btn');
-      btns[0].classList.toggle('active', tab === 'cat');
-      btns[1].classList.toggle('active', tab === 'dir');
-      closeChat();
-      renderChatList();
-    }
+    <!-- Entertainment Popup Modal -->
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">⚽</div>
+                    <div class="category-title">الرياضة</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">📚</div>
+                    <div class="category-title">الكتب والقراءة</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎬</div>
+                    <div class="category-title">الأفلام والسينما</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">👗</div>
+                    <div class="category-title">عالم الموضة</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                💬 التواصل والمحادثات
+            </div>
+        </div>
+    </div>
 
-    function openChat(title) {
-      document.getElementById('chatRoom').style.display = 'flex';
-      document.getElementById('roomTitle').textContent = title;
-      const box = document.getElementById('msgBox');
-      box.innerHTML = `<div class="msg received">مرحباً بك في ${title}! 👋</div>`;
-      setTimeout(() => document.getElementById('chatInp').focus(), 200);
-    }
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <span>🏠</span>
+            <span>الرئيسية</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span>🎬</span>
+            <span>ريلز</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span>💬</span>
+            <span>المحادثات</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span>👤</span>
+            <span>حسابي</span>
+        </a>
+    </div>
 
-    function closeChat() {
-      document.getElementById('chatRoom').style.display = 'none';
-    }
-
-    function sendChatMsg() {
-      const inp = document.getElementById('chatInp');
-      if(!inp.value.trim()) return;
-      const box = document.getElementById('msgBox');
-      box.innerHTML += `<div class="msg sent">${inp.value}</div>`;
-      inp.value = '';
-      box.scrollTop = box.scrollHeight;
-      inp.focus();
-    }
-
-    function setMockup(icon) {
-      document.getElementById('mockupIcon').textContent = icon;
-      document.querySelectorAll('.prod-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-    }
-
-    function scrollToSection(idx) {
-      container.scrollTo({ left: container.clientWidth * idx, behavior: 'smooth' });
-      updateUI(idx);
-    }
-
-    function updateUI(idx) {
-      navs.forEach((nav, i) => nav.classList.toggle('active', i === idx));
-      document.getElementById('pageTitle').textContent = titles[idx];
-    }
-
-    container.addEventListener('scroll', () => {
-      const idx = Math.round(container.scrollLeft / container.clientWidth);
-      updateUI(idx);
-    });
-
-    window.onload = renderChatList;
-  </script>
 </body>
 </html>
