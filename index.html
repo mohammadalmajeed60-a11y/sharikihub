@@ -38,9 +38,9 @@
 
     .brand { font-size: 1.3rem; font-weight: 700; color: #38bdf8; }
     .header-actions { display: flex; gap: 12px; align-items: center; }
-    .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
+    .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; cursor: pointer; }
 
-    /* زر المفتاح الذهبي المضاف للهيدر */
+    /* زر المفتاح الذهبي */
     .gold-key-header {
       background: var(--gold-gradient);
       color: #000;
@@ -50,7 +50,6 @@
       font-weight: bold;
       font-size: 0.8rem;
       cursor: pointer;
-      text-decoration: none;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -111,6 +110,7 @@
     }
     .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
+    /* النوافذ المنبثقة */
     .modal {
       display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.7); z-index: 200;
@@ -119,7 +119,7 @@
 
     .modal-content {
       background: var(--card-bg); border: 1px solid var(--border);
-      border-radius: 12px; width: 100%; max-width: 450px; padding: 20px;
+      border-radius: 16px; width: 100%; max-width: 400px; padding: 25px;
     }
 
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -146,6 +146,18 @@
       color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
     }
 
+    /* مدخلات نافذة المفتاح الذهبي */
+    .auth-input {
+      width: 100%; padding: 12px; margin-bottom: 12px;
+      border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg-main); color: white; outline: none;
+    }
+
+    .gold-login-btn {
+      width: 100%; padding: 12px; background: var(--gold-gradient);
+      border: none; border-radius: 8px; color: #000; font-weight: bold; cursor: pointer;
+    }
+
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
       background-color: var(--card-bg); display: flex; justify-content: space-around;
@@ -154,7 +166,7 @@
 
     .nav-item {
       color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;
     }
     .nav-item.active { color: var(--accent); font-weight: bold; }
   </style>
@@ -164,8 +176,7 @@
   <header>
     <div class="brand">SharikiHub</div>
     <div class="header-actions">
-      <!-- المفتاح الذهبي المباشر لصفحة التسجيل -->
-      <a href="auth.html" class="gold-key-header">🗝️ دخول</a>
+      <button class="gold-key-header" onclick="openAuthModal()">🗝️ دخول</button>
       <a href="search.html" class="icon-btn">🔍</a>
       <a href="cart.html" class="icon-btn">🛒</a>
     </div>
@@ -187,6 +198,7 @@
     <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;"></div>
   </div>
 
+  <!-- نافذة إنشاء منشور -->
   <div class="modal" id="postModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -204,12 +216,25 @@
     </div>
   </div>
 
-  <!-- الشريط السفلي بعد تعديل قسم حسابي -->
+  <!-- نافذة المفتاح الذهبي (تسجيل الدخول) -->
+  <div class="modal" id="authModal">
+    <div class="modal-content" style="text-align: center;">
+      <div class="modal-header">
+        <h3>🗝️ بوابة المفتاح الذهبي</h3>
+        <span style="cursor:pointer;" onclick="closeAuthModal()">❌</span>
+      </div>
+      <input type="email" class="auth-input" placeholder="البريد الإلكتروني">
+      <input type="password" class="auth-input" placeholder="كلمة المرور">
+      <button class="gold-login-btn" onclick="alert('تم تسجيل الدخول بنجاح!'); closeAuthModal();">دخول إلى العالم الذهبي</button>
+    </div>
+  </div>
+
+  <!-- الشريط السفلي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item active">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
-    <a href="auth.html" class="nav-item">👤 حسابي</a>
+    <div class="nav-item" onclick="openAuthModal()">👤 حسابي</div>
   </nav>
 
   <script>
@@ -224,10 +249,7 @@
       }
     ];
 
-    function openPostModal() {
-      document.getElementById('postModal').style.display = 'flex';
-    }
-
+    function openPostModal() { document.getElementById('postModal').style.display = 'flex'; }
     function closePostModal() {
       document.getElementById('postModal').style.display = 'none';
       document.getElementById('postText').value = '';
@@ -235,6 +257,9 @@
       document.getElementById('imgPreview').style.display = 'none';
       base64Image = "";
     }
+
+    function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+    function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
 
     function previewImage(event) {
       const file = event.target.files[0];
