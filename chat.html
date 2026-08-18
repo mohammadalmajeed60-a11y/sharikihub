@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SharikiHub - المحادثات والمجتمعات</title>
   <style>
     :root {
@@ -19,13 +18,17 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 
-    body {
+    html, body {
       background-color: var(--bg-main);
       color: var(--text);
-      height: 100vh;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    body {
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
     /* الهيدر العلوي */
@@ -39,7 +42,7 @@
       z-index: 10;
     }
 
-    .brand-title { font-size: 1.2rem; font-weight: bold; color: #38bdf8; }
+    .brand-title { font-size: 1.1rem; font-weight: bold; color: #38bdf8; }
 
     .gold-key-btn {
       background: var(--gold-gradient);
@@ -49,7 +52,7 @@
       border-radius: 20px;
       font-weight: bold;
       font-size: 0.8rem;
-      cursor: pointer;
+      text-decoration: none;
     }
 
     /* تبويبات القوائم */
@@ -61,7 +64,7 @@
 
     .tab-btn {
       flex: 1;
-      padding: 12px;
+      padding: 10px;
       text-align: center;
       background: transparent;
       border: none;
@@ -78,13 +81,13 @@
       background: rgba(139, 92, 246, 0.05);
     }
 
-    /* منطقة العرض */
+    /* منطقة العرض الرئيسية */
     .content-area {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      padding-bottom: 60px;
+      position: relative;
     }
 
     /* قائمة الأقسام */
@@ -95,13 +98,14 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding-bottom: 70px;
     }
 
     .section-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -109,27 +113,29 @@
     }
 
     .section-icon {
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: rgba(139, 92, 246, 0.2);
       border: 1px solid var(--purple-accent);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     .section-info { flex: 1; }
-    .section-title { font-weight: bold; font-size: 0.95rem; margin-bottom: 3px; }
-    .section-desc { font-size: 0.8rem; color: var(--text-muted); }
+    .section-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 2px; }
+    .section-desc { font-size: 0.75rem; color: var(--text-muted); }
 
     /* غرفة المحادثة النشطة */
     .chat-room {
-      flex: 1;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 60px;
       display: none;
       flex-direction: column;
-      background: rgba(10, 15, 26, 0.6);
+      background: var(--bg-main);
+      z-index: 20;
     }
 
     .chat-header {
@@ -160,10 +166,10 @@
     }
 
     .msg {
-      max-width: 75%;
+      max-width: 80%;
       padding: 10px 14px;
       border-radius: 12px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       line-height: 1.4;
     }
 
@@ -179,6 +185,7 @@
       align-self: flex-end;
     }
 
+    /* مربع إدخال النص المحدث للحفاظ على ظهور لوحة المفاتيح */
     .input-wrapper {
       padding: 10px 12px;
       background: var(--card-bg);
@@ -195,7 +202,7 @@
       border-radius: 20px;
       color: white;
       outline: none;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
 
     .send-btn {
@@ -250,26 +257,23 @@
   </div>
 
   <div class="content-area">
-    <!-- قائمة الأقسام -->
     <div class="sections-list" id="sectionsList"></div>
 
-    <!-- نافذة الشات داخل القسم -->
     <div class="chat-room" id="chatRoom">
       <div class="chat-header">
-        <span id="activeRoomTitle" style="font-weight: bold;"></span>
+        <span id="activeRoomTitle" style="font-weight: bold; font-size: 0.9rem;"></span>
         <button class="back-btn" onclick="closeChat()">⬅️ رجوع للأقسام</button>
       </div>
 
       <div class="messages-box" id="messagesBox"></div>
 
       <div class="input-wrapper">
-        <input type="text" id="msgInput" class="chat-input" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendMsg()">
+        <input type="text" id="msgInput" class="chat-input" placeholder="اكتب رسالتك هنا..." onkeypress="if(event.key==='Enter') sendMsg()">
         <button class="send-btn" onclick="sendMsg()">إرسال</button>
       </div>
     </div>
   </div>
 
-  <!-- الشريط السفلي المثبت -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
@@ -326,6 +330,12 @@
 
       const box = document.getElementById('messagesBox');
       box.innerHTML = `<div class="msg received">مرحباً بك في ${title}! أهلاً وسهلاً. 👋</div>`;
+      
+      // تركيز تلقائي لفتح لوحة المفاتيح
+      setTimeout(() => {
+        const input = document.getElementById('msgInput');
+        if(input) input.focus();
+      }, 300);
     }
 
     function closeChat() {
@@ -342,6 +352,7 @@
       box.innerHTML += `<div class="msg sent">${val}</div>`;
       input.value = '';
       box.scrollTop = box.scrollHeight;
+      input.focus(); // إبقاء التركيز على مربع الإدخال لعدم إغلاق لوحة المفاتيح
     }
 
     window.onload = renderList;
