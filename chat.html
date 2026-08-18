@@ -1,97 +1,185 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - المحادثات</title>
-    <style>
-        :root {
-            --bg-main: #0f172a;
-            --card-bg: #1e293b;
-            --border: #334155;
-            --text: #f8fafc;
-            --gold-start: #ffd700;
-            --gold-end: #b8860b;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub - المحادثات</title>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+    }
 
-        body { background-color: var(--bg-main); color: var(--text); font-family: system-ui; margin: 0; padding: 20px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        h2 { color: var(--text); }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* ستايل المفتاح الذهبي */
-        .gold-key-btn {
-            background: linear-gradient(45deg, var(--gold-start), var(--gold-end));
-            color: #000;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            transition: transform 0.2s;
-        }
-        .gold-key-btn:hover { transform: scale(1.05); }
+    /* الشريط العلوي */
+    header {
+      background-color: var(--card-bg);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        /* منطقة الشات */
-        .chat-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; height: 60vh; padding: 15px; overflow-y: auto; margin-bottom: 15px; }
-        .msg { padding: 10px; margin-bottom: 10px; border-radius: 10px; background: #334155; max-width: 80%; }
-        
-        .input-area { display: flex; gap: 10px; }
-        input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: white; }
-        button#send-btn { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 10px; }
-    </style>
+    .brand { font-size: 1.2rem; font-weight: 700; color: #38bdf8; }
+
+    /* منطقة المحادثة */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding-bottom: 60px; /* مساحة للشريط السفلي */
+    }
+
+    .messages-box {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .message.received {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-right-radius: 2px;
+    }
+
+    .message.sent {
+      background: var(--accent);
+      color: white;
+      align-self: flex-end;
+      border-bottom-left-radius: 2px;
+    }
+
+    /* مدخل إرسال الرسالة */
+    .input-box {
+      padding: 10px 15px;
+      background: var(--card-bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 10px 14px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .send-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0 18px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* الشريط السفلي */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h2>مركز المحادثات</h2>
-        <!-- المفتاح الذهبي -->
-        <button class="gold-key-btn" onclick="alert('جاري التوجيه لبوابة الدخول الذهبية...')">🗝️ المفتاح الذهبي</button>
-    </header>
+  <header>
+    <div class="brand">💬 مجتمع SharikiHub</div>
+  </header>
 
-    <div class="chat-container" id="chat-box">
-        <div id="messages"></div>
+  <div class="chat-container">
+    <div class="messages-box" id="messagesBox">
+      <div class="message received">أهلاً بك في غرفة المحادثة الجماعية لـ SharikiHub! 👋</div>
     </div>
 
-    <div class="input-area">
-        <input type="text" id="msg-input" placeholder="اكتب رسالتك...">
-        <button id="send-btn" onclick="sendMessage()">إرسال</button>
+    <div class="input-box">
+      <input type="text" id="msgInput" class="chat-input" placeholder="اكتب رسالتك..." onkeypress="handleKeyPress(event)">
+      <button class="send-btn" onclick="sendMessage()">إرسال</button>
     </div>
+  </div>
 
-    <!-- ربط Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <!-- الشريط السفلي الثابت -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="chat.html" class="nav-item active">💬 المحادثات</a>
+    <a href="index.html" class="nav-item">👤 حسابي</a>
+  </nav>
 
-        const firebaseConfig = {
-            databaseURL: "https://sharikihub-default-rtdb.firebaseio.com"
-        };
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('msgInput');
+      const text = input.value.trim();
+      if (!text) return;
 
-        const chatBox = document.getElementById('chat-box');
-        const msgContainer = document.getElementById('messages');
+      const box = document.getElementById('messagesBox');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message sent';
+      msgDiv.textContent = text;
 
-        // جلب الرسائل
-        onValue(ref(db, 'messages'), (snapshot) => {
-            msgContainer.innerHTML = '';
-            const data = snapshot.val();
-            if (data) {
-                Object.values(data).forEach(m => {
-                    msgContainer.innerHTML += `<div class="msg">${m.text}</div>`;
-                });
-            }
-        });
+      box.appendChild(msgDiv);
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+    }
 
-        window.sendMessage = () => {
-            const input = document.getElementById('msg-input');
-            if (input.value) {
-                push(ref(db, 'messages'), { text: input.value });
-                input.value = '';
-            }
-        };
-    </script>
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    }
+  </script>
 </body>
 </html>
