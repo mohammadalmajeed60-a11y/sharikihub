@@ -1,290 +1,306 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub</title>
-    <style>
-        :root {
-            --bg-dark: #0a131d;
-            --card-dark: #121e2d;
-            --yellow-btn: #f5c518;
-            --blue-accent: #38bdf8;
-            --text-light: #ffffff;
-            --text-muted: #94a3b8;
-            --border-color: #1e2d3d;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub</title>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --gold-gradient: linear-gradient(135deg, #ffd700, #b8860b);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            padding-bottom: 70px;
-        }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text);
+      padding-bottom: 80px;
+    }
 
-        /* Navbar Fixing Alignment */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background-color: var(--bg-dark);
-        }
+    /* الشريط العلوي */
+    header {
+      background-color: var(--card-bg);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
 
-        /* Left Side: Shopping Cart, Search, Login Button */
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    .brand { font-size: 1.3rem; font-weight: 700; color: #38bdf8; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
 
-        .icon-btn {
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 18px;
-            cursor: pointer;
-        }
+    /* زر المفتاح الذهبي المضاف للهيدر */
+    .gold-key-header {
+      background: var(--gold-gradient);
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+    }
 
-        .btn-login {
-            background-color: var(--yellow-btn);
-            color: #000;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 0 12px rgba(245, 197, 24, 0.3);
-        }
+    .container { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
 
-        /* Right Side: Logo */
-        .logo {
-            color: var(--blue-accent);
-            font-size: 22px;
-            font-weight: bold;
-        }
+    .create-post-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
 
-        /* Create Post Area */
-        .post-input-container {
-            margin: 10px 15px;
-            background-color: var(--card-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    .create-post-input { color: var(--text-muted); font-size: 0.9rem; }
 
-        .avatar {
-            width: 40px;
-            height: 40px;
-            background-color: #2563eb;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-        }
+    .quick-access { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+    .quick-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 15px;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .post-input-text {
-            color: #64748b;
-            font-size: 14px;
-        }
+    .feed-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+    }
 
-        /* Horizontal Scrolling Chips */
-        .quick-nav {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 15px;
-            white-space: nowrap;
-        }
+    .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--accent); display: flex;
+      align-items: center; justify-content: center; font-weight: bold;
+    }
 
-        .quick-btn {
-            background-color: var(--card-dark);
-            border: 1px solid var(--border-color);
-            color: #cbd5e1;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
+    .feed-user { font-weight: bold; font-size: 0.95rem; }
+    .feed-content { font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 10px; white-space: pre-line; }
+    .feed-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
 
-        /* Modal Overlay & Card */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
+    .feed-actions {
+      display: flex; gap: 15px; border-top: 1px solid var(--border);
+      padding-top: 10px; font-size: 0.85rem; color: var(--text-muted);
+    }
+    .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-        .modal-content {
-            background-color: #ffffff;
-            color: #1e293b;
-            width: 88%;
-            max-width: 360px;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 200;
+      justify-content: center; align-items: center; padding: 20px;
+    }
 
-        .categories-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
+    .modal-content {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; width: 100%; max-width: 450px; padding: 20px;
+    }
 
-        .category-card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 18px 10px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-        }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    
+    .modal-textarea {
+      width: 100%; height: 90px; background: var(--bg-main);
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); padding: 10px; resize: none; outline: none; margin-bottom: 10px;
+    }
 
-        .category-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
+    .file-input-wrapper { margin-bottom: 12px; }
+    .file-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #334155; color: #f8fafc; padding: 8px 12px;
+      border-radius: 6px; font-size: 0.85rem; cursor: pointer;
+    }
+    .image-preview {
+      width: 100%; max-height: 150px; object-fit: cover;
+      border-radius: 8px; display: none; margin-top: 8px;
+    }
 
-        .category-title {
-            font-size: 13px;
-            font-weight: bold;
-            color: #1e293b;
-        }
+    .post-btn {
+      width: 100%; padding: 10px; background: var(--accent);
+      color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+    }
 
-        .modal-footer {
-            text-align: center;
-            padding-top: 12px;
-            border-top: 1px solid #f1f5f9;
-            font-size: 14px;
-            font-weight: bold;
-            color: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--card-bg); display: flex; justify-content: space-around;
+      align-items: center; border-top: 1px solid var(--border); z-index: 100;
+    }
 
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background-color: #060d14;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 99;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 11px;
-            gap: 4px;
-        }
-
-        .nav-item.active {
-            color: var(--blue-accent);
-        }
-    </style>
+    .nav-item {
+      color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .nav-item.active { color: var(--accent); font-weight: bold; }
+  </style>
 </head>
 <body>
 
-    <!-- Header Navbar -->
-    <div class="navbar">
-        <div class="nav-left">
-            <button class="icon-btn">🛒</button>
-            <button class="icon-btn">🔍</button>
-            <button class="btn-login">🔑 دخول</button>
-        </div>
-        <div class="logo">SharikiHub</div>
+  <header>
+    <div class="brand">SharikiHub</div>
+    <div class="header-actions">
+      <!-- المفتاح الذهبي المباشر لصفحة التسجيل -->
+      <a href="auth.html" class="gold-key-header">🗝️ دخول</a>
+      <a href="search.html" class="icon-btn">🔍</a>
+      <a href="cart.html" class="icon-btn">🛒</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="create-post-box" onclick="openPostModal()">
+      <div class="avatar">👤</div>
+      <div class="create-post-input">بم تفكر اليوم؟ أضف نصاً أو صورة...</div>
     </div>
 
-    <!-- Create Post Input -->
-    <div class="post-input-container">
-        <div class="avatar">👤</div>
-        <div class="post-input-text">بم تفكر اليوم؟ أضف نصاً أو صورة...</div>
+    <div class="quick-access">
+      <a href="design-studio.html" class="quick-card">🛍️ المتجر والتصاميم</a>
+      <a href="reels.html" class="quick-card">🎬 أحدث الريلز</a>
+      <a href="explore.html" class="quick-card">🎈 قسم الترفيه</a>
+      <a href="chat.html" class="quick-card">💬 مجتمع المنصة</a>
     </div>
 
-    <!-- Quick Horizontal Options -->
-    <div class="quick-nav">
-        <button class="quick-btn">🛍️ المتجر والتصاميم</button>
-        <button class="quick-btn">🎬 أحدث الريلز</button>
-        <button class="quick-btn">🎈 قسم 1</button>
-    </div>
+    <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;"></div>
+  </div>
 
-    <!-- Center Categories Modal -->
-    <div class="modal-overlay">
-        <div class="modal-content">
-            <div class="categories-grid">
-                <div class="category-card">
-                    <div class="category-icon">⚽</div>
-                    <div class="category-title">الرياضة</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">📚</div>
-                    <div class="category-title">الكتب والقراءة</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">👗</div>
-                    <div class="category-title">عالم الموضة</div>
-                </div>
-                <div class="category-card">
-                    <div class="category-icon">🎬</div>
-                    <div class="category-title">الأفلام والسينما</div>
-                </div>
+  <div class="modal" id="postModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>إنشاء منشور جديد</h3>
+        <span style="cursor:pointer;" onclick="closePostModal()">❌</span>
+      </div>
+      <textarea id="postText" class="modal-textarea" placeholder="اكتب منشورك هنا..."></textarea>
+      
+      <div class="file-input-wrapper">
+        <label for="postImageInput" class="file-label">🖼️ إرفاق صورة</label>
+        <input type="file" id="postImageInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+        <img id="imgPreview" class="image-preview" alt="معاينة الصورة">
+      </div>
+      <button class="post-btn" onclick="publishPost()">نشر الآن 🚀</button>
+    </div>
+  </div>
+
+  <!-- الشريط السفلي بعد تعديل قسم حسابي -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item active">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="chat.html" class="nav-item">💬 المحادثات</a>
+    <a href="auth.html" class="nav-item">👤 حسابي</a>
+  </nav>
+
+  <script>
+    let base64Image = "";
+    const defaultPosts = [
+      {
+        author: "إدارة SharikiHub",
+        avatar: "S",
+        time: "منذ ساعة",
+        content: "مرحباً بكم في المنصة الشاملة! تم إطلاق استوديو التصاميم والمطبوعات بالإضافة للأقسام الترفيهية ومقاطع الريلز. 🔥👕",
+        image: ""
+      }
+    ];
+
+    function openPostModal() {
+      document.getElementById('postModal').style.display = 'flex';
+    }
+
+    function closePostModal() {
+      document.getElementById('postModal').style.display = 'none';
+      document.getElementById('postText').value = '';
+      document.getElementById('postImageInput').value = '';
+      document.getElementById('imgPreview').style.display = 'none';
+      base64Image = "";
+    }
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          base64Image = e.target.result;
+          const imgElement = document.getElementById('imgPreview');
+          imgElement.src = base64Image;
+          imgElement.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function loadPosts() {
+      const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
+      const allPosts = [...savedPosts, ...defaultPosts];
+      const feed = document.getElementById('postsFeed');
+      feed.innerHTML = '';
+
+      allPosts.forEach(post => {
+        const imgTag = post.image ? `<img src="${post.image}" class="feed-img" alt="صورة المنشور">` : '';
+        feed.innerHTML += `
+          <div class="feed-card">
+            <div class="feed-header">
+              <div class="avatar">${post.avatar}</div>
+              <div>
+                <div class="feed-user">${post.author}</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">${post.time}</div>
+              </div>
             </div>
-            <div class="modal-footer">
-                💬 التواصل والمحادثات
+            <div class="feed-content">${post.content}</div>
+            ${imgTag}
+            <div class="feed-actions">
+              <span class="action-item" onclick="this.style.color='#ef4444'">❤️ إعجاب</span>
+              <span class="action-item" onclick="alert('قسم التعليقات قريباً!')">💬 تعليق</span>
+              <span class="action-item" onclick="alert('تم نسخ رابط المنشور')">🔄 مشاركة</span>
             </div>
-        </div>
-    </div>
+          </div>
+        `;
+      });
+    }
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-        <a href="#" class="nav-item active">
-            <span>🏠</span>
-            <span>الرئيسية</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span>🎬</span>
-            <span>ريلز</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span>💬</span>
-            <span>المحادثات</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span>👤</span>
-            <span>حسابي</span>
-        </a>
-    </div>
+    function publishPost() {
+      const text = document.getElementById('postText').value.trim();
+      if (!text && !base64Image) { alert('يرجى كتابة نص أو إرفاق صورة'); return; }
 
+      const user = JSON.parse(localStorage.getItem('currentUser')) || { name: 'مستخدم جديد' };
+      const newPost = {
+        author: user.name,
+        avatar: user.name.charAt(0).toUpperCase(),
+        time: "الآن",
+        content: text,
+        image: base64Image
+      };
+
+      const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
+      savedPosts.unshift(newPost);
+      localStorage.setItem('userPosts', JSON.stringify(savedPosts));
+
+      closePostModal();
+      loadPosts();
+    }
+
+    window.onload = loadPosts;
+  </script>
 </body>
 </html>
