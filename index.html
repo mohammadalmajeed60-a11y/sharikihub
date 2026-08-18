@@ -1,469 +1,303 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SharikiHub - المنصة الشاملة</title>
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #0f172a;
-            --border-color: #e2e8f0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SharikiHub</title>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding-bottom: 75px;
-        }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text);
+      padding-bottom: 80px;
+    }
 
-        /* الهيدر العلوي */
-        header {
-            background-color: var(--card-bg);
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    /* الشريط العلوي */
+    header {
+      background-color: var(--card-bg);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
 
-        header h1 {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
+    .brand { font-size: 1.3rem; font-weight: 700; color: #38bdf8; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
 
-        .search-icon {
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
+    .container { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
 
-        /* حاوية الأقسام */
-        .container {
-            padding: 15px 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    /* صندوق إنشاء منشور */
+    .create-post-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
 
-        .page {
-            display: none;
-        }
+    .create-post-input {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
 
-        .page.active {
-            display: block;
-        }
+    /* أزرار الوصول السريع */
+    .quick-access { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+    .quick-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 15px;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 20px 0 12px 0;
-            color: #334155;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    /* بطاقات التغذية الرئيسية */
+    .feed-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+    }
 
-        /* شبكة الكروت */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
+    .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--accent); display: flex;
+      align-items: center; justify-content: center; font-weight: bold;
+    }
 
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 25px 15px;
-            text-align: center;
-            text-decoration: none;
-            color: var(--text-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
-            transition: transform 0.15s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+    .feed-user { font-weight: bold; font-size: 0.95rem; }
+    .feed-content { font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; margin-bottom: 10px; white-space: pre-line; }
+    .feed-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
 
-        .card:active {
-            transform: scale(0.97);
-        }
+    .feed-actions {
+      display: flex; gap: 15px; border-top: 1px solid var(--border);
+      padding-top: 10px; font-size: 0.85rem; color: var(--text-muted);
+    }
+    .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-        .card .icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-        }
+    /* النافذة المنبثقة للإنشاء */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 200;
+      justify-content: center; align-items: center; padding: 20px;
+    }
 
-        .card h3 {
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
+    .modal-content {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 12px; width: 100%; max-width: 450px; padding: 20px;
+    }
 
-        .full-card {
-            grid-column: span 2;
-            padding: 20px;
-            border-color: var(--primary-color);
-            background: #ffffff;
-        }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    
+    .modal-textarea {
+      width: 100%; height: 90px; background: var(--bg-main);
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); padding: 10px; resize: none; outline: none; margin-bottom: 10px;
+    }
 
-        /* واجهة المحادثات */
-        .chat-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            overflow-x: auto;
-        }
+    .file-input-wrapper { margin-bottom: 12px; }
+    .file-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #334155; color: #f8fafc; padding: 8px 12px;
+      border-radius: 6px; font-size: 0.85rem; cursor: pointer;
+    }
+    .image-preview {
+      width: 100%; max-height: 150px; object-fit: cover;
+      border-radius: 8px; display: none; margin-top: 8px;
+    }
 
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            background: var(--card-bg);
-            color: var(--text-color);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            white-space: nowrap;
-        }
+    .post-btn {
+      width: 100%; padding: 10px; background: var(--accent);
+      color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+    }
 
-        .tab-btn.active {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background-color: #eff6ff;
-        }
+    /* الشريط السفلي الموحد */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--card-bg); display: flex; justify-content: space-around;
+      align-items: center; border-top: 1px solid var(--border); z-index: 100;
+    }
 
-        .chat-messages {
-            height: 320px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .message.received {
-            background-color: #f1f5f9;
-            align-self: flex-start;
-        }
-
-        .message.sent {
-            background-color: var(--primary-color);
-            color: white;
-            align-self: flex-end;
-        }
-
-        .chat-input {
-            display: flex;
-            gap: 8px;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            outline: none;
-            background: var(--card-bg);
-        }
-
-        .chat-input button {
-            padding: 12px 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* شريط التنقل السفلي */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 100;
-        }
-
-        .nav-item {
-            border: none;
-            background: transparent;
-            color: #64748b;
-            font-size: 0.75rem;
-            text-align: center;
-            cursor: pointer;
-            flex: 1;
-        }
-
-        .nav-item.active {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        .nav-item .icon {
-            font-size: 1.3rem;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 22px;
-            border-radius: 14px;
-            text-align: center;
-            width: 80%;
-            max-width: 300px;
-        }
-
-        .modal-content button {
-            margin-top: 15px;
-            padding: 9px 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-    </style>
+    .nav-item {
+      color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .nav-item.active { color: var(--accent); font-weight: bold; }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>SharikiHub</h1>
-        <div class="search-icon">🔍</div>
-    </header>
+  <header>
+    <div class="brand">SharikiHub</div>
+    <div class="header-actions">
+      <a href="search.html" class="icon-btn">🔍</a>
+      <a href="cart.html" class="icon-btn">🛒</a>
+    </div>
+  </header>
 
-    <div class="container">
-        
-        <!-- صفحة الرئيسية بالتطبيق والترتيب المتفق عليه -->
-        <div id="page-home" class="page active">
-            
-            <!-- 1. خدمات الطباعة حسب الطلب -->
-            <div class="section-title">🖨️ خدمات الطباعة حسب الطلب</div>
-            <div class="grid">
-                <div class="card">
-                    <span class="icon">👕</span>
-                    <h3>الأزياء والملابس</h3>
-                </div>
-                <div class="card">
-                    <span class="icon">🎨</span>
-                    <h3>متجر التصاميم</h3>
-                </div>
-            </div>
-
-            <!-- 2. الأقسام الترفيهية -->
-            <div class="section-title">🎉 الأقسام الترفيهية</div>
-            <div class="grid">
-                <div class="card">
-                    <span class="icon">📚</span>
-                    <h3>الكتب والقراءة</h3>
-                </div>
-                <div class="card">
-                    <span class="icon">⚽</span>
-                    <h3>الرياضة</h3>
-                </div>
-                <div class="card">
-                    <span class="icon">👗</span>
-                    <h3>عالم الموضة</h3>
-                </div>
-                <div class="card">
-                    <span class="icon">🎬</span>
-                    <h3>الأفلام والسينما</h3>
-                </div>
-            </div>
-
-            <!-- 3. التواصل والمحادثات -->
-            <div class="section-title">💬 التواصل والمحادثات</div>
-            <div class="grid">
-                <div class="card full-card" onclick="switchTab('chat')">
-                    <span class="icon">💬</span>
-                    <h3>مركز المحادثات والدعم</h3>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- صفحة المحادثات -->
-        <div id="page-chat" class="page">
-            <div class="section-title">💬 مركز المحادثات</div>
-            
-            <div class="chat-tabs">
-                <button class="tab-btn active" id="btn-support" onclick="switchSection('support')">🛠️ الدعم الفني</button>
-                <button class="tab-btn" id="btn-communities" onclick="switchSection('communities')">🌐 المجتمعات</button>
-                <button class="tab-btn" id="btn-messages" onclick="switchSection('messages')">💬 المحادثات الشخصية</button>
-            </div>
-
-            <div class="chat-messages" id="chat-messages">
-                <!-- الرسائل هنا -->
-            </div>
-
-            <div class="chat-input">
-                <input type="text" id="user-input" placeholder="اكتب رسالتك هنا...">
-                <button onclick="sendMessage()">إرسال</button>
-            </div>
-        </div>
-
+  <div class="container">
+    <!-- صندوق إنشاء منشور -->
+    <div class="create-post-box" onclick="openPostModal()">
+      <div class="avatar">👤</div>
+      <div class="create-post-input">بم تفكر اليوم؟ أضف نصاً أو صورة...</div>
     </div>
 
-    <!-- الشريط السفلي -->
-    <div class="bottom-nav">
-        <button class="nav-item active" id="nav-home" onclick="switchTab('home')">
-            <span class="icon">🏠</span>
-            الرئيسية
-        </button>
-        <button class="nav-item">
-            <span class="icon">🛍️</span>
-            المتجر
-        </button>
-        <button class="nav-item" id="nav-chat" onclick="switchTab('chat')">
-            <span class="icon">💬</span>
-            المحادثات
-        </button>
-        <button class="nav-item">
-            <span class="icon">👤</span>
-            حسابي
-        </button>
+    <!-- أزرار وصول سريع -->
+    <div class="quick-access">
+      <a href="design-studio.html" class="quick-card">🛍️ المتجر والتصاميم</a>
+      <a href="reels.html" class="quick-card">🎬 أحدث الريلز</a>
+      <a href="explore.html" class="quick-card">🎈 قسم الترفيه</a>
+      <a href="chat.html" class="quick-card">💬 مجتمع المنصة</a>
     </div>
 
-    <div class="modal" id="auth-modal">
-        <div class="modal-content">
-            <h3>تنبيه</h3>
-            <p>يرجى تسجيل الدخول للوصول إلى هذا القسم واستخدامه.</p>
-            <button onclick="closeModal()">حسناً</button>
-        </div>
+    <!-- قائمة المنشورات الديناميكية -->
+    <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;"></div>
+  </div>
+
+  <!-- النافذة المنبثقة لكتابة منشور -->
+  <div class="modal" id="postModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>إنشاء منشور جديد</h3>
+        <span style="cursor:pointer;" onclick="closePostModal()">❌</span>
+      </div>
+      <textarea id="postText" class="modal-textarea" placeholder="اكتب منشورك هنا..."></textarea>
+      
+      <div class="file-input-wrapper">
+        <label for="postImageInput" class="file-label">🖼️ إرفاق صورة</label>
+        <input type="file" id="postImageInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+        <img id="imgPreview" class="image-preview" alt="معاينة الصورة">
+      </div>
+      <button class="post-btn" onclick="publishPost()">نشر الآن 🚀</button>
     </div>
+  </div>
 
-    <!-- الربط المباشر بـ Realtime Database -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <!-- الشريط السفلي الموحد -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item active">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="chat.html" class="nav-item">💬 المحادثات</a>
+    <a href="profile.html" class="nav-item">👤 حسابي</a>
+  </nav>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBwn1cYeo-jP-ccBMZRRMrEZ2R_RdSvw50",
-            authDomain: "sharikihub.firebaseapp.com",
-            databaseURL: "https://sharikihub-default-rtdb.firebaseio.com",
-            projectId: "sharikihub",
-            storageBucket: "sharikihub.firebasestorage.app",
-            messagingSenderId: "393020794820",
-            appId: "1:393020794820:web:1a6a55be713028fb9e2691",
-            measurementId: "G-QL47SXGDPR"
+  <script>
+    let base64Image = "";
+    const defaultPosts = [
+      {
+        author: "إدارة SharikiHub",
+        avatar: "S",
+        time: "منذ ساعة",
+        content: "مرحباً بكم في المنصة الشاملة! تم إطلاق استوديو التصاميم والمطبوعات بالإضافة للأقسام الترفيهية ومقاطع الريلز. 🔥👕",
+        image: ""
+      }
+    ];
+
+    function openPostModal() {
+      document.getElementById('postModal').style.display = 'flex';
+    }
+
+    function closePostModal() {
+      document.getElementById('postModal').style.display = 'none';
+      document.getElementById('postText').value = '';
+      document.getElementById('postImageInput').value = '';
+      document.getElementById('imgPreview').style.display = 'none';
+      base64Image = "";
+    }
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          base64Image = e.target.result;
+          const imgElement = document.getElementById('imgPreview');
+          imgElement.src = base64Image;
+          imgElement.style.display = 'block';
         };
+        reader.readAsDataURL(file);
+      }
+    }
 
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+    function loadPosts() {
+      const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
+      const allPosts = [...savedPosts, ...defaultPosts];
+      const feed = document.getElementById('postsFeed');
+      feed.innerHTML = '';
 
-        window.isLoggedIn = false;
-        window.currentSection = 'support';
+      allPosts.forEach(post => {
+        const imgTag = post.image ? `<img src="${post.image}" class="feed-img" alt="صورة المنشور">` : '';
+        feed.innerHTML += `
+          <div class="feed-card">
+            <div class="feed-header">
+              <div class="avatar">${post.avatar}</div>
+              <div>
+                <div class="feed-user">${post.author}</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">${post.time}</div>
+              </div>
+            </div>
+            <div class="feed-content">${post.content}</div>
+            ${imgTag}
+            <div class="feed-actions">
+              <span class="action-item" onclick="this.style.color='#ef4444'">❤️ إعجاب</span>
+              <span class="action-item" onclick="alert('قسم التعليقات قريباً!')">💬 تعليق</span>
+              <span class="action-item" onclick="alert('تم نسخ رابط المنشور')">🔄 مشاركة</span>
+            </div>
+          </div>
+        `;
+      });
+    }
 
-        window.switchTab = function(tabName) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    function publishPost() {
+      const text = document.getElementById('postText').value.trim();
+      if (!text && !base64Image) { alert('يرجى كتابة نص أو إرفاق صورة'); return; }
 
-            if (tabName === 'home') {
-                document.getElementById('page-home').classList.add('active');
-                document.getElementById('nav-home').classList.add('active');
-            } else if (tabName === 'chat') {
-                document.getElementById('page-chat').classList.add('active');
-                document.getElementById('nav-chat').classList.add('active');
-                listenForMessages();
-            }
-        };
+      const user = JSON.parse(localStorage.getItem('currentUser')) || { name: 'مستخدم جديد' };
+      const newPost = {
+        author: user.name,
+        avatar: user.name.charAt(0).toUpperCase(),
+        time: "الآن",
+        content: text,
+        image: base64Image
+      };
 
-        window.switchSection = function(section) {
-            if ((section === 'communities' || section === 'messages') && !window.isLoggedIn) {
-                document.getElementById('auth-modal').style.display = 'flex';
-                return;
-            }
+      const savedPosts = JSON.parse(localStorage.getItem('userPosts')) || [];
+      savedPosts.unshift(newPost);
+      localStorage.setItem('userPosts', JSON.stringify(savedPosts));
 
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            window.currentSection = section;
-            
-            if (section === 'support') document.getElementById('btn-support').classList.add('active');
-            if (section === 'communities') document.getElementById('btn-communities').classList.add('active');
-            if (section === 'messages') document.getElementById('btn-messages').classList.add('active');
+      closePostModal();
+      loadPosts();
+    }
 
-            listenForMessages();
-        };
-
-        function listenForMessages() {
-            const messagesRef = ref(database, 'messages/' + window.currentSection);
-            onValue(messagesRef, (snapshot) => {
-                const messagesContainer = document.getElementById('chat-messages');
-                messagesContainer.innerHTML = '';
-                const data = snapshot.val();
-
-                if (data) {
-                    Object.values(data).forEach((msgData) => {
-                        const msgDiv = document.createElement('div');
-                        msgDiv.className = msgData.sender === "user" ? "message sent" : "message received";
-                        msgDiv.innerText = msgData.text;
-                        messagesContainer.appendChild(msgDiv);
-                    });
-                }
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            });
-        }
-
-        window.sendMessage = function() {
-            const input = document.getElementById('user-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const messagesRef = ref(database, 'messages/' + window.currentSection);
-            push(messagesRef, {
-                text: text,
-                sender: "user",
-                timestamp: Date.now()
-            });
-
-            input.value = '';
-        };
-
-        window.closeModal = function() {
-            document.getElementById('auth-modal').style.display = 'none';
-        };
-    </script>
+    window.onload = loadPosts;
+  </script>
 </body>
 </html>
