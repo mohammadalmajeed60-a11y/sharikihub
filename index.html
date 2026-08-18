@@ -57,7 +57,6 @@
             margin: 0 auto;
         }
 
-        /* الصفحات المتحركة */
         .page {
             display: none;
         }
@@ -76,7 +75,7 @@
             gap: 8px;
         }
 
-        /* شبكة الكروت (Grid) بنفس أبعاد وتصميم البارحة */
+        /* شبكة الكروت */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -92,7 +91,7 @@
             text-decoration: none;
             color: var(--text-color);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            transition: transform 0.15s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -115,7 +114,6 @@
             font-weight: 600;
         }
 
-        /* كارت مركز المحادثات الكامل */
         .full-card {
             grid-column: span 2;
             padding: 20px;
@@ -123,7 +121,7 @@
             background: #ffffff;
         }
 
-        /* واجهة المحادثات والدردشة الداخلي */
+        /* واجهة المحادثات */
         .chat-tabs {
             display: flex;
             gap: 8px;
@@ -207,12 +205,10 @@
             cursor: pointer;
         }
 
-        /* شريط التنقل السفلي الأصلي */
+        /* شريط التنقل السفلي */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background-color: var(--card-bg);
             border-top: 1px solid var(--border-color);
             display: flex;
@@ -242,7 +238,6 @@
             margin-bottom: 2px;
         }
 
-        /* النافذة المنبثقة للتنبيه */
         .modal {
             display: none;
             position: fixed;
@@ -282,10 +277,10 @@
 
     <div class="container">
         
-        <!-- صفحة الرئيسية الأصلية بالكامل -->
+        <!-- صفحة الرئيسية بالتطبيق والترتيب المتفق عليه -->
         <div id="page-home" class="page active">
             
-            <!-- خدمات الطباعة حسب الطلب -->
+            <!-- 1. خدمات الطباعة حسب الطلب -->
             <div class="section-title">🖨️ خدمات الطباعة حسب الطلب</div>
             <div class="grid">
                 <div class="card">
@@ -298,28 +293,28 @@
                 </div>
             </div>
 
-            <!-- الأقسام الترفيهية -->
+            <!-- 2. الأقسام الترفيهية -->
             <div class="section-title">🎉 الأقسام الترفيهية</div>
             <div class="grid">
-                <div class="card">
-                    <span class="icon">⚽</span>
-                    <h3>الرياضة</h3>
-                </div>
                 <div class="card">
                     <span class="icon">📚</span>
                     <h3>الكتب والقراءة</h3>
                 </div>
                 <div class="card">
-                    <span class="icon">🎬</span>
-                    <h3>الأفلام والسينما</h3>
+                    <span class="icon">⚽</span>
+                    <h3>الرياضة</h3>
                 </div>
                 <div class="card">
                     <span class="icon">👗</span>
                     <h3>عالم الموضة</h3>
                 </div>
+                <div class="card">
+                    <span class="icon">🎬</span>
+                    <h3>الأفلام والسينما</h3>
+                </div>
             </div>
 
-            <!-- التواصل والمحادثات -->
+            <!-- 3. التواصل والمحادثات -->
             <div class="section-title">💬 التواصل والمحادثات</div>
             <div class="grid">
                 <div class="card full-card" onclick="switchTab('chat')">
@@ -330,7 +325,7 @@
 
         </div>
 
-        <!-- صفحة المحادثات الشاملة (تفتح بسلاسة من الشريط أو الكارت) -->
+        <!-- صفحة المحادثات -->
         <div id="page-chat" class="page">
             <div class="section-title">💬 مركز المحادثات</div>
             
@@ -341,7 +336,7 @@
             </div>
 
             <div class="chat-messages" id="chat-messages">
-                <!-- يتم جلب الرسائل من Firebase هنا -->
+                <!-- الرسائل هنا -->
             </div>
 
             <div class="chat-input">
@@ -352,7 +347,7 @@
 
     </div>
 
-    <!-- شريط التنقل السفلي الأصلي للتنقل السلس -->
+    <!-- الشريط السفلي -->
     <div class="bottom-nav">
         <button class="nav-item active" id="nav-home" onclick="switchTab('home')">
             <span class="icon">🏠</span>
@@ -372,7 +367,6 @@
         </button>
     </div>
 
-    <!-- النافذة المنبثقة لطلب تسجيل الدخول -->
     <div class="modal" id="auth-modal">
         <div class="modal-content">
             <h3>تنبيه</h3>
@@ -381,10 +375,10 @@
         </div>
     </div>
 
-    <!-- ربط Firebase المفعل بالكامل -->
+    <!-- الربط المباشر بـ Realtime Database -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBwn1cYeo-jP-ccBMZRRMrEZ2R_RdSvw50",
@@ -398,13 +392,11 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        const database = getDatabase(app);
 
         window.isLoggedIn = false;
         window.currentSection = 'support';
-        let unsubscribe = null;
 
-        // التنقل بين الصفحات السفلية
         window.switchTab = function(tabName) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -419,7 +411,6 @@
             }
         };
 
-        // التنقل بين أقسام المحادثة
         window.switchSection = function(section) {
             if ((section === 'communities' || section === 'messages') && !window.isLoggedIn) {
                 document.getElementById('auth-modal').style.display = 'flex';
@@ -437,45 +428,37 @@
         };
 
         function listenForMessages() {
-            if (unsubscribe) unsubscribe();
-
-            const messagesRef = collection(db, "chats", window.currentSection, "messages");
-            const q = query(messagesRef, orderBy("timestamp", "asc"));
-
-            unsubscribe = onSnapshot(q, (snapshot) => {
+            const messagesRef = ref(database, 'messages/' + window.currentSection);
+            onValue(messagesRef, (snapshot) => {
                 const messagesContainer = document.getElementById('chat-messages');
                 messagesContainer.innerHTML = '';
+                const data = snapshot.val();
 
-                snapshot.forEach((doc) => {
-                    const msgData = doc.data();
-                    const msgDiv = document.createElement('div');
-                    
-                    msgDiv.className = msgData.sender === "user" ? "message sent" : "message received";
-                    msgDiv.innerText = msgData.text;
-                    
-                    messagesContainer.appendChild(msgDiv);
-                });
-
+                if (data) {
+                    Object.values(data).forEach((msgData) => {
+                        const msgDiv = document.createElement('div');
+                        msgDiv.className = msgData.sender === "user" ? "message sent" : "message received";
+                        msgDiv.innerText = msgData.text;
+                        messagesContainer.appendChild(msgDiv);
+                    });
+                }
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             });
         }
 
-        window.sendMessage = async function() {
+        window.sendMessage = function() {
             const input = document.getElementById('user-input');
             const text = input.value.trim();
             if (!text) return;
 
-            try {
-                const messagesRef = collection(db, "chats", window.currentSection, "messages");
-                await addDoc(messagesRef, {
-                    text: text,
-                    sender: "user",
-                    timestamp: serverTimestamp()
-                });
-                input.value = '';
-            } catch (error) {
-                console.error("خطأ أثناء إرسال الرسالة:", error);
-            }
+            const messagesRef = ref(database, 'messages/' + window.currentSection);
+            push(messagesRef, {
+                text: text,
+                sender: "user",
+                timestamp: Date.now()
+            });
+
+            input.value = '';
         };
 
         window.closeModal = function() {
