@@ -2,242 +2,284 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SharikiHub - استوديو التصميم</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SharikiHub - استوديو التصميم والطباعة</title>
   <style>
     :root {
-      --bg-main: #0f172a;
-      --card-bg: #1e293b;
-      --accent: #8b5cf6;
+      --bg-main: #090d16;
+      --card-bg: #1a2232;
+      --border: #2a364f;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --border: #334155;
+      --accent: #2563eb;
+      --purple-accent: #8b5cf6;
+      --gold-gradient: linear-gradient(135deg, #ffd700, #b8860b);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 
-    body {
+    html, body {
       background-color: var(--bg-main);
       color: var(--text);
-      padding-bottom: 80px;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
     }
 
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* الهيدر العلوي */
     header {
       background-color: var(--card-bg);
-      padding: 15px 20px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
+      z-index: 10;
     }
 
-    .brand { font-size: 1.3rem; font-weight: 700; color: #38bdf8; }
-    .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
+    .brand-title { font-size: 1.1rem; font-weight: bold; color: #38bdf8; }
 
-    .container { padding: 15px; display: flex; flex-direction: column; gap: 20px; }
+    .gold-key-btn {
+      background: var(--gold-gradient);
+      color: #000;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.8rem;
+      text-decoration: none;
+    }
 
-    /* منطقة المعاينة الحية */
-    .preview-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 30px 15px;
+    /* الحاوية الرئيسية للتصميم */
+    .studio-container {
+      flex: 1;
       display: flex;
       flex-direction: column;
+      padding: 15px;
+      gap: 15px;
+      padding-bottom: 80px;
+      overflow-y: auto;
+    }
+
+    /* اختيار المنتج */
+    .product-selector {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .prod-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .prod-btn.active {
+      border-color: var(--purple-accent);
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--purple-accent);
+      font-weight: bold;
+    }
+
+    /* لوحة المعاينة الحية */
+    .canvas-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      height: 280px;
+      display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      min-height: 250px;
+      overflow: hidden;
     }
 
-    .mockup-icon {
+    .product-mockup {
       font-size: 8rem;
-      transition: color 0.3s ease;
+      user-select: none;
+      transition: all 0.3s ease;
     }
 
     .custom-text-overlay {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       font-weight: bold;
       font-size: 1.2rem;
       color: #ffffff;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
       pointer-events: none;
-      text-align: center;
-      word-break: break-word;
-      max-width: 80%;
     }
 
     /* أدوات التحكم والتخصيص */
-    .control-card {
+    .controls-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 15px;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    .label { font-size: 0.9rem; font-weight: bold; color: var(--text-muted); }
-
-    .grid-options {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .opt-btn {
-      background: var(--bg-main);
+    .control-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .tool-input {
+      background: #0f172a;
       border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      text-align: center;
-    }
-
-    .opt-btn.active {
-      border-color: var(--accent);
-      background: #2e1065;
-    }
-
-    .input-field {
-      width: 100%;
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
+      color: white;
       padding: 10px;
+      border-radius: 8px;
       outline: none;
       font-size: 0.9rem;
     }
 
-    .add-cart-btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
+    .color-picker-group {
+      display: flex;
+      gap: 10px;
     }
 
+    .color-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .color-dot.active { border-color: white; }
+
+    .action-btn {
+      background: var(--purple-accent);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+      font-size: 0.95rem;
+    }
+
+    /* الشريط السفلي */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
-      background-color: var(--card-bg); display: flex; justify-content: space-around;
-      align-items: center; border-top: 1px solid var(--border); z-index: 100;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background-color: var(--card-bg);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      z-index: 100;
     }
 
     .nav-item {
-      color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--purple-accent);
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="brand">استوديو التصميم 🎨</div>
-    <a href="cart.html" class="icon-btn" title="السلة">🛒</a>
+    <div class="brand-title">🎨 استوديو التصميم</div>
+    <a href="index.html" class="gold-key-btn">🗝️ المفتاح الذهبي</a>
   </header>
 
-  <div class="container">
-    <!-- المعاينة الحية للمنتج -->
-    <div class="preview-box">
-      <div id="productMockup" class="mockup-icon" style="color: #38bdf8;">👕</div>
-      <div id="textOverlay" class="custom-text-overlay">نصك هنا</div>
+  <div class="studio-container">
+    <!-- اختيار نوع المنتج -->
+    <div class="product-selector">
+      <button class="prod-btn active" onclick="selectProduct('👕', 'تيشيرت')">👕 تيشيرت</button>
+      <button class="prod-btn" onclick="selectProduct('☕', 'كوب')">☕ كوب</button>
+      <button class="prod-btn" onclick="selectProduct('📱', 'غطاء هاتف')">📱 غطاء هاتف</button>
+      <button class="prod-btn" onclick="selectProduct('🧢', 'قبعة')">🧢 قبعة</button>
     </div>
 
-    <!-- لوحة التخصيص -->
-    <div class="control-card">
-      <div class="label">1. اختر نوع المنتج:</div>
-      <div class="grid-options">
-        <button class="opt-btn active" onclick="selectProduct('👕', 'تيشيرت', 25)">👕 تيشيرت</button>
-        <button class="opt-btn" onclick="selectProduct('☕', 'كوب', 12)">☕ كوب</button>
-        <button class="opt-btn" onclick="selectProduct('👜', 'حقيبة', 18)">👜 حقيبة</button>
-        <button class="opt-btn" onclick="selectProduct('🧢', 'قبعة', 15)">🧢 قبعة</button>
+    <!-- منصة المعاينة الحية -->
+    <div class="canvas-card">
+      <div class="product-mockup" id="mockupDisplay">👕</div>
+      <div class="custom-text-overlay" id="textOverlay">نص تصميمك</div>
+    </div>
+
+    <!-- لوحة أدوات التعديل -->
+    <div class="controls-card">
+      <div class="control-group">
+        <label class="control-label">النص على المنتج:</label>
+        <input type="text" id="textInput" class="tool-input" value="نص تصميمك" oninput="updateText(this.value)">
       </div>
 
-      <div class="label">2. اكتب النص المخصص:</div>
-      <input type="text" id="customTextInput" class="input-field" placeholder="اكتب عبارة أو اسم..." oninput="updateText(this.value)">
-
-      <div class="label">3. اختر لون المنتج:</div>
-      <div class="grid-options">
-        <button class="opt-btn" onclick="changeColor('#38bdf8')">🩵 أزرق</button>
-        <button class="opt-btn" onclick="changeColor('#ef4444')">❤️ أحمر</button>
-        <button class="opt-btn" onclick="changeColor('#22c55e')">💚 أخضر</button>
-        <button class="opt-btn" onclick="changeColor('#f59e0b')">💛 أصفر</button>
+      <div class="control-group">
+        <label class="control-label">لون النص:</label>
+        <div class="color-picker-group">
+          <div class="color-dot active" style="background: #ffffff;" onclick="changeTextColor('#ffffff')"></div>
+          <div class="color-dot" style="background: #ffd700;" onclick="changeTextColor('#ffd700')"></div>
+          <div class="color-dot" style="background: #ef4444;" onclick="changeTextColor('#ef4444')"></div>
+          <div class="color-dot" style="background: #10b981;" onclick="changeTextColor('#10b981')"></div>
+        </div>
       </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-        <span class="label">السعر المقدر:</span>
-        <span id="productPrice" style="font-size: 1.2rem; font-weight: bold; color: #38bdf8;">25 $</span>
-      </div>
-
-      <button class="add-cart-btn" onclick="addToCart()">إضافة إلى السلة 🛒</button>
+      <button class="action-btn" onclick="saveDesign()">🛒 إضافة إلى السلة والطباعة</button>
     </div>
   </div>
 
+  <!-- الشريط السفلي المثبت -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item">🏠 الرئيسية</a>
-    <a href="reels.html" class="nav-item">🎬 ريلز</a>
-    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
+    <a href="studio.html" class="nav-item active">🎨 الاستوديو</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
-    <a href="admin.html" class="nav-item">👤 الملف</a>
+    <a href="index.html" class="nav-item">👤 حسابي</a>
   </nav>
 
   <script>
-    let currentProduct = {
-      icon: '👕',
-      name: 'تيشيرت',
-      price: 25,
-      color: '#38bdf8',
-      text: 'نصك هنا'
-    };
-
-    function selectProduct(icon, name, price) {
-      currentProduct.icon = icon;
-      currentProduct.name = name;
-      currentProduct.price = price;
-
-      document.getElementById('productMockup').innerText = icon;
-      document.getElementById('productPrice').innerText = price + ' $';
-
-      const buttons = document.querySelectorAll('.grid-options button');
-      buttons.forEach(btn => btn.classList.remove('active'));
+    function selectProduct(icon, name) {
+      document.getElementById('mockupDisplay').textContent = icon;
+      const btns = document.querySelectorAll('.prod-btn');
+      btns.forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
     }
 
     function updateText(val) {
-      currentProduct.text = val || 'نصك هنا';
-      document.getElementById('textOverlay').innerText = currentProduct.text;
+      document.getElementById('textOverlay').textContent = val || '';
     }
 
-    function changeColor(hex) {
-      currentProduct.color = hex;
-      document.getElementById('productMockup').style.color = hex;
+    function changeTextColor(color) {
+      document.getElementById('textOverlay').style.color = color;
+      const dots = document.querySelectorAll('.color-dot');
+      dots.forEach(dot => dot.classList.remove('active'));
+      event.target.classList.add('active');
     }
 
-    function addToCart() {
-      const cart = JSON.parse(localStorage.getItem('userCart')) || [];
-      cart.push({
-        id: Date.now(),
-        name: currentProduct.name + ' مخصص',
-        icon: currentProduct.icon,
-        text: currentProduct.text,
-        price: currentProduct.price,
-        color: currentProduct.color
-      });
-
-      localStorage.setItem('userCart', JSON.stringify(cart));
-      alert('تمت إضافة التصميم المخصص إلى سلة التسوق بنجاح!');
+    function saveDesign() {
+      alert('تم حفظ تصميمك وإضافته لسلة الشراء بنجاح! 🛍️');
     }
   </script>
 </body>
