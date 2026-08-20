@@ -2,16 +2,16 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>تسجيل الدخول - SharikiHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حسابي - SharikiHub</title>
   <style>
     :root {
-      --bg-main: #090d16;
-      --card-bg: #1a2232;
-      --border: #2a364f;
+      --bg-main: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
       --text: #f8fafc;
+      --text-muted: #94a3b8;
       --accent: #2563eb;
-      --purple-accent: #8b5cf6;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
@@ -19,80 +19,196 @@
     body {
       background-color: var(--bg-main);
       color: var(--text);
-      height: 100vh;
+      padding-bottom: 80px;
+      touch-action: pan-y;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .brand { font-size: 1.3rem; font-weight: 700; color: #38bdf8; }
+
+    .container { padding: 20px 15px; max-width: 450px; margin: 0 auto; }
+
+    .auth-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 20px;
     }
 
-    .login-container {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 30px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .tab-btn {
+      flex: 1; padding: 10px; background: none; border: none;
+      color: var(--text-muted); font-weight: bold; cursor: pointer; text-align: center;
     }
+    .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
 
-    .logo { font-size: 3rem; margin-bottom: 20px; }
-    .title { font-size: 1.5rem; font-weight: bold; margin-bottom: 20px; color: #38bdf8; }
-
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-muted); }
     .input-field {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 15px;
-      background: #0f172a;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: white;
-      font-size: 1rem;
-      outline: none;
+      width: 100%; background: var(--bg-main); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); padding: 10px; font-size: 0.9rem; outline: none;
     }
 
-    .input-field:focus { border-color: var(--purple-accent); }
-
-    .login-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--purple-accent);
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: opacity 0.3s;
+    .submit-btn {
+      width: 100%; padding: 12px; background: var(--accent);
+      color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;
     }
 
-    .login-btn:hover { opacity: 0.9; }
-
-    .back-link {
-      display: block;
-      margin-top: 20px;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      opacity: 0.7;
+    .profile-info { text-align: center; }
+    .profile-avatar {
+      width: 70px; height: 70px; border-radius: 50%; background: var(--accent);
+      color: white; font-size: 2rem; font-weight: bold; display: flex;
+      align-items: center; justify-content: center; margin: 0 auto 15px;
     }
+    .profile-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
+    .profile-email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+    .logout-btn { background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+      background-color: var(--card-bg); display: flex; justify-content: space-around;
+      align-items: center; border-top: 1px solid var(--border); z-index: 100;
+    }
+
+    .nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .nav-item.active { color: var(--accent); font-weight: bold; }
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <div class="logo">🔑</div>
-    <div class="title">تسجيل الدخول إلى SharikiHub</div>
-    
-    <form onsubmit="event.preventDefault(); alert('تم تسجيل الدخول بنجاح!'); window.location.href='index.html';">
-      <input type="email" class="input-field" placeholder="البريد الإلكتروني" required>
-      <input type="password" class="input-field" placeholder="كلمة المرور" required>
-      <button type="submit" class="login-btn">دخول</button>
-    </form>
+  <header>
+    <div class="brand">👤 تسجيل الدخول والحساب</div>
+  </header>
 
-    <a href="index.html" class="back-link">العودة للرئيسية</a>
+  <div class="container">
+    <div class="auth-card" id="authBox">
+      <div class="tabs">
+        <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">تسجيل الدخول</button>
+        <button class="tab-btn" id="registerTab" onclick="switchTab('register')">حساب جديد</button>
+      </div>
+
+      <!-- نموذج تسجيل الدخول -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="loginEmail" class="input-field" required placeholder="example@mail.com">
+        </div>
+        <div class="input-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="loginPass" class="input-field" required placeholder="******">
+        </div>
+        <button type="submit" class="submit-btn">دخول 🚀</button>
+      </form>
+
+      <!-- نموذج حساب جديد -->
+      <form id="registerForm" style="display:none;" onsubmit="handleRegister(event)">
+        <div class="input-group">
+          <label>الاسم الكامل</label>
+          <input type="text" id="regName" class="input-field" required placeholder="مثال: محمد علي">
+        </div>
+        <div class="input-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="regEmail" class="input-field" required placeholder="example@mail.com">
+        </div>
+        <div class="input-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="regPass" class="input-field" required placeholder="******">
+        </div>
+        <button type="submit" class="submit-btn">إنشاء حساب جديد ✨</button>
+      </form>
+    </div>
+
+    <!-- واجهة البروفايل عند تسجيل الدخول -->
+    <div class="auth-card" id="profileBox" style="display:none;">
+      <div class="profile-info">
+        <div class="profile-avatar" id="userAvatar">U</div>
+        <div class="profile-name" id="userName">المستخدم</div>
+        <div class="profile-email" id="userEmail">user@mail.com</div>
+        <button class="logout-btn" onclick="handleLogout()">تسجيل الخروج 🚪</button>
+      </div>
+    </div>
   </div>
 
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠 الرئيسية</a>
+    <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
+    <a href="chat.html" class="nav-item">💬 المحادثات</a>
+    <a href="login.html" class="nav-item active">👤 حسابي</a>
+  </nav>
+
+  <script>
+    function checkUser() {
+      const user = JSON.parse(localStorage.getItem('currentUser'));
+      if (user) {
+        document.getElementById('authBox').style.display = 'none';
+        document.getElementById('profileBox').style.display = 'block';
+        document.getElementById('userName').innerText = user.name;
+        document.getElementById('userEmail').innerText = user.email;
+        document.getElementById('userAvatar').innerText = user.name.charAt(0).toUpperCase();
+      } else {
+        document.getElementById('authBox').style.display = 'block';
+        document.getElementById('profileBox').style.display = 'none';
+      }
+    }
+
+    function switchTab(tab) {
+      if (tab === 'login') {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('loginTab').classList.add('active');
+        document.getElementById('registerTab').classList.remove('active');
+      } else {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+        document.getElementById('registerTab').classList.add('active');
+        document.getElementById('loginTab').classList.remove('active');
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value;
+      const email = document.getElementById('regEmail').value;
+      const user = { name, email };
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      checkUser();
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const name = email.split('@')[0];
+      const user = { name, email };
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      checkUser();
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('currentUser');
+      checkUser();
+    }
+
+    /* السحب للتنقل بين الصفحات */
+    let touchstartX = 0, touchendX = 0;
+    document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      if (touchendX - touchstartX > 70) window.location.href = "chat.html";
+    });
+
+    window.onload = checkUser;
+  </script>
 </body>
 </html>
