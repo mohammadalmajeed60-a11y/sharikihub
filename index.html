@@ -40,7 +40,6 @@
     .header-actions { display: flex; gap: 12px; align-items: center; }
     .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
 
-    /* زر المفتاح الذهبي المضاف للهيدر */
     .gold-key-header {
       background: var(--gold-gradient);
       color: #000;
@@ -87,6 +86,27 @@
       gap: 6px;
     }
 
+    .entertainment-categories {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .category-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 5px;
+      text-align: center;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
     .feed-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -109,7 +129,51 @@
       display: flex; gap: 15px; border-top: 1px solid var(--border);
       padding-top: 10px; font-size: 0.85rem; color: var(--text-muted);
     }
-    .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; transition: color 0.2s; }
+    
+    /* فئة الإعجاب الجديدة */
+    .action-item.liked { color: #ef4444 !important; font-weight: bold; }
+
+    .comments-section {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      display: none;
+    }
+
+    .comment-item {
+      font-size: 0.8rem;
+      background: var(--bg-main);
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    .comment-input-box {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .comment-input {
+      flex: 1;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+
+    .comment-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
 
     .modal {
       display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -164,7 +228,6 @@
   <header>
     <div class="brand">SharikiHub</div>
     <div class="header-actions">
-      <!-- المفتاح الذهبي المباشر لصفحة التسجيل -->
       <a href="auth.html" class="gold-key-header">🗝️ دخول</a>
       <a href="search.html" class="icon-btn">🔍</a>
       <a href="cart.html" class="icon-btn">🛒</a>
@@ -182,6 +245,13 @@
       <a href="reels.html" class="quick-card">🎬 أحدث الريلز</a>
       <a href="explore.html" class="quick-card">🎈 قسم الترفيه</a>
       <a href="chat.html" class="quick-card">💬 مجتمع المنصة</a>
+    </div>
+
+    <div class="entertainment-categories">
+      <a href="books.html" class="category-card">📚<span>الكتب</span></a>
+      <a href="sports.html" class="category-card">⚽<span>الرياضة</span></a>
+      <a href="fashion.html" class="category-card">👗<span>الأزياء</span></a>
+      <a href="movies.html" class="category-card">🎬<span>الأفلام</span></a>
     </div>
 
     <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;"></div>
@@ -204,7 +274,6 @@
     </div>
   </div>
 
-  <!-- الشريط السفلي بعد تعديل قسم حسابي -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item active">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
@@ -216,6 +285,7 @@
     let base64Image = "";
     const defaultPosts = [
       {
+        id: 1,
         author: "إدارة SharikiHub",
         avatar: "S",
         time: "منذ ساعة",
@@ -256,7 +326,8 @@
       const feed = document.getElementById('postsFeed');
       feed.innerHTML = '';
 
-      allPosts.forEach(post => {
+      allPosts.forEach((post, index) => {
+        const postId = post.id || index;
         const imgTag = post.image ? `<img src="${post.image}" class="feed-img" alt="صورة المنشور">` : '';
         feed.innerHTML += `
           <div class="feed-card">
@@ -270,9 +341,16 @@
             <div class="feed-content">${post.content}</div>
             ${imgTag}
             <div class="feed-actions">
-              <span class="action-item" onclick="this.style.color='#ef4444'">❤️ إعجاب</span>
-              <span class="action-item" onclick="alert('قسم التعليقات قريباً!')">💬 تعليق</span>
-              <span class="action-item" onclick="alert('تم نسخ رابط المنشور')">🔄 مشاركة</span>
+              <span class="action-item" onclick="toggleLike(this)">❤️ إعجاب</span>
+              <span class="action-item" onclick="toggleComments(${postId})">💬 تعليق</span>
+              <span class="action-item" onclick="sharePost()">🔄 مشاركة</span>
+            </div>
+            <div class="comments-section" id="comments-${postId}">
+              <div id="commentList-${postId}"></div>
+              <div class="comment-input-box">
+                <input type="text" class="comment-input" id="input-${postId}" placeholder="اكتب تعليقاً...">
+                <button class="comment-btn" onclick="addComment(${postId})">إرسال</button>
+              </div>
             </div>
           </div>
         `;
@@ -285,6 +363,7 @@
 
       const user = JSON.parse(localStorage.getItem('currentUser')) || { name: 'مستخدم جديد' };
       const newPost = {
+        id: Date.now(),
         author: user.name,
         avatar: user.name.charAt(0).toUpperCase(),
         time: "الآن",
@@ -298,6 +377,38 @@
 
       closePostModal();
       loadPosts();
+    }
+
+    // تم تحديث الدالة لتستخدم الـ Class
+    function toggleLike(element) {
+      element.classList.toggle('liked');
+    }
+
+    function toggleComments(postId) {
+      const commentSection = document.getElementById(`comments-${postId}`);
+      if (commentSection.style.display === 'block') {
+        commentSection.style.display = 'none';
+      } else {
+        commentSection.style.display = 'block';
+      }
+    }
+
+    function addComment(postId) {
+      const input = document.getElementById(`input-${postId}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const list = document.getElementById(`commentList-${postId}`);
+      const commentDiv = document.createElement('div');
+      commentDiv.className = 'comment-item';
+      commentDiv.innerText = text;
+      list.appendChild(commentDiv);
+
+      input.value = '';
+    }
+
+    function sharePost() {
+      alert('تم نسخ رابط المنشور إلى الحافظة!');
     }
 
     window.onload = loadPosts;
