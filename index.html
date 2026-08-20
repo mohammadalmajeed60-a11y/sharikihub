@@ -21,6 +21,7 @@
       background-color: var(--bg-main);
       color: var(--text);
       padding-bottom: 80px;
+      touch-action: pan-y;
     }
 
     /* الشريط العلوي */
@@ -40,6 +41,7 @@
     .header-actions { display: flex; gap: 12px; align-items: center; }
     .icon-btn { color: var(--text); text-decoration: none; font-size: 1.2rem; }
 
+    /* زر المفتاح الذهبي */
     .gold-key-header {
       background: var(--gold-gradient);
       color: #000;
@@ -86,27 +88,6 @@
       gap: 6px;
     }
 
-    .entertainment-categories {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    .category-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 5px;
-      text-align: center;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.75rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
     .feed-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -130,8 +111,6 @@
       padding-top: 10px; font-size: 0.85rem; color: var(--text-muted);
     }
     .action-item { cursor: pointer; display: flex; align-items: center; gap: 4px; transition: color 0.2s; }
-    
-    /* فئة الإعجاب الجديدة */
     .action-item.liked { color: #ef4444 !important; font-weight: bold; }
 
     .comments-section {
@@ -149,30 +128,14 @@
       margin-bottom: 6px;
     }
 
-    .comment-input-box {
-      display: flex;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
+    .comment-input-box { display: flex; gap: 6px; margin-top: 8px; }
     .comment-input {
-      flex: 1;
-      background: var(--bg-main);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text);
-      padding: 6px 10px;
-      font-size: 0.8rem;
+      flex: 1; background: var(--bg-main); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text); padding: 6px 10px; font-size: 0.8rem;
     }
-
     .comment-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      cursor: pointer;
+      background: var(--accent); color: white; border: none;
+      padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;
     }
 
     .modal {
@@ -210,6 +173,7 @@
       color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
     }
 
+    /* الشريط السفلي المعدل (تمت إضافة الترفيه) */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
       background-color: var(--card-bg); display: flex; justify-content: space-around;
@@ -217,7 +181,7 @@
     }
 
     .nav-item {
-      color: var(--text-muted); text-decoration: none; font-size: 0.8rem;
+      color: var(--text-muted); text-decoration: none; font-size: 0.75rem;
       display: flex; flex-direction: column; align-items: center; gap: 3px;
     }
     .nav-item.active { color: var(--accent); font-weight: bold; }
@@ -247,13 +211,6 @@
       <a href="chat.html" class="quick-card">💬 مجتمع المنصة</a>
     </div>
 
-    <div class="entertainment-categories">
-      <a href="books.html" class="category-card">📚<span>الكتب</span></a>
-      <a href="sports.html" class="category-card">⚽<span>الرياضة</span></a>
-      <a href="fashion.html" class="category-card">👗<span>الأزياء</span></a>
-      <a href="movies.html" class="category-card">🎬<span>الأفلام</span></a>
-    </div>
-
     <div id="postsFeed" style="display: flex; flex-direction: column; gap: 15px;"></div>
   </div>
 
@@ -274,9 +231,11 @@
     </div>
   </div>
 
+  <!-- الشريط السفلي بعد إضافة خيار الترفيه -->
   <nav class="bottom-nav">
     <a href="index.html" class="nav-item active">🏠 الرئيسية</a>
     <a href="reels.html" class="nav-item">🎬 ريلز</a>
+    <a href="explore.html" class="nav-item">🎈 الترفيه</a>
     <a href="chat.html" class="nav-item">💬 المحادثات</a>
     <a href="auth.html" class="nav-item">👤 حسابي</a>
   </nav>
@@ -294,10 +253,7 @@
       }
     ];
 
-    function openPostModal() {
-      document.getElementById('postModal').style.display = 'flex';
-    }
-
+    function openPostModal() { document.getElementById('postModal').style.display = 'flex'; }
     function closePostModal() {
       document.getElementById('postModal').style.display = 'none';
       document.getElementById('postText').value = '';
@@ -379,18 +335,10 @@
       loadPosts();
     }
 
-    // تم تحديث الدالة لتستخدم الـ Class
-    function toggleLike(element) {
-      element.classList.toggle('liked');
-    }
-
+    function toggleLike(element) { element.classList.toggle('liked'); }
     function toggleComments(postId) {
       const commentSection = document.getElementById(`comments-${postId}`);
-      if (commentSection.style.display === 'block') {
-        commentSection.style.display = 'none';
-      } else {
-        commentSection.style.display = 'block';
-      }
+      commentSection.style.display = commentSection.style.display === 'block' ? 'none' : 'block';
     }
 
     function addComment(postId) {
@@ -403,12 +351,25 @@
       commentDiv.className = 'comment-item';
       commentDiv.innerText = text;
       list.appendChild(commentDiv);
-
       input.value = '';
     }
 
-    function sharePost() {
-      alert('تم نسخ رابط المنشور إلى الحافظة!');
+    function sharePost() { alert('تم نسخ رابط المنشور إلى الحافظة!'); }
+
+    /* ميزة التنقل بالسحب (Swipe) بين الصفحات */
+    let touchstartX = 0;
+    let touchendX = 0;
+
+    document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      if (touchstartX - touchendX > 70) {
+        window.location.href = "reels.html"; // سحب لليار ينقلك للصفحة التالية
+      }
     }
 
     window.onload = loadPosts;
